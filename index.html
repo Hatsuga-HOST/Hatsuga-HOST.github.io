@@ -824,10 +824,123 @@
             .section-title {
                 font-size: 1.5rem;
             }
+
+            /* Modal Berita */
+            .modal-news {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                z-index: 1000;
+                justify-content: center;
+                align-items: center;
+                padding: 20px;
+                overflow-y: auto;
+            }
+            .modal-news-content {
+                background: white;
+                border-radius: 10px;
+                width: 90%;
+                max-width: 800px;
+                max-height: 90vh;
+                overflow-y: auto;
+                position: relative;
+                animation: modalFadeIn 0.3s ease;
+            }
+
+            .modal-news-header {
+                padding: 1.5rem;
+                border-bottom: 1px solid #eee;
+                position: relative;
+            }
+            .modal-news-title {
+                font-size: 1.5rem;
+                color: var(--primary);
+                margin-bottom: 0.5rem;
+                padding-right: 2rem;
+            }
+
+.modal-news-date {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.close-modal-news {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #999;
+  transition: color 0.3s ease;
+}
+
+.close-modal-news:hover {
+  color: var(--dark);
+}
+
+.modal-news-image {
+  height: 300px;
+  overflow: hidden;
+}
+
+.modal-news-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal-news-body {
+  padding: 1.5rem;
+}
+
+.modal-news-text {
+  line-height: 1.8;
+  color: #444;
+  margin-bottom: 1.5rem;
+}
+
+.modal-news-text p {
+  margin-bottom: 1rem;
+}
+
+.modal-news-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.news-share {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.news-share a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 36px;
+  height: 36px;
+  background: #f5f5f5;
+  border-radius: 50%;
+  color: #666;
+  transition: all 0.3s ease;
+}
+
+.news-share a:hover {
+  background: var(--primary);
+  color: white;
+}
         }
     </style>
 </head>
-<body>
+    <body>
+    
     <!-- Login Page -->
     <div id="login-page">
         <div class="login-container">
