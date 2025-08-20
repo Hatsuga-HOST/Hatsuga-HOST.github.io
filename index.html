@@ -1005,10 +1005,23 @@
                     <div class="stat-label">Wali Kelas</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number">28</div>
+                    <div class="stat-number">2</div>
                     <div class="stat-label">Prestasi</div>
                 </div>
             </div>
+
+              <div class="modal-news" id="news-modal">
+    <div class="modal-news-content">
+      <div class="modal-news-header">
+        <h2 class="modal-news-title" id="modal-news-title">Judul Berita</h2>
+        <div class="modal-news-date" id="modal-news-date">Tanggal Berita</div>
+        <span class="close-modal-news" onclick="closeNewsModal()">&times;</span>
+      </div>
+      <div class="modal-news-image">
+        <img id="modal-news-image" src="" alt="Gambar Berita">
+      </div>
+      <div class="modal-news-body">
+        <div class="modal-news-text" id="modal-news-text">
 
             <h2 class="section-title">Berita Terbaru</h2>
             
@@ -1021,8 +1034,7 @@
                         <div class="news-date">15 Maret 2023</div>
                         <h3 class="news-title">Kegiatan Penanaman Pohon di Lingkungan Sekolah</h3>
                         <p class="news-excerpt">Siswa-siswi kelas VIII melakukan kegiatan penanaman pohon sebagai bagian dari program sekolah berbasis lingkungan...</p>
-                        <a href="#" class="btn-read-more">Baca Selengkapnya →</a>
-                    </div>
+<a href="javascript:void(0)" class="btn-read-more" onclick="showNewsModal(0)">Baca Selengkapnya →</a>                    </div>
                 </div>
                 
                 <div class="news-card">
@@ -1276,6 +1288,88 @@
                 </div>
             </div>
         </div>
+
+        </div>
+      </div>
+      <div class="modal-news-footer">
+        <div class="news-share">
+          <a href="#" id="share-fb"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" id="share-twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" id="share-wa"><i class="fab fa-whatsapp"></i></a>
+        </div>
+        <button class="btn-more" onclick="closeNewsModal()">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+                const newsData = [
+            {
+                title: "Kegiatan Penanaman Pohon di Lingkungan Sekolah",
+                date: "15 Maret 2023",
+                image: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+                excerpt: "Siswa-siswi kelas VIII melakukan kegiatan penanaman pohon sebagai bagian dari program sekolah berbasis lingkungan...",
+                content: `<p>Siswa-siswi kelas VIII SMP AZAHRA BEKASI melakukan kegiatan penanaman pohon di lingkungan sekolah pada tanggal 15 Maret 2023. Kegiatan ini merupakan bagian dari program sekolah berbasis lingkungan yang dicanangkan sejak awal tahun ajaran.</p>
+                <p>Sebanyak 50 bibit pohon buah-buahan lokal ditanam di area sekitar lapangan sekolah dan taman belajar. Kegiatan ini tidak hanya bertujuan untuk menghijaukan lingkungan sekolah, tetapi juga sebagai media pembelajaran bagi siswa tentang pentingnya menjaga kelestarian alam.</p>
+                <p>Kepala Sekolah, Dr. Ahmad Suryadi, M.Pd., dalam sambutannya menyatakan bahwa kegiatan ini sejalan dengan visi sekolah yang peduli terhadap lingkungan. "Kami ingin menciptakan lingkungan belajar yang asri dan nyaman, sekaligus mengajarkan tanggung jawab kepada siswa untuk merawat tanaman yang mereka tanam," ujarnya.</p>
+                <p>Setiap siswa bertanggung jawab merawat satu pohon yang mereka tanam hingga lulus nanti. Mereka akan mencatat perkembangan pohon tersebut dalam jurnal khusus yang menjadi bagian dari penilaian pelajaran IPA dan Pendidikan Lingkungan Hidup.</p>
+                <p>Kegiatan ini mendapat apresiasi dari orang tua siswa dan masyarakat sekitar. Diharapkan program seperti ini dapat terus berlanjut dan menjadi contoh bagi sekolah-sekolah lain di wilayah Bekasi.</p>`
+            },
+            {
+                title: "Siswa SMP AZAHRA Raih Medali Olimpiade Matematika",
+                date: "10 Maret 2023",
+                image: "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+                excerpt: "Atas nama Ahmad Fauzi, siswa kelas VIII berhasil meraih medali perak dalam olimpiade matematika tingkat kota...",
+                content: `<p>Ahmad Fauzi, siswa kelas VIII SMP AZAHRA BEKASI, berhasil meraih medali perak dalam Olimpiade Matematika Tingkat Kota Bekasi yang diselenggarakan pada tanggal 10 Maret 2023. Prestasi ini merupakan kebanggaan bagi sekolah dan membuktikan kualitas pendidikan di SMP AZAHRA.</p>
+                <p>Olimpiade yang diikuti oleh 50 peserta dari berbagai sekolah di Kota Bekasi ini menguji kemampuan siswa dalam menyelesaikan soal-soal matematika tingkat menengah dengan tingkat kesulitan tinggi. Ahmad Fauzi berhasil menyelesaikan 8 dari 10 soal dengan sempurna.</p>
+                <p>"Saya senang bisa mengharumkan nama sekolah. Ini berkat bimbingan dari guru matematika saya, Bu Siti, dan dukungan dari orang tua," ujar Ahmad Fauzi dengan semangat.</p>
+                <p>Guru matematika, Siti Aminah, S.Pd., menyatakan bahwa prestasi ini adalah hasil dari kerja keras dan konsistensi. "Ahmad adalah siswa yang tekun dan selalu antusias dalam mempelajari matematika. Dia sering mengikuti les tambahan dan mengerjakan soal-soal latihan di luar jam sekolah," tuturnya.</p>
+                <p>Kepala Sekolah berencana akan memberikan penghargaan khusus kepada Ahmad Fauzi dalam upacara bendera hari Senin depan. Prestasi ini diharapkan dapat memotivasi siswa lainnya untuk lebih giat belajar dan berprestasi.</p>`
+            },
+            {
+                title: "Study Tour Kelas VIII ke Taman Nasional",
+                date: "5 Maret 2023",
+                image: "https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+                excerpt: "Sebagai bagian dari pembelajaran lingkungan, siswa kelas VIII melakukan study tour ke Taman Nasional untuk mempelajari ekosistem...",
+                content: `<p>Sebagai bagian dari program pembelajaran lingkungan hidup, siswa kelas VIII SMP AZAHRA BEKASI melaksanakan study tour ke Taman Nasional Gunung Halimun Salak pada tanggal 5 Maret 2023. Kegiatan ini diikuti oleh 120 siswa dan 15 guru pendamping.</p>
+                <p>Study tour ini bertujuan untuk memberikan pengalaman langsung kepada siswa tentang keanekaragaman hayati dan ekosistem hutan tropis. Selama kegiatan, siswa diajak untuk mengamati berbagai jenis flora dan fauna, serta mempelajari pentingnya menjaga kelestarian hutan.</p>
+                <p>"Ini pengalaman pertama saya melihat langsung owa jawa dan elang jawa yang merupakan satwa langka. Sangat mengesankan!" ujar Siti Rahayu, salah satu peserta study tour.</p>
+                <p>Selain observasi alam, siswa juga melakukan praktik pengukuran kualitas air, identifikasi jenis-jenis tumbuhan, dan wawancara dengan petugas konservasi taman nasional. Hasil dari study tour ini akan dituangkan dalam laporan ilmiah yang menjadi penilaian untuk mata pelajaran IPA dan Pendidikan Lingkungan Hidup.</p>
+                <p>Kegiatan study tour ini diharapkan dapat meningkatkan kesadaran siswa akan pentingnya menjaga kelestarian alam dan menjadi pengalaman yang berharga bagi mereka.</p>`
+            },
+            {
+                title: "Workshop Teknologi Hijau untuk Siswa",
+                date: "28 Februari 2023",
+                image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+                excerpt: "SMP AZAHRA menyelenggarakan workshop teknologi hijau dengan menghadirkan pakar lingkungan dari universitas ternama...",
+                content: `<p>SMP AZAHRA BEKASI menyelenggarakan workshop teknologi hijau pada tanggal 28 Februari 2023. Workshop ini menghadirkan Dr. Rina Pratiwi, pakar lingkungan dari Institut Teknologi Bandung, sebagai pembicara utama.</p>
+                <p>Kegiatan yang diikuti oleh seluruh siswa kelas VIII ini bertujuan untuk memperkenalkan teknologi ramah lingkungan yang dapat diterapkan dalam kehidupan sehari-hari. Materi yang disampaikan meliputi pemanfaatan energi terbarukan, pengelolaan sampah, dan teknologi sederhana untuk konservasi air.</p>
+                <p>"Sangat penting bagi generasi muda untuk memahami dan menerapkan teknologi hijau sejak dini. Ini adalah investasi untuk masa depan bumi kita," ujar Dr. Rina dalam pemaparannya.</p>
+                <p>Selain teori, siswa juga diajak untuk praktik membuat vertical garden dari botol plastik bekas dan instalasi sederhana pemanas air tenaga surya. Hasil karya siswa akan dipamerkan di sekolah dan dinilai sebagai bagian dari penilaian mata pelajaran IPA.</p>
+                <p>Workshop ini mendapat respons positif dari siswa. "Saya jadi tahu kalau teknologi hijau tidak selalu mahal dan rumit. Kita bisa memulai dari hal-hal sederhana di sekitar kita," kata Budi Santoso, salah satu peserta workshop.</p>`
+            },
+            {
+                title: "Pentas Seni Kelas VIII Tampil Memukau",
+                date: "20 Februari 2023",
+                image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+                excerpt: "Pentas seni tahunan kelas VIII berlangsung meriah dengan berbagai pertunjukan menarik dari siswa-siswi berbakat...",
+                content: `<p>Pentas Seni tahunan kelas VIII SMP AZAHRA BEKASI berlangsung meriah pada tanggal 20 Februari 2023. Acara yang bertema "Seni Membangun Karakter" ini menampilkan berbagai pertunjukan seni dari siswa-siswi kelas VIII.</p>
+                <p>Pentas seni dibuka dengan tarian tradisional dari berbagai daerah di Indonesia, dilanjutkan dengan pertunjukan musik, drama, puisi, dan fashion show busana daur ulang. Seluruh pertunjukan merupakan hasil karya siswa yang dilatih oleh guru kesenian sekolah.</p>
+                <p>"Kami sangat bangga dengan kreativitas dan bakat yang ditunjukkan oleh siswa-siswi. Pentas seni ini tidak hanya sebagai ajang unjuk bakat, tetapi juga sebagai media untuk melestarikan budaya Indonesia," ujar Ibu Maya, guru kesenian SMP AZAHRA.</p>
+                <p>Acara yang berlangsung dari pukul 08.00 hingga 15.00 WIB ini dihadiri oleh orang tua siswa, perwakilan dinas pendidikan, dan masyarakat sekitar. Mereka terkesan dengan penampilan para siswa yang penuh semangat dan profesional.</p>
+                <p>Pentas seni tahunan ini menjadi agenda rutin sekolah untuk mengembangkan bakat seni siswa dan sebagai bentuk apresiasi terhadap dunia seni dan budaya.</p>`
+            },
+            {
+                title: "SMP AZAHRA Juara Umum Lomba Cerdas Cermat",
+                date: "15 Februari 2023",
+                image: "https://images.unsplash.com/photo-1571260899304-425eee4c7efc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+                excerpt: "Tim cerdas cermat SMP AZAHRA berhasil menjadi juara umum dalam lomba cerdas cermat antar sekolah se-Kota Bekasi...",
+                content: `<p>Tim cerdas cermat SMP AZAHRA BEKASI berhasil meraih juara umum dalam Lomba Cerdas Cermat Antar Sekolah se-Kota Bekasi yang diselenggarakan pada tanggal 15 Februari 2023. Prestasi ini membuktikan kualitas akademik siswa SMP AZAHRA yang unggul.</p>
+                <p>Lomba yang diikuti oleh 30 sekolah menengah pertama ini menguji pengetahuan siswa dalam berbagai bidang studi, termasuk matematika, IPA, IPS, bahasa Indonesia, bahasa Inggris, dan pengetahuan umum. Tim SMP AZAHRA yang terdiri dari Ahmad Fauzi, Siti Rahayu, dan Indah Permata berhasil mengungguli peserta lainnya dengan perolehan skor tertinggi.</p>
+                <p>"Kami berlatih selama tiga bulan untuk persiapan lomba ini. Strategi kami adalah pembagian tugas sesuai dengan keahlian masing-masing," ujar Ahmad Fauzi, ketua tim cerdas cermat.</p>
+                <p>Guru pembimbing, Bapak Irhas Abdul Fatah, S.Pd., menyatakan bahwa kunci keberhasilan tim adalah kerjasama dan kedisiplinan dalam belajar. "Mereka sangat kompak dan saling mendukung. Selain belajar materi, kami juga melatih mental dan strategi menjawab soal," tuturnya.</p>
+                <p>Kemenangan ini mengantarkan SMP AZAHRA menjadi wakil Kota Bekasi untuk lomba cerdas cermat tingkat provinsi yang akan diselenggarakan bulan depan.</p>`
+            }
+        ];
 
         <!-- Teachers Page -->
         <div id="teachers" class="page">
@@ -1541,6 +1635,48 @@
                 photo: "https://images.unsplash.com/photo-1508341591423-4347099e1f19?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80"
             }
         ];
+
+               function showNewsModal(index) {
+            const news = newsData[index];
+            const modal = document.getElementById('news-modal');
+            const modalTitle = document.getElementById('modal-news-title');
+            const modalDate = document.getElementById('modal-news-date');
+            const modalImage = document.getElementById('modal-news-image');
+            const modalText = document.getElementById('modal-news-text');
+            
+            // Isi data ke dalam modal
+            modalTitle.textContent = news.title;
+            modalDate.textContent = news.date;
+            modalImage.src = news.image;
+            modalImage.alt = news.title;
+            modalText.innerHTML = news.content;
+            
+            // Set link berbagi
+            const currentURL = window.location.href;
+            const encodedTitle = encodeURIComponent(news.title);
+            
+            document.getElementById('share-fb').href = `https://www.facebook.com/sharer/sharer.php?u=${currentURL}`;
+            document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${currentURL}`;
+            document.getElementById('share-wa').href = `https://wa.me/?text=${encodedTitle}%20${currentURL}`;
+            
+            // Tampilkan modal
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Mencegah scroll di latar belakang
+        }
+        
+        // Fungsi untuk menutup modal berita
+        function closeNewsModal() {
+            document.getElementById('news-modal').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Mengembalikan scroll
+        }
+        
+        // Tutup modal jika klik di luar area konten
+        window.onclick = function(event) {
+            const modal = document.getElementById('news-modal');
+            if (event.target == modal) {
+                closeNewsModal();
+            }
+        }
 
         // Fungsi login
         function login() {
