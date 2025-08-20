@@ -3,301 +3,416 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KELAS VIII SMP AZAHRA BEKASI</title>
+    <title>SMP AZAHRA BEKASI - Kelas VIII</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Variabel warna */
         :root {
-            --dark-blue: #0a192f;
-            --medium-blue: #112240;
-            --light-blue: #233554;
-            --accent-blue: #64ffda;
-            --text-primary: #e6f1ff;
-            --text-secondary: #8892b0;
+            --primary: #1a73e8;
+            --secondary: #34a853;
+            --accent: #fbbc04;
+            --light: #f8f9fa;
+            --dark: #202124;
+            --blue-light: #e8f0fe;
+            --blue-dark: #0d47a1;
+            --green-light: #e6f4ea;
         }
-
-        /* Reset & Global Styles */
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
+        
         body {
-            background-color: var(--dark-blue);
-            color: var(--text-primary);
-            line-height: 1.6;
+            background-color: var(--light);
+            color: var(--dark);
             overflow-x: hidden;
         }
-
-        /* Animasi */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-
-        /* Container */
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header & Navigasi */
-        header {
-            background-color: rgba(10, 25, 47, 0.9);
+        
+        /* Login Page */
+        #login-page {
             position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--primary), var(--blue-dark));
+            display: flex;
+            justify-content: center;
+            align-items: center;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.5s ease;
         }
-
-        nav {
+        
+        .login-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .login-container h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .login-container img {
+            width: 120px;
+            margin-bottom: 1rem;
+        }
+        
+        .input-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            font-weight: 500;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border 0.3s ease;
+        }
+        
+        .input-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+        
+        .btn-login {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .btn-login:hover {
+            background: var(--blue-dark);
+        }
+        
+        .error-message {
+            color: #e53935;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        /* Main Website */
+        #main-website {
+            display: none;
+        }
+        
+        /* Header */
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 0;
+            padding: 1rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
         }
-
+        
         .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--accent-blue);
-            animation: fadeIn 1s ease;
+            display: flex;
+            align-items: center;
         }
-
-        .nav-links {
+        
+        .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        nav ul {
             display: flex;
             list-style: none;
         }
-
-        .nav-links li {
-            margin-left: 30px;
+        
+        nav ul li {
+            margin-left: 1.5rem;
         }
-
-        .nav-links a {
-            color: var(--text-primary);
+        
+        nav ul li a {
             text-decoration: none;
+            color: var(--dark);
             font-weight: 500;
-            transition: color 0.3s ease;
+            padding: 0.5rem 0;
             position: relative;
+            transition: color 0.3s ease;
         }
-
-        .nav-links a:hover {
-            color: var(--accent-blue);
+        
+        nav ul li a:hover {
+            color: var(--primary);
         }
-
-        .nav-links a::after {
+        
+        nav ul li a::after {
             content: '';
             position: absolute;
+            bottom: 0;
+            left: 0;
             width: 0;
             height: 2px;
-            bottom: -5px;
-            left: 0;
-            background-color: var(--accent-blue);
+            background: var(--primary);
             transition: width 0.3s ease;
         }
-
-        .nav-links a:hover::after {
+        
+        nav ul li a:hover::after {
             width: 100%;
         }
-
-        /* Section Umum */
-        section {
-            padding: 100px 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+        
+        .nav-active {
+            color: var(--primary);
         }
-
-        .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 50px;
+        
+        .nav-active::after {
+            width: 100% !important;
+        }
+        
+        /* Page Content */
+        .page {
+            display: none;
+            padding: 2rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .page-active {
+            display: block;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(26, 115, 232, 0.8), rgba(13, 71, 161, 0.8)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 4rem 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
             text-align: center;
-            color: var(--accent-blue);
-            position: relative;
         }
-
+        
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            animation: slideUp 1s ease;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            animation: slideUp 1.2s ease;
+        }
+        
+        .btn-hero {
+            background: var(--accent);
+            color: var(--dark);
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, background 0.3s ease;
+            animation: slideUp 1.4s ease;
+        }
+        
+        .btn-hero:hover {
+            transform: translateY(-3px);
+            background: #fdcc36;
+        }
+        
+        /* Section Titles */
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        
         .section-title::after {
             content: '';
             position: absolute;
-            width: 100px;
-            height: 3px;
-            background-color: var(--accent-blue);
-            bottom: -10px;
+            bottom: 0;
             left: 50%;
             transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--primary);
         }
-
-        /* Hero Section */
-        #hero {
-            text-align: center;
-            background: linear-gradient(to bottom, var(--dark-blue), var(--medium-blue));
-        }
-
-        .hero-content {
-            animation: fadeIn 1.5s ease;
-        }
-
-        .hero-content h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-        }
-
-        .hero-content p {
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto 30px;
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 12px 28px;
-            background-color: transparent;
-            color: var(--accent-blue);
-            border: 1px solid var(--accent-blue);
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            margin: 10px;
-        }
-
-        .cta-button:hover {
-            background-color: rgba(100, 255, 218, 0.1);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(100, 255, 218, 0.2);
-        }
-
+        
         /* About Section */
-        #about {
-            background-color: var(--medium-blue);
-        }
-
         .about-content {
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
         }
-
+        
         .about-text {
             flex: 1;
             min-width: 300px;
-            padding-right: 30px;
-            animation: fadeIn 1s ease;
         }
-
+        
         .about-text h3 {
-            color: var(--accent-blue);
-            margin-bottom: 20px;
-            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
         }
-
-        .about-text p {
-            margin-bottom: 15px;
-            color: var(--text-secondary);
-        }
-
+        
         .about-image {
             flex: 1;
             min-width: 300px;
-            text-align: center;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .about-image img {
-            max-width: 100%;
             border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
-
+        
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Stats Section */
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 3rem 0;
+            text-align: center;
+        }
+        
+        .stat-item {
+            padding: 1.5rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin: 1rem;
+            min-width: 180px;
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--dark);
+            font-weight: 500;
+        }
+        
         /* Students Section */
-        #students {
-            background-color: var(--light-blue);
-        }
-
         .students-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 30px;
+            gap: 2rem;
+            margin: 2rem 0;
         }
-
+        
         .student-card {
-            background-color: var(--medium-blue);
+            background: white;
             border-radius: 10px;
             overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            animation: fadeIn 1s ease;
         }
-
+        
         .student-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
-
+        
         .student-image {
-            width: 100%;
-            height: 250px;
+            height: 200px;
             overflow: hidden;
         }
-
+        
         .student-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: transform 0.5s ease;
         }
-
+        
         .student-card:hover .student-image img {
             transform: scale(1.1);
         }
-
+        
         .student-info {
-            padding: 20px;
+            padding: 1.5rem;
         }
-
-        .student-info h3 {
-            margin-bottom: 10px;
-            color: var(--accent-blue);
+        
+        .student-name {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
         }
-
-        .student-info p {
-            color: var(--text-secondary);
-            margin-bottom: 15px;
+        
+        .student-bio {
+            color: var(--dark);
+            margin-bottom: 1rem;
             font-size: 0.9rem;
         }
-
-        .info-button {
-            display: inline-block;
+        
+        .btn-more {
+            background: var(--blue-light);
+            color: var(--primary);
+            border: none;
             padding: 8px 15px;
-            background-color: transparent;
-            color: var(--accent-blue);
-            border: 1px solid var(--accent-blue);
-            border-radius: 4px;
-            text-decoration: none;
+            border-radius: 5px;
             font-size: 0.9rem;
-            transition: all 0.3s ease;
+            cursor: pointer;
+            transition: background 0.3s ease;
         }
-
-        .info-button:hover {
-            background-color: rgba(100, 255, 218, 0.1);
+        
+        .btn-more:hover {
+            background: #d2e3fc;
         }
-
+        
         /* Modal */
         .modal {
             display: none;
@@ -306,512 +421,1118 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 1001;
-            overflow-y: auto;
-            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
         }
-
+        
         .modal-content {
-            background-color: var(--medium-blue);
-            margin: 50px auto;
-            padding: 30px;
+            background: white;
+            padding: 2rem;
             border-radius: 10px;
-            max-width: 600px;
+            width: 90%;
+            max-width: 500px;
             position: relative;
-            animation: fadeIn 0.5s ease;
+            animation: modalFadeIn 0.3s ease;
         }
-
-        .close-button {
+        
+        .close-modal {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 1rem;
+            right: 1rem;
             font-size: 1.5rem;
-            color: var(--text-secondary);
             cursor: pointer;
+            color: #999;
             transition: color 0.3s ease;
         }
-
-        .close-button:hover {
-            color: var(--accent-blue);
+        
+        .close-modal:hover {
+            color: var(--dark);
         }
-
-        .modal-header {
-            text-align: center;
-            margin-bottom: 30px;
+        
+        .modal-student-info {
+            margin-top: 1.5rem;
         }
-
-        .modal-header h2 {
-            color: var(--accent-blue);
-            margin-bottom: 10px;
+        
+        .modal-student-info p {
+            margin-bottom: 0.5rem;
+            display: flex;
         }
-
-        .modal-image {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
+        
+        .modal-student-info strong {
+            min-width: 150px;
+            display: inline-block;
+        }
+        
+        .btn-wa {
+            display: inline-block;
+            background: #25D366;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 1rem;
+            transition: background 0.3s ease;
+        }
+        
+        .btn-wa:hover {
+            background: #128C7E;
+        }
+        
+        /* News Section */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .news-card {
+            background: white;
+            border-radius: 10px;
             overflow: hidden;
-            margin: 0 auto 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
         }
-
-        .modal-image img {
+        
+        .news-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .news-image {
+            height: 180px;
+            overflow: hidden;
+        }
+        
+        .news-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.5s ease;
         }
-
-        .modal-details {
-            margin-bottom: 30px;
+        
+        .news-card:hover .news-image img {
+            transform: scale(1.1);
         }
-
-        .detail-item {
-            display: flex;
-            margin-bottom: 15px;
+        
+        .news-info {
+            padding: 1.5rem;
         }
-
-        .detail-label {
-            flex: 1;
-            font-weight: 600;
-            color: var(--accent-blue);
+        
+        .news-date {
+            color: var(--primary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
         }
-
-        .detail-value {
-            flex: 2;
-            color: var(--text-secondary);
-        }
-
-        .social-media {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .social-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            background-color: transparent;
-            border: 1px solid var(--accent-blue);
-            border-radius: 50%;
-            color: var(--accent-blue);
-            text-decoration: none;
+        
+        .news-title {
             font-size: 1.2rem;
-            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+            color: var(--dark);
         }
-
-        .social-button:hover {
-            background-color: rgba(100, 255, 218, 0.1);
-            transform: translateY(-3px);
-        }
-
-        /* Class Info Section */
-        #class-info {
-            background-color: var(--dark-blue);
-        }
-
-        .class-details {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .class-details p {
-            margin-bottom: 20px;
-            color: var(--text-secondary);
-            text-align: center;
-        }
-
-        .class-stats {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            margin-top: 50px;
-        }
-
-        .stat-item {
-            text-align: center;
-            padding: 20px;
-            min-width: 200px;
-            animation: fadeIn 1s ease;
-        }
-
-        .stat-number {
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--accent-blue);
-            margin-bottom: 10px;
-        }
-
-        .stat-label {
-            color: var(--text-secondary);
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--medium-blue);
-            padding: 30px 0;
-            text-align: center;
-        }
-
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .secret-button {
-            margin: 20px 0;
-        }
-
-        .copyright {
-            color: var(--text-secondary);
-            margin-top: 20px;
+        
+        .news-excerpt {
+            color: #666;
+            margin-bottom: 1rem;
             font-size: 0.9rem;
         }
-
+        
+        .btn-read-more {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        
+        .btn-read-more:hover {
+            color: var(--blue-dark);
+        }
+        
+        /* Teachers Section */
+        .teachers-list {
+            margin: 2rem 0;
+        }
+        
+        .teacher-item {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .teacher-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .teacher-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 1.5rem;
+            background: var(--blue-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .teacher-info h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .teacher-subject {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .teacher-contact {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .teacher-contact a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        
+        .teacher-contact a:hover {
+            color: var(--blue-dark);
+        }
+        
+        /* Contact Section */
+        .contact-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .contact-info {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .contact-info h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .contact-details {
+            margin-bottom: 2rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--blue-light);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--primary);
+            margin-right: 1rem;
+        }
+        
+        .contact-text {
+            color: var(--dark);
+        }
+        
+        .map-container {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .map-container iframe {
+            width: 100%;
+            height: 300px;
+            border: none;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 5%;
+            margin-top: 4rem;
+        }
+        
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-col {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .footer-col h3 {
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--accent);
+        }
+        
+        .footer-col p {
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-links a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid #444;
+            color: #999;
+            font-size: 0.9rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .hero-content h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero-content p {
-                font-size: 1.2rem;
-            }
-
-            .about-content {
+            .header-container {
                 flex-direction: column;
+                text-align: center;
             }
-
-            .about-text {
-                padding-right: 0;
-                margin-bottom: 30px;
+            
+            nav ul {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
             }
-
-            .section-title {
+            
+            nav ul li {
+                margin: 0.5rem;
+            }
+            
+            .hero h2 {
                 font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header & Navigasi -->
-    <header>
-        <div class="container">
-            <nav>
-                <div class="logo">KELAS VIII</div>
-                <ul class="nav-links">
-                    <li><a href="#hero">Home</a></li>
-                    <li><a href="#about">Tentang</a></li>
-                    <li><a href="#students">Siswa</a></li>
-                    <li><a href="#class-info">Kelas</a></li>
-                </ul>
-            </nav>
+    <!-- Login Page -->
+    <div id="login-page">
+        <div class="login-container">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzFhNzNlOCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yIDNIOGEyIDIgMCAwIDEgMiAydjE0YTIgMiAwIDAgMS0yIDJIMnYtMThaIj48L3BhdGg+PHBhdGggZD0iTTIyIDNIMTZhMiAyIDAgMCAwLTIgMnYxNGEyIDIgMCAwIDAgMiAyaDZ2LTE4WiI+PC9wYXRoPjxwYXRoIGQ9Ik02IDE2aDQiPjwvcGF0aD48cGF0aCBkPSJNNiAxMGg0Ij48L3BhdGg+PHBhdGggZD0iTTE0IDE2aDQiPjwvcGF0aD48cGF0aCBkPSJNMTQgMTBoNCI+PC9wYXRoPjwvc3ZnPg==" alt="SMP AZAHRA Logo">
+            <h2>Login ke Portal SMP AZAHRA</h2>
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Masukkan username">
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Masukkan password">
+            </div>
+            <button class="btn-login" onclick="login()">Login</button>
+            <p class="error-message" id="error-message">Username atau password salah!</p>
         </div>
-    </header>
+    </div>
 
-    <!-- Hero Section -->
-    <section id="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1>SMP AZAHRA BEKASI</h1>
-                <p>KELAS VIII - Tahun Ajaran 2025/2026</p>
-                <a href="#students" class="cta-button">Lihat Siswa</a>
-                <a href="#about" class="cta-button">Tentang Sekolah</a>
+    <!-- Main Website -->
+    <div id="main-website">
+        <!-- Header -->
+        <header>
+            <div class="header-container">
+                <div class="logo">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzFhNzNlOCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yIDNIOGEyIDIgMCAwIDEgMiAydjE0YTIgMiAwIDAgMS0yIDJIMnYtMThaIj48L3BhdGg+PHBhdGggZD0iTTIyIDNIMTZhMiAyIDAgMCAwLTIgMnYxNGEyIDIgMCAwIDAgMiAyaDZ2LTE4WiI+PC9wYXRoPjxwYXRoIGQ9Ik02IDE2aDQiPjwvcGF0aD48cGF0aCBkPSJNNiAxMGg0Ij48L3BhdGg+PHBhdGggZD0iTTE0IDE2aDQiPjwvcGF0aD48cGF0aCBkPSJNMTQgMTBoNCI+PC9wYXRoPjwvc3ZnPg==" alt="SMP AZAHRA Logo">
+                    <h1>SMP AZAHRA BEKASI</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="nav-active" onclick="showPage('home')">Home</a></li>
+                        <li><a href="#" onclick="showPage('about')">Tentang</a></li>
+                        <li><a href="#" onclick="showPage('students')">Siswa</a></li>
+                        <li><a href="#" onclick="showPage('news')">Berita</a></li>
+                        <li><a href="#" onclick="showPage('teachers')">Guru</a></li>
+                        <li><a href="#" onclick="showPage('contact')">Kontak</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Home Page -->
+        <div id="home" class="page page-active">
+            <div class="hero">
+                <h2>Selamat Datang di SMP AZAHRA BEKASI</h2>
+                <p>Sekolah unggulan berbasis lingkungan dengan fokus pada pengembangan karakter dan akademik siswa</p>
+                <button class="btn-hero" onclick="showPage('about')">Jelajahi Sekolah</button>
+            </div>
+
+            <h2 class="section-title">Kelas VIII - Informasi Singkat</h2>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">Siswa</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">13</div>
+                    <div class="stat-label">Mata Pelajaran</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">1</div>
+                    <div class="stat-label">Wali Kelas</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">28</div>
+                    <div class="stat-label">Prestasi</div>
+                </div>
+            </div>
+
+            <h2 class="section-title">Berita Terbaru</h2>
+            
+            <div class="news-grid">
+                <div class="news-card">
+                    <div class="news-image">
+                        <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Kegiatan Sekolah">
+                    </div>
+                    <div class="news-info">
+                        <div class="news-date">15 Maret 2023</div>
+                        <h3 class="news-title">Kegiatan Penanaman Pohon di Lingkungan Sekolah</h3>
+                        <p class="news-excerpt">Siswa-siswi kelas VIII melakukan kegiatan penanaman pohon sebagai bagian dari program sekolah berbasis lingkungan...</p>
+                        <a href="#" class="btn-read-more">Baca Selengkapnya →</a>
+                    </div>
+                </div>
+                
+                <div class="news-card">
+                    <div class="news-image">
+                        <img src="https://images.unsplash.com/photo-1546410531-bb4caa6b424d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Olimpiade">
+                    </div>
+                    <div class="news-info">
+                        <div class="news-date">10 Maret 2023</div>
+                        <h3 class="news-title">Siswa SMP AZAHRA Raih Medali Olimpiade Matematika</h3>
+                        <p class="news-excerpt">Atas nama Ahmad Fauzi, siswa kelas VIII berhasil meraih medali perak dalam olimpiade matematika tingkat kota...</p>
+                        <a href="#" class="btn-read-more">Baca Selengkapnya →</a>
+                    </div>
+                </div>
+                
+                <div class="news-card">
+                    <div class="news-image">
+                        <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Study Tour">
+                    </div>
+                    <div class="news-info">
+                        <div class="news-date">5 Maret 2023</div>
+                        <h3 class="news-title">Study Tour Kelas VIII ke Taman Nasional</h3>
+                        <p class="news-excerpt">Sebagai bagian dari pembelajaran lingkungan, siswa kelas VIII melakukan study tour ke Taman Nasional untuk mempelajari ekosistem...</p>
+                        <a href="#" class="btn-read-more">Baca Selengkapnya →</a>
+                    </div>
+                </div>
             </div>
         </div>
-    </section>
 
-    <!-- About Section -->
-    <section id="about">
-        <div class="container">
-            <h2 class="section-title">Tentang Sekolah</h2>
+        <!-- About Page -->
+        <div id="about" class="page">
+            <h2 class="section-title">Tentang SMP AZAHRA BEKASI</h2>
+            
             <div class="about-content">
                 <div class="about-text">
-                    <h3>SMP AZAHRA BEKASI</h3>
-                    <p>SMP AZAHRA BEKASI adalah lembaga pendidikan yang berkomitmen untuk memberikan pendidikan terbaik dengan pendekatan modern dan berbasis karakter. Kami mempersiapkan siswa tidak hanya secara akademik tetapi juga secara moral dan sosial.</p>
-                    <p>Dengan fasilitas yang lengkap dan guru-guru yang berpengalaman, kami menciptakan lingkungan belajar yang nyaman dan inspiratif bagi seluruh siswa.</p>
-                    <p>Visi kami adalah membentuk generasi muda yang cerdas, berkarakter, dan mampu bersaing di era global.</p>
+                    <h3>Visi dan Misi</h3>
+                    <p>SMP AZAHRA BEKASI adalah sekolah menengah pertama unggulan yang berfokus pada pengembangan akademik dan karakter siswa dengan berbasis lingkungan. Kami memiliki komitmen untuk menciptakan generasi penerus yang berprestasi, berakhlak mulia, dan peduli terhadap lingkungan.</p>
+                    <p>Dengan fasilitas yang lengkap dan guru-guru yang profesional, kami siap membimbing siswa-siswi untuk meraih prestasi terbaik baik di bidang akademik maupun non-akademik.</p>
                 </div>
                 <div class="about-image">
-                    <img src="https://files.catbox.moe/baalyx.jpg">
+                    <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Sekolah">
+                </div>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Kelas">
+                </div>
+                <div class="about-text">
+                    <h3>Fasilitas Sekolah</h3>
+                    <p>SMP AZAHRA BEKASI dilengkapi dengan berbagai fasilitas pendukung pembelajaran seperti:</p>
+                    <ul>
+                        <li>Ruang kelas ber-AC dan dilengkapi proyektor</li>
+                        <li>Laboratorium komputer, IPA, dan bahasa</li>
+                        <li>Perpustakaan dengan koleksi buku lengkap</li>
+                        <li>Lapangan olahraga yang luas</li>
+                        <li>Kantin sehat dengan makanan bergizi</li>
+                        <li>Taman hijau dan area penghijauan</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h2 class="section-title">Kegiatan Kelas VIII</h2>
+            
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Program Unggulan</h3>
+                    <p>Kelas VIII di SMP AZAHRA BEKASI mengikuti berbagai program unggulan yang dirancang khusus untuk mengembangkan potensi siswa, antara lain:</p>
+                    <ul>
+                        <li>Program literasi dan numerasi</li>
+                        <li>Pembelajaran berbasis proyek lingkungan</li>
+                        <li>Ekstrakurikuler wajib pramuka</li>
+                        <li>Klub sains dan teknologi</li>
+                        <li>Program kepemimpinan siswa</li>
+                    </ul>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1546410531-bb4caa6b424d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Kegiatan">
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Students Section -->
-    <section id="students">
-        <div class="container">
-            <h2 class="section-title">Daftar Siswa</h2>
+        <!-- Students Page -->
+        <div id="students" class="page">
+            <h2 class="section-title">Siswa Kelas VIII</h2>
+            <p style="text-align: center; margin-bottom: 2rem;">Berikut adalah daftar siswa kelas VIII SMP AZAHRA BEKASI tahun ajaran 2022/2023</p>
+            
             <div class="students-grid">
-                <!-- Siswa 1 -->
                 <div class="student-card">
                     <div class="student-image">
-                        <img src="https://files.catbox.moe/6ph14t.jpg" alt="Ibnu">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Ahmad Fauzi">
                     </div>
                     <div class="student-info">
-                        <h3>Ibnu Battuta</h3>
-                        <p>Siswa Ahli Dalam Bidang Olahraga Terutama Di Permainan Sepak Bola, Serta Siswa Aktif Dalam Bersosialisasi Bersama Teman Teman Di SMP Azahra Bekasi, Yang Konon Katanya Mempunyai Kepribadian Yang Sedikit Gila Dan Mempunyai Keterbelakangan Mental ??.</p>
-                        <a href="#" class="info-button" onclick="openModal('modal1')">Info Selengkapnya</a>
+                        <h3 class="student-name">Ahmad Fauzi</h3>
+                        <p class="student-bio">Siswa berprestasi di bidang matematika dan sains. Aktif dalam klub robotik sekolah.</p>
+                        <button class="btn-more" onclick="showStudentModal(0)">Info Selengkapnya</button>
                     </div>
                 </div>
-
-                <!-- Siswa 2 -->
-                <div class="student-card">
-                    <div class="student-image">
-                        <img src="https://files.catbox.moe/d3fauw.jpg" alt="Haikal">
-                    </div>
-                    <div class="student-info">
-                        <h3>Haikal</h3>
-                        <p>Siswa Ahli dalam bidang olahraga terutama Dalam Permainan Bola Basket. Siswa Aktif Dalam Kegiatan Sekolah Dan Suka Bersosialisasi Dengan Teman" Lainnya Di Smp Azahra Bekasi.</p>
-                        <A Href="#" class="info-button" onclick="openModal('modal1')">Info Selengkapnya</a>
-                    </div>
-                </div>
-
-                <!-- Siswa 3 -->
-                <div class="student-card">
-                    <div class="student-image">
-                        <img src="https://placehold.co/400x500/233554/64ffda?text=Dewi" alt="Dewi">
-                    </div>
-                    <div class="student-info">
-                        <h3>Dewi</h3>
-                        <p>Siswa yang berbakat dalam seni lukis dan tari. Beberapa karyanya telah dipamerkan di galeri sekolah.</p>
-                        <A Href="#" class="info-button" onclick="openModal('modal3')">Info Selengkapnya</a>
-                    </div>
-                </div>
-
-                <!-- Siswa 4 -->
-                <div class="student-card">
-                    <div class="student-image">
-                        <img src="https://placehold.co/400x500/233554/64ffda?text=Rudi" alt="Rudi">
-                    </div>
-                    <div class="student-info">
-                        <h3>Rudi</h3>
-                        <p>Pandai dalam public speaking dan debat. Meraih juara dalam lomba debat bahasa Inggris tingkat kota.</p>
-                        <a href="#" class="info-button" onclick="openModal('modal4')">Info Selengkapnya</a>
-                    </div>
-                </div>
-
-                <!-- Siswa 5 -->
-                <div class="student-card">
-                    <div class="student-image">
-                        <img src="https://placehold.co/400x500/233554/64ffda?text=Maya" alt="Maya">
-                    </div>
-                    <div class="student-info">
-                        <h3>Maya</h3>
-                        <p>Berbakat dalam musik dan bisa memainkan beberapa alat musik. Sering tampil dalam acara-acara sekolah.</p>
-                        <a href="#" class="info-button" onclick="openModal('modal5')">Info Selengkapnya</a>
-                    </div>
-                </div>
-
-                <!-- Siswa 6 -->
-                <div class="student-card">
-                    <div class="student-image">
-                        <img src="https://placehold.co/400x500/233554/64ffda?text=Budi" alt="Budi">
-                    </div>
-                    <div class="student-info">
-                        <h3>Budi</h3>
-                        <p>Pandai dalam coding dan teknologi. Telah membuat beberapa aplikasi sederhana untuk pembelajaran.</p>
-                        <a href="#" class="info-button" onclick="openModal('modal6')">Info Selengkapnya</a>
-                    </div>
-                </div>
-
-                <!-- Siswa 7 -->
-                <div class="student-card">
-                    <div class="student-image">
-                        <img src="https://placehold.co/400x500/233554/64ffda?text=Ani" alt="Ani">
-                    </div>
-                    <div class="student-info">
-                        <h3>Ani</h3>
-                        <p>Berbakat dalam menulis cerpen dan puisi. Beberapa karyanya telah dimuat di majalah sekolah.</p>
-                        <a href="#" class="info-button" onclick="openModal('modal7')">Info Selengkapnya</a>
-                    </div>
-                </div>
-
-                <!-- Siswa 8 -->
-                <div class="student-card">
-                    <div class="student-image">
-                        <img src="https://placehold.co/400x500/233554/64ffda?text=Joko" alt="Joko">
-                    </div>
-                    <div class="student-info">
-                        <h3>Joko</h3>
-                        <p>Ahli dalam science project dan percobaan ilmiah. Telah memenangkan beberapa lomba science fair.</p>
-                        <a href="#" class="info-button" onclick="openModal('modal8')">Info Selengkapnya</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Class Info Section -->
-    <section id="class-info">
-        <div class="container">
-            <h2 class="section-title">Informasi Kelas</h2>
-            <div class="class-details">
-                <p>Kelas 8 SMP AZAHRA BEKASI dipimpin oleh wali kelas <strong>Pak Suhardi</strong> yang telah berpengalaman dalam mendidik siswa selama lebih dari 4 tahun.</p>
-                <p>Kelas kami terdiri dari 8 siswa yang aktif dan berprestasi dalam berbagai bidang. Kami memiliki semangat belajar yang tinggi dan selalu mendukung satu sama lain.</p>
-                <p>Kegiatan belajar mengajar dilakukan dengan metode yang menyenangkan dan interaktif, dengan memanfaatkan teknologi untuk meningkatkan pengalaman belajar.</p>
                 
-                <div class="class-stats">
-                    <div class="stat-item">
-                        <div class="stat-number">8</div>
-                        <div class="stat-label">Siswa</div>
+                <div class="student-card">
+                    <div class="student-image">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Siti Rahayu">
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-number">13</div>
-                        <div class="stat-label">Mata Pelajaran</div>
+                    <div class="student-info">
+                        <h3 class="student-name">Siti Rahayu</h3>
+                        <p class="student-bio">Siswi dengan bakat menulis dan public speaking. Juara lomba pidato tingkat kota.</p>
+                        <button class="btn-more" onclick="showStudentModal(1)">Info Selengkapnya</button>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-number">1</div>
-                        <div class="stat-label">Wali Kelas</div>
+                </div>
+                
+                <div class="student-card">
+                    <div class="student-image">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Budi Santoso">
+                    </div>
+                    <div class="student-info">
+                        <h3 class="student-name">Budi Santoso</h3>
+                        <p class="student-bio">Atlet bulu tangkis sekolah. Pernah mewakili kota dalam kejuaraan regional.</p>
+                        <button class="btn-more" onclick="showStudentModal(2)">Info Selengkapnya</button>
+                    </div>
+                </div>
+                
+                <div class="student-card">
+                    <div class="student-image">
+                        <img src="https://images.unsplash.com/photo-1516724562728-afc824a36e84?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Dewi Anggraini">
+                    </div>
+                    <div class="student-info">
+                        <h3 class="student-name">Dewi Anggraini</h3>
+                        <p class="student-bio">Pecinta lingkungan dan aktif dalam kegiatan penghijauan sekolah.</p>
+                        <button class="btn-more" onclick="showStudentModal(3)">Info Selengkapnya</button>
+                    </div>
+                </div>
+                
+                <div class="student-card">
+                    <div class="student-image">
+                        <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Rizky Pratama">
+                    </div>
+                    <div class="student-info">
+                        <h3 class="student-name">Rizky Pratama</h3>
+                        <p class="student-bio">Ahli dalam teknologi informasi. Sering membantu dalam pemeliharaan lab komputer.</p>
+                        <button class="btn-more" onclick="showStudentModal(4)">Info Selengkapnya</button>
+                    </div>
+                </div>
+                
+                <div class="student-card">
+                    <div class="student-image">
+                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Maya Sari">
+                    </div>
+                    <div class="student-info">
+                        <h3 class="student-name">Maya Sari</h3>
+                        <p class="student-bio">Berkemampuan dalam seni lukis dan tari. Aktif dalam ekstrakurikuler seni budaya.</p>
+                        <button class="btn-more" onclick="showStudentModal(5)">Info Selengkapnya</button>
+                    </div>
+                </div>
+                
+                <div class="student-card">
+                    <div class="student-image">
+                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Indah Permata">
+                    </div>
+                    <div class="student-info">
+                        <h3 class="student-name">Indah Permata</h3>
+                        <p class="student-bio">Siswi dengan nilai akademik konsisten tinggi. Rajin dan disiplin dalam belajar.</p>
+                        <button class="btn-more" onclick="showStudentModal(6)">Info Selengkapnya</button>
+                    </div>
+                </div>
+                
+                <div class="student-card">
+                    <div class="student-image">
+                        <img src="https://images.unsplash.com/photo-1508341591423-4347099e1f19?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Joko Widodo">
+                    </div>
+                    <div class="student-info">
+                        <h3 class="student-name">Joko Widodo</h3>
+                        <p class="student-bio">Aktif dalam organisasi siswa. Memiliki jiwa kepemimpinan dan kemampuan berorganisasi.</p>
+                        <button class="btn-more" onclick="showStudentModal(7)">Info Selengkapnya</button>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <a href="https://wa.me/628123456789" class="cta-button secret-button">Secret Grup WhatsApp</a>
-                <p class="copyright">© 2025 Kelas 8 SMP AZAHRA BEKASI | Website ini Di Buat Oleh I/R.</p>
+        <!-- News Page -->
+        <div id="news" class="page">
+            <h2 class="section-title">Berita Terbaru</h2>
+            
+            <div class="news-grid">
+                <div class="news-card">
+                    <div class="news-image">
+                        <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Kegiatan Sekolah">
+                    </div>
+                    <div class="news-info">
+                        <div class="news-date">15 Maret 2023</div>
+                        <h3 class="news-title">Kegiatan Penanaman Pohon di Lingkungan Sekolah</h3>
+                        <p class="news-excerpt">Siswa-siswi kelas VIII melakukan kegiatan penanaman pohon sebagai bagian dari program sekolah berbasis lingkungan...</p>
+                        <a href="#" class="btn-read-more">Baca Selengkapnya →</a>
+                    </div>
+                </div>
+                
+                <div class="news-card">
+                    <div class="news-image">
+                        <img src="https://images.unsplash.com/photo-1546410531-bb4caa6b424d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Olimpiade">
+                    </div>
+                    <div class="news-info">
+                        <div class="news-date">10 Maret 2023</div>
+                        <h3 class="news-title">Siswa SMP AZAHRA Raih Medali Olimpiade Matematika</h3>
+                        <p class="news-excerpt">Atas nama Ahmad Fauzi, siswa kelas VIII berhasil meraih medali perak dalam olimpiade matematika tingkat kota...</p>
+                        <a href="#" class="btn-read-more">Baca Selengkapnya →</a>
+                    </div>
+                </div>
+                
+                <div class="news-card">
+                    <div class="news-image">
+                        <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Study Tour">
+                    </div>
+                    <div class="news-info">
+                        <div class="news-date">5 Maret 2023</div>
+                        <h3 class="news-title">Study Tour Kelas VIII ke Taman Nasional</h3>
+                        <p class="news-excerpt">Sebagai bagian dari pembelajaran lingkungan, siswa kelas VIII melakukan study tour ke Taman Nasional untuk mempelajari ekosistem...</p>
+                        <a href="#" class="btn-read-more">Baca Selengkapnya →</a>
+                    </div>
+                </div>
+                
+                <div class="news-card">
+                    <div class="news-image">
+                        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Workshop">
+                    </div>
+                    <div class="news-info">
+                        <div class="news-date">28 Februari 2023</div>
+                        <h3 class="news-title">Workshop Teknologi Hijau untuk Siswa</h3>
+                        <p class="news-excerpt">SMP AZAHRA menyelenggarakan workshop teknologi hijau dengan menghadirkan pakar lingkungan dari universitas ternama...</p>
+                        <a href="#" class="btn-read-more">Baca Selengkapnya →</a>
+                    </div>
+                </div>
+                
+                <div class="news-card">
+                    <div class="news-image">
+                        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Pentas Seni">
+                    </div>
+                    <div class="news-info">
+                        <div class="news-date">20 Februari 2023</div>
+                        <h3 class="news-title">Pentas Seni Kelas VIII Tampil Memukau</h3>
+                        <p class="news-excerpt">Pentas seni tahunan kelas VIII berlangsung meriah dengan berbagai pertunjukan menarik dari siswa-siswi berbakat...</p>
+                        <a href="#" class="btn-read-more">Baca Selengkapnya →</a>
+                    </div>
+                </div>
+                
+                <div class="news-card">
+                    <div class="news-image">
+                        <img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Perlombaan">
+                    </div>
+                    <div class="news-info">
+                        <div class="news-date">15 Februari 2023</div>
+                        <h3 class="news-title">SMP AZAHRA Juara Umum Lomba Cerdas Cermat</h3>
+                        <p class="news-excerpt">Tim cerdas cermat SMP AZAHRA berhasil menjadi juara umum dalam lomba cerdas cermat antar sekolah se-Kota Bekasi...</p>
+                        <a href="#" class="btn-read-more">Baca Selengkapnya →</a>
+                    </div>
+                </div>
             </div>
         </div>
-    </footer>
 
-    <!-- Modal Siswa 1 -->
-    <div id="modal1" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeModal('modal1')">&times;</span>
-            <div class="modal-header">
-                <div class="modal-image">
-                    <img src="https://files.catbox.moe/6ph14t.jpg" alt="Ibnu Batuta">
+        <!-- Teachers Page -->
+        <div id="teachers" class="page">
+            <h2 class="section-title">Guru dan Staf Pengajar</h2>
+            <p style="text-align: center; margin-bottom: 2rem;">Berikut adalah daftar guru dan staf pengajar kelas VIII SMP AZAHRA BEKASI</p>
+            
+            <div class="teachers-list">
+                <div class="teacher-item">
+                    <div class="teacher-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="teacher-info">
+                        <h3>Drs. H. Ahmad Rambe, M.Pd</h3>
+                        <p class="teacher-subject">Wali Kelas VIII - Matematika</p>
+                        <div class="teacher-contact">
+                            <a href="mailto:ahmad.rambe@smpazahra.sch.id"><i class="fas fa-envelope"></i> Email</a>
+                            <a href="tel:+62213456789"><i class="fas fa-phone"></i> Telp</a>
+                        </div>
+                    </div>
                 </div>
-                <h2>Ibnu</h2>
-                <p>Siswa Berprestasi - Ketua Murid</p>
-            </div>
-            <div class="modal-details">
-                <div class="detail-item">
-                    <div class="detail-label">Nama Lengkap:</div>
-                    <div class="detail-value">Ibnu Batuta</div>
+                
+                <div class="teacher-item">
+                    <div class="teacher-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="teacher-info">
+                        <h3>Diana Sari, S.Pd</h3>
+                        <p class="teacher-subject">Bahasa Indonesia</p>
+                        <div class="teacher-contact">
+                            <a href="mailto:diana.sari@smpazahra.sch.id"><i class="fas fa-envelope"></i> Email</a>
+                            <a href="tel:+62213456790"><i class="fas fa-phone"></i> Telp</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="detail-item">
-                    <div class="detail-label">Tanggal Lahir:</div>
-                    <div class="detail-value">18 Agustus 2011</div>
+                
+                <div class="teacher-item">
+                    <div class="teacher-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="teacher-info">
+                        <h3>Budi Santoso, S.Pd</h3>
+                        <p class="teacher-subject">IPA</p>
+                        <div class="teacher-contact">
+                            <a href="mailto:budi.santoso@smpazahra.sch.id"><i class="fas fa-envelope"></i> Email</a>
+                            <a href="tel:+62213456791"><i class="fas fa-phone"></i> Telp</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="detail-item">
-                    <div class="detail-label">Alamat:</div>
-                    <div class="detail-value">Jl. Perumahan Elok</div>
+                
+                <div class="teacher-item">
+                    <div class="teacher-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="teacher-info">
+                        <h3>Sri Mulyani, S.Pd</h3>
+                        <p class="teacher-subject">Bahasa Inggris</p>
+                        <div class="teacher-contact">
+                            <a href="mailto:sri.mulyani@smpazahra.sch.id"><i class="fas fa-envelope"></i> Email</a>
+                            <a href="tel:+62213456792"><i class="fas fa-phone"></i> Telp</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="detail-item">
-                    <div class="detail-label">Hobi:</div>
-                    <div class="detail-value">Futsal, Silat, Nonton Bola Dan Bermain Game, Olahraga Pagi</div>
+                
+                <div class="teacher-item">
+                    <div class="teacher-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="teacher-info">
+                        <h3>Rudi Hartono, S.Pd</h3>
+                        <p class="teacher-subject">IPS</p>
+                        <div class="teacher-contact">
+                            <a href="mailto:rudi.hartono@smpazahra.sch.id"><i class="fas fa-envelope"></i> Email</a>
+                            <a href="tel:+62213456793"><i class="fas fa-phone"></i> Telp</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="detail-item">
-                    <div class="detail-label">Prestasi:</div>
-                    <div class="detail-value">Juara 1 Rangking Kelas Tahun Ajaran 2024 - 2025, | Menjabat Sebagai Pemimpin Regu Untuk Regu Puma, Pada Ekskul Pramuka Tahun Ajaran 2025 - 2026</div>
-                </div>
-            </div>
-            <div class="social-media">
-                <a href="https://wa.me/6285819624955" class="social-button">
-                    <i class="fab fa-whatsapp"></i>
-                </a>
             </div>
         </div>
+
+        <!-- Contact Page -->
+        <div id="contact" class="page">
+            <h2 class="section-title">Kontak dan Lokasi</h2>
+            
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>Informasi Kontak</h3>
+                    
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-text">
+                                Jl. Raya Bekasi Timur No. 123, Bekasi, Jawa Barat 17111
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-text">
+                                (021) 34567890
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-text">
+                                info@smpazahrabekasi.sch.id
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="contact-text">
+                                Senin - Jumat: 07:00 - 16:00 WIB
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3>Sosial Media</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.269715002995!2d106.8652773143191!3d-6.226980662700522!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f3e9455f5d2f%3A0x5c2c0bce5c0c2b0!2sBekasi%2C%20Kota%20Bekasi%2C%20Jawa%20Barat!5e0!3m2!1sid!2sid!4v1647856789447!5m2!1sid!2sid" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>Tentang Kami</h3>
+                    <p>SMP AZAHRA BEKASI adalah sekolah menengah pertama unggulan dengan fokus pada pengembangan akademik dan karakter siswa berbasis lingkungan.</p>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Link Cepat</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" onclick="showPage('home')">Home</a></li>
+                        <li><a href="#" onclick="showPage('about')">Tentang Sekolah</a></li>
+                        <li><a href="#" onclick="showPage('students')">Siswa</a></li>
+                        <li><a href="#" onclick="showPage('news')">Berita</a></li>
+                        <li><a href="#" onclick="showPage('teachers')">Guru</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Kontak Kami</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Jl. Raya Bekasi Timur No. 123, Bekasi</p>
+                    <p><i class="fas fa-phone"></i> (021) 34567890</p>
+                    <p><i class="fas fa-envelope"></i> info@smpazahrabekasi.sch.id</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 SMP AZAHRA BEKASI. All Rights Reserved.</p>
+            </div>
+        </footer>
     </div>
 
-    <!-- Modal Siswa 2 -->
-    <div id="modal2" class="modal">
+    <!-- Student Modal -->
+    <div class="modal" id="student-modal">
         <div class="modal-content">
-            <span class="close-button" onclick="closeModal('modal2')">&times;</span>
-            <div class="modal-header">
-                <div class="modal-image">
-                    <img src="https://files.catbox.moe/d3fauw.jpg" alt="Haikal">
-                </div>
-                <h2>Haikal</h2>
-                <p>Wakil Murid</p>
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2 id="modal-student-name">Nama Siswa</h2>
+            <div class="modal-student-info" id="modal-student-details">
+                <!-- Student details will be inserted here by JavaScript -->
             </div>
-            <div class="modal-details">
-                <div class="detail-item">
-                    <div class="detail-label">Nama Lengkap:</div>
-                    <div class="detail-value">Haikal Okta Viano</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Tanggal Lahir:</div>
-                    <div class="detail-value">?? ???? 2011</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Alamat:</div>
-                    <div class="detail-value">Jl. Harapan Elok, Blk D6, Rt 01 Rw 04</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Hobi:</div>
-                    <div class="detail-value">Sepak Bola, Berenang, Lari, Bermain Game Terutama Roblox, Serta Bola Basket</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Prestasi:</div>
-                    <div class="detail-value">Menjabat Sebagai Wakil Pemimpin Regu, Untuk Regu Elang Pada Ekskul Pramuka Tahun Ajaran 2025 - 2026</div>
-                </div>
-            </div>
-            <div class="social-media">
-                <a href="https://wa.me/6285794781994" class="social-button">
-                    <i class="fab fa-whatsapp"></i>
-                </a>
-            </div>
+            <a href="#" class="btn-wa" id="wa-link" target="_blank"><i class="fab fa-whatsapp"></i> Hubungi via WhatsApp</a>
         </div>
     </div>
-
-    <!-- Modal Siswa 3-8 akan serupa, disesuaikan dengan data masing-masing siswa -->
 
     <script>
-        // Fungsi untuk membuka modal
-        function openModal(modalId) {
-            document.getElementById(modalId).style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
+        // Data siswa
+        const students = [
+            {
+                name: "Ahmad Fauzi",
+                birthPlace: "Bekasi",
+                birthDate: "15 April 2008",
+                address: "Jl. Merdeka No. 45, Bekasi Timur",
+                parents: "Sutrisno (Ayah), Siti Aminah (Ibu)",
+                phone: "+628123456789",
+                achievements: ["Juara 2 Olimpiade Matematika Kota Bekasi", "Juara 1 Lomba Cerdas Cermat Sekolah"],
+                hobbies: ["Matematika", "Robotika", "Membaca"],
+                photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                name: "Siti Rahayu",
+                birthPlace: "Bekasi",
+                birthDate: "22 Mei 2008",
+                address: "Jl. Kenanga No. 12, Bekasi Selatan",
+                parents: "Bambang (Ayah), Sri Lestari (Ibu)",
+                phone: "+628123456790",
+                achievements: ["Juara 1 Lomba Pidato Bahasa Indonesia", "Juara 3 Story Telling Competition"],
+                hobbies: ["Membaca", "Menulis", "Public Speaking"],
+                photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                name: "Budi Santoso",
+                birthPlace: "Bekasi",
+                birthDate: "10 Maret 2008",
+                address: "Jl. Melati No. 8, Bekasi Barat",
+                parents: "Joko Susilo (Ayah), Endang (Ibu)",
+                phone: "+628123456791",
+                achievements: ["Juara 2 Bulu Tangkis Tingkat Kota", "Atlet Terbaik PORDA"],
+                hobbies: ["Bulu Tangkis", "Berenang", "Lari"],
+                photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                name: "Dewi Anggraini",
+                birthPlace: "Bekasi",
+                birthDate: "3 Juli 2008",
+                address: "Jl. Mawar No. 21, Bekasi Utara",
+                parents: "Suryadi (Ayah), Rina (Ibu)",
+                phone: "+628123456792",
+                achievements: ["Ketua Tim Lingkungan Sekolah", "Juara 1 Lomba Karya Tulis Lingkungan"],
+                hobbies: ["Menanam", "Membaca", "Menulis"],
+                photo: "https://images.unsplash.com/photo-1516724562728-afc824a36e84?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                name: "Rizky Pratama",
+                birthPlace: "Bekasi",
+                birthDate: "18 Agustus 2008",
+                address: "Jl. Anggrek No. 33, Bekasi Timur",
+                parents: "Ahmad Yani (Ayah), Linda (Ibu)",
+                phone: "+628123456793",
+                achievements: ["Juara 1 Lomba Programming Tingkat Sekolah", "Pengembang Aplikasi Sekolah"],
+                hobbies: ["Programming", "Game Development", "Desain Grafis"],
+                photo: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                name: "Maya Sari",
+                birthPlace: "Bekasi",
+                birthDate: "29 September 2008",
+                address: "Jl. Flamboyan No. 17, Bekasi Selatan",
+                parents: "Dedi (Ayah), Siska (Ibu)",
+                phone: "+628123456794",
+                achievements: ["Juara 2 Lomba Lukis Tingkat Kota", "Penari Terbaik Festival Seni"],
+                hobbies: ["Melukis", "Menari", "Bermain Musik"],
+                photo: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                name: "Indah Permata",
+                birthPlace: "Bekasi",
+                birthDate: "11 November 2008",
+                address: "Jl. Kencana No. 5, Bekasi Barat",
+                parents: "Herman (Ayah), Dian (Ibu)",
+                phone: "+628123456795",
+                achievements: ["Siswa Berprestasi Kelas VII", "Peraih Nilai UN Tertinggi Semester Lalu"],
+                hobbies: ["Membaca", "Belajar", "Menulis"],
+                photo: "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                name: "Joko Widodo",
+                birthPlace: "Bekasi",
+                birthDate: "25 Desember 2008",
+                address: "Jl. Teratai No. 9, Bekasi Utara",
+                parents: "Sugiono (Ayah), Rini (Ibu)",
+                phone: "+628123456796",
+                achievements: ["Ketua OSIS SMP AZAHRA", "Juara 1 Debat Bahasa Inggris"],
+                hobbies: ["Berorganisasi", "Debat", "Membaca Buku Politik"],
+                photo: "https://images.unsplash.com/photo-1508341591423-4347099e1f19?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80"
+            }
+        ];
 
-        // Fungsi untuk menutup modal
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        // Tutup modal ketika klik di luar konten modal
-        window.onclick = function(event) {
-            const modals = document.getElementsByClassName('modal');
-            for (let i = 0; i < modals.length; i++) {
-                if (event.target == modals[i]) {
-                    modals[i].style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                }
+        // Fungsi login
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+            
+            const validUsers = [
+                { username: 'IBNUKM', password: 'VANOWM' },
+                { username: 'rambeadmin', password: 'rambeadmin124' }
+            ];
+            
+            const isValid = validUsers.some(user => user.username === username && user.password === password);
+            
+            if (isValid) {
+                document.getElementById('login-page').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('login-page').style.display = 'none';
+                    document.getElementById('main-website').style.display = 'block';
+                }, 500);
+            } else {
+                errorMessage.style.display = 'block';
             }
         }
-
-        // Animasi saat scroll
-        document.addEventListener('DOMContentLoaded', function() {
-            const animatedElements = document.querySelectorAll('.student-card, .stat-item, .about-text, .about-image');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.animation = 'fadeIn 1s ease forwards';
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, {
-                threshold: 0.1
+        
+        // Fungsi untuk menampilkan halaman
+        function showPage(pageId) {
+            // Sembunyikan semua halaman
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('page-active');
             });
             
-            animatedElements.forEach(element => {
-                observer.observe(element);
+            // Tampilkan halaman yang dipilih
+            document.getElementById(pageId).classList.add('page-active');
+            
+            // Update navigasi aktif
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('nav-active');
             });
+            
+            // Scroll ke atas
+            window.scrollTo(0, 0);
+        }
+        
+        // Fungsi untuk menampilkan modal siswa
+        function showStudentModal(index) {
+            const student = students[index];
+            const modal = document.getElementById('student-modal');
+            const modalName = document.getElementById('modal-student-name');
+            const modalDetails = document.getElementById('modal-student-details');
+            const waLink = document.getElementById('wa-link');
+            
+            modalName.textContent = student.name;
+            
+            // Format nomor WhatsApp (hapus + dan spasi)
+            const phoneNumber = student.phone.replace(/\s|\+/g, '');
+            waLink.href = `https://wa.me/${phoneNumber}?text=Halo%20${student.name},%20saya%20dari%20SMP%20AZAHRA%20Bekasi`;
+            
+            modalDetails.innerHTML = `
+                <p><strong>Tempat, Tanggal Lahir:</strong> ${student.birthPlace}, ${student.birthDate}</p>
+                <p><strong>Alamat:</strong> ${student.address}</p>
+                <p><strong>Orang Tua:</strong> ${student.parents}</p>
+                <p><strong>Nomor Telepon:</strong> ${student.phone}</p>
+                <p><strong>Prestasi:</strong></p>
+                <ul>
+                    ${student.achievements.map(achievement => `<li>${achievement}</li>`).join('')}
+                </ul>
+                <p><strong>Hobi:</strong> ${student.hobbies.join(', ')}</p>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+        
+        // Fungsi untuk menutup modal
+        function closeModal() {
+            document.getElementById('student-modal').style.display = 'none';
+        }
+        
+        // Tutup modal jika klik di luar area konten
+        window.onclick = function(event) {
+            const modal = document.getElementById('student-modal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+        
+        // Event listener untuk input password (agar bisa login dengan tekan Enter)
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
         });
     </script>
 </body>
