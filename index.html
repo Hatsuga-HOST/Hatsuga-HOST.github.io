@@ -3,1565 +3,527 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMP AZAHRA BEKASI - Kelas 8</title>
+    <title>SMP AZAHRA BEKASI - Portal Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Sertakan Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-dark: #0a192f;
-            --primary: #112240;
-            --primary-light: #233554;
-            --accent: #64ffda;
-            --text-primary: #e6f1ff;
-            --text-secondary: #8892b0;
-            --danger: #ff6b6b;
-            --success: #4ecdc4;
-            --warning: #ffe66d;
-            --radius: 10px;
-            --shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.7);
+            --primary: #1a73e8;
+            --secondary: #34a853;
+            --accent: #fbbc04;
+            --light: #f8f9fa;
+            --dark: #202124;
+            --blue-light: #e8f0fe;
+            --blue-dark: #0d47a1;
+            --green-light: #e6f4ea;
+            --school-blue: #1a73e8;
+            --school-green: #34a853;
+            --school-gold: #fbbc04;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            background-color: var(--primary-dark);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header Styles */
-        header {
-            background-color: var(--primary);
-            padding: 20px 0;
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .header-content {
+            background: linear-gradient(135deg, var(--blue-light) 0%, #ffffff 100%);
+            min-height: 100vh;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--accent);
-        }
-
-        .logo-text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .school-name {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent);
-        }
-
-        .class-name {
-            font-size: 1rem;
-            color: var(--text-secondary);
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 30px;
-        }
-
-        nav a {
-            color: var(--text-primary);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-            position: relative;
-            padding: 5px 0;
-        }
-
-        nav a:after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: var(--accent);
-            transition: width 0.3s;
-        }
-
-        nav a:hover:after {
-            width: 100%;
-        }
-
-        nav a:hover {
-            color: var(--accent);
-        }
-
-        .auth-buttons {
-            display: flex;
-            gap: 15px;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border-radius: var(--radius);
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .btn-primary {
-            background-color: var(--accent);
-            color: var(--primary-dark);
-        }
-
-        .btn-primary:hover {
-            background-color: transparent;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--accent);
-            color: var(--primary-dark);
-        }
-
-        /* Main Content Styles */
-        .main-content {
-            padding: 40px 0;
-            min-height: calc(100vh - 200px);
-        }
-
-        .section-title {
-            font-size: 2.2rem;
-            margin-bottom: 30px;
-            color: var(--accent);
-            text-align: center;
-            position: relative;
-            padding-bottom: 15px;
-        }
-
-        .section-title:after {
-            content: '';
-            position: absolute;
-            width: 100px;
-            height: 3px;
-            background-color: var(--accent);
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        /* News Section */
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
-
-        .news-card {
-            background-color: var(--primary);
-            border-radius: var(--radius);
             overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: transform 0.3s;
+            position: relative;
         }
 
-        .news-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .news-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .news-content {
-            padding: 20px;
-        }
-
-        .news-title {
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-            color: var(--accent);
-        }
-
-        .news-date {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 15px;
-        }
-
-        .news-excerpt {
-            color: var(--text-secondary);
-            margin-bottom: 15px;
-        }
-
-        .read-more {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        /* Class Info Section */
-        .class-info {
-            background-color: var(--primary);
-            border-radius: var(--radius);
-            padding: 30px;
-            box-shadow: var(--shadow);
-            margin-top: 30px;
-        }
-
-        .class-teacher {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .teacher-img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--accent);
-        }
-
-        .teacher-info h3 {
-            color: var(--accent);
-            margin-bottom: 10px;
-        }
-
-        .students-count {
-            background-color: var(--primary-light);
-            padding: 20px;
-            border-radius: var(--radius);
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .count-number {
-            font-size: 3rem;
-            color: var(--accent);
-            font-weight: 700;
-        }
-
-        /* Students Grid */
-        .students-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
-
-        .student-card {
-            background-color: var(--primary);
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: transform 0.3s;
-            text-align: center;
-        }
-
-        .student-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .student-img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-        }
-
-        .student-info {
-            padding: 20px;
-        }
-
-        .student-name {
-            font-size: 1.2rem;
-            color: var(--accent);
-            margin-bottom: 10px;
-        }
-
-        .student-role {
-            display: inline-block;
-            background-color: var(--primary-light);
-            color: var(--accent);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-        }
-
-        .student-bio {
-            color: var(--text-secondary);
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-        }
-
-        /* Login Modal */
-        .modal {
-            display: none;
-            position: fixed;
+        /* Background elements with animation */
+        .bg-bubbles {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(10, 25, 47, 0.9);
-            z-index: 2000;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .bg-bubbles li {
+            position: absolute;
+            list-style: none;
+            display: block;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(26, 115, 232, 0.15);
+            bottom: -160px;
+            border-radius: 50%;
+            animation: square 25s infinite;
+            transition-timing-function: linear;
+        }
+
+        .bg-bubbles li:nth-child(1) {
+            left: 10%;
+            animation-delay: 0s;
+            width: 80px;
+            height: 80px;
+        }
+
+        .bg-bubbles li:nth-child(2) {
+            left: 20%;
+            animation-delay: 2s;
+            animation-duration: 17s;
+            width: 60px;
+            height: 60px;
+        }
+
+        .bg-bubbles li:nth-child(3) {
+            left: 25%;
+            animation-delay: 4s;
+        }
+
+        .bg-bubbles li:nth-child(4) {
+            left: 40%;
+            animation-delay: 0s;
+            animation-duration: 22s;
+            width: 100px;
+            height: 100px;
+        }
+
+        .bg-bubbles li:nth-child(5) {
+            left: 70%;
+            animation-delay: 3s;
+        }
+
+        .bg-bubbles li:nth-child(6) {
+            left: 80%;
+            animation-delay: 2s;
+            width: 120px;
+            height: 120px;
+        }
+
+        .bg-bubbles li:nth-child(7) {
+            left: 32%;
+            animation-delay: 6s;
+            width: 70px;
+            height: 70px;
+        }
+
+        .bg-bubbles li:nth-child(8) {
+            left: 55%;
+            animation-delay: 8s;
+            animation-duration: 18s;
+            width: 50px;
+            height: 50px;
+        }
+
+        .bg-bubbles li:nth-child(9) {
+            left: 25%;
+            animation-delay: 9s;
+            animation-duration: 20s;
+            width: 90px;
+            height: 90px;
+        }
+
+        .bg-bubbles li:nth-child(10) {
+            left: 90%;
+            animation-delay: 11s;
+            width: 60px;
+            height: 60px;
+        }
+
+        @keyframes square {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+                border-radius: 50%;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+                border-radius: 30%;
+            }
+        }
+
+        /* Login container styling */
+        #login-page {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
             justify-content: center;
             align-items: center;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
         }
 
-        .modal-content {
-            background-color: var(--primary);
+        .login-container {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
             width: 100%;
             max-width: 450px;
-            border-radius: var(--radius);
-            padding: 30px;
-            box-shadow: var(--shadow);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transform: translateY(0);
+            animation: fadeInUp 0.8s ease-out;
             position: relative;
+            overflow: hidden;
         }
 
-        .close-modal {
+        .login-container::before {
+            content: '';
             position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .close-modal:hover {
-            color: var(--accent);
-        }
-
-        .modal-title {
-            text-align: center;
-            margin-bottom: 25px;
-            color: var(--accent);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text-secondary);
-        }
-
-        .form-control {
+            top: 0;
+            left: 0;
             width: 100%;
-            padding: 12px 15px;
-            background-color: var(--primary-light);
-            border: 1px solid transparent;
-            border-radius: var(--radius);
-            color: var(--text-primary);
-            transition: border-color 0.3s;
+            height: 8px;
+            background: linear-gradient(90deg, var(--school-blue), var(--school-green), var(--school-gold));
+            background-size: 200% 200%;
+            animation: gradientMove 3s ease infinite;
         }
 
-        .form-control:focus {
-            border-color: var(--accent);
-            outline: none;
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        /* Admin Panel */
-        .admin-panel {
-            display: none;
-            background-color: var(--primary);
-            border-radius: var(--radius);
-            padding: 30px;
-            box-shadow: var(--shadow);
-            margin-top: 30px;
+        @keyframes gradientMove {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
-        .admin-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
-            border-bottom: 1px solid var(--primary-light);
+        .login-container img {
+            display: block;
+            margin: 0 auto 20px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            padding: 15px;
+            background: var(--blue-light);
+            box-shadow: 0 5px 15px rgba(26, 115, 232, 0.2);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 5px 15px rgba(26, 115, 232, 0.2);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 8px 20px rgba(26, 115, 232, 0.3);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 5px 15px rgba(26, 115, 232, 0.2);
+            }
+        }
+
+        .school-name {
+            text-align: center;
+            margin-bottom: 10px;
+            color: var(--school-blue);
+            font-weight: 700;
+            font-size: 1.8rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .school-subtitle {
+            text-align: center;
+            color: var(--dark);
+            margin-bottom: 30px;
+            font-weight: 500;
+            position: relative;
             padding-bottom: 15px;
         }
 
-        .admin-tab {
-            padding: 10px 20px;
-            background-color: transparent;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            border-radius: var(--radius);
-            transition: all 0.3s;
+        .school-subtitle::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--school-blue), var(--school-green));
+            border-radius: 3px;
         }
 
-        .admin-tab.active {
-            background-color: var(--primary-light);
-            color: var(--accent);
-        }
-
-        .admin-content {
-            display: none;
-        }
-
-        .admin-content.active {
-            display: block;
-        }
-
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-
-        .table th, .table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid var(--primary-light);
-        }
-
-        .table th {
-            color: var(--accent);
+        h2 {
+            text-align: center;
+            color: var(--dark);
+            margin-bottom: 30px;
             font-weight: 600;
-        }
-
-        .action-btn {
-            padding: 5px 10px;
-            border: none;
-            border-radius: var(--radius);
-            cursor: pointer;
-            margin-right: 5px;
-            transition: all 0.3s;
-        }
-
-        .btn-edit {
-            background-color: var(--accent);
-            color: var(--primary-dark);
-        }
-
-        .btn-delete {
-            background-color: var(--danger);
-            color: white;
-        }
-
-        /* Student Tools */
-        .student-tools {
-            display: none;
-            margin: 30px 0;
-        }
-
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-        }
-
-        .tool-card {
-            background-color: var(--primary);
-            border-radius: var(--radius);
-            padding: 20px;
-            box-shadow: var(--shadow);
-        }
-
-        .tool-title {
-            color: var(--accent);
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-        }
-
-        .calculator {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-        }
-
-        .calculator-display {
-            grid-column: span 4;
-            padding: 15px;
-            background-color: var(--primary-light);
-            border-radius: var(--radius);
-            text-align: right;
             font-size: 1.5rem;
-            margin-bottom: 10px;
         }
 
-        .calculator-btn {
-            padding: 15px;
-            border: none;
-            border-radius: var(--radius);
-            background-color: var(--primary-light);
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: background-color 0.3s;
+        .input-group {
+            margin-bottom: 25px;
+            position: relative;
         }
 
-        .calculator-btn:hover {
-            background-color: var(--accent);
-            color: var(--primary-dark);
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
         }
 
-        .calculator-btn.operator {
-            background-color: var(--accent);
-            color: var(--primary-dark);
-        }
-
-        .calculator-btn.operator:hover {
-            background-color: var(--primary-light);
-            color: var(--text-primary);
-        }
-
-        .notes-area {
+        .input-group input {
             width: 100%;
-            min-height: 200px;
-            padding: 15px;
-            background-color: var(--primary-light);
-            border: 1px solid transparent;
-            border-radius: var(--radius);
-            color: var(--text-primary);
-            margin-bottom: 15px;
-            resize: vertical;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid #e1e5eb;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: #fff;
         }
 
-        .notes-area:focus {
-            border-color: var(--accent);
+        .input-group input:focus {
+            border-color: var(--school-blue);
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
             outline: none;
         }
 
-        /* Footer */
-        footer {
-            background-color: var(--primary);
-            padding: 30px 0;
-            box-shadow: 0 -5px 20px -5px rgba(0, 0, 0, 0.5);
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 42px;
+            color: var(--school-blue);
+            font-size: 18px;
         }
 
-        .footer-content {
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--school-blue) 0%, var(--blue-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(26, 115, 232, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(26, 115, 232, 0.6);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .btn-login::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(30deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+
+        .btn-login:hover::after {
+            animation: shine 1.5s ease;
+        }
+
+        @keyframes shine {
+            0% {
+                transform: translateX(-100%) rotate(30deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateX(100%) rotate(30deg);
+                opacity: 0;
+            }
+        }
+
+        .error-message {
+            color: #e53935;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            opacity: 0;
+            height: 0;
+            transition: all 0.3s ease;
+        }
+
+        .error-message.show {
+            opacity: 1;
+            height: auto;
+        }
+
+        .additional-options {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-        }
-
-        .credit {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        .credit span {
-            color: var(--accent);
-            font-weight: 600;
-        }
-
-        /* Utility Classes */
-        .text-center {
-            text-align: center;
-        }
-
-        .mt-20 {
             margin-top: 20px;
+            font-size: 14px;
         }
 
-        .mb-20 {
-            margin-bottom: 20px;
+        .additional-options a {
+            color: var(--school-blue);
+            text-decoration: none;
+            transition: color 0.3s ease;
         }
 
-        /* Loading Spinner */
-        .spinner {
-            border: 4px solid var(--primary-light);
-            border-top: 4px solid var(--accent);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
+        .additional-options a:hover {
+            color: var(--blue-dark);
+            text-decoration: underline;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 12px;
         }
 
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 20px;
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
             }
             
-            nav ul {
-                gap: 15px;
-                flex-wrap: wrap;
-                justify-content: center;
+            .school-name {
+                font-size: 1.5rem;
             }
             
-            .news-grid, .students-grid, .tools-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .class-teacher {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .footer-content {
-                flex-direction: column;
-                gap: 20px;
-                text-align: center;
-            }
-            
-            .calculator {
-                grid-template-columns: repeat(4, 1fr);
+            h2 {
+                font-size: 1.3rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header Section -->
-    <header>
-        <div class="container header-content">
-            <div class="logo">
-                <img src="https://catbox.moe/cached.php?t=w&id=1be8c1b4f7c1e9b6c1c4c1c4c1c4c1c4c1c4c1c4c1c4c1c4c1c4c1c4c1c4c1c4" alt="Logo SMP AZAHRA">
-                <div class="logo-text">
-                    <div class="school-name">SMP AZAHRA BEKASI</div>
-                    <div class="class-name">KELAS VIII</div>
-                </div>
-            </div>
-            
-            <nav>
-                <ul>
-                    <li><a href="#home">Beranda</a></li>
-                    <li><a href="#news">Berita</a></li>
-                    <li><a href="#about">Tentang Sekolah</a></li>
-                    <li><a href="#class">Kelas 8</a></li>
-                    <li><a href="#structure">Struktur Kelas</a></li>
-                </ul>
-            </nav>
-            
-            <div class="auth-buttons">
-                <button class="btn btn-primary" onclick="openLoginModal()">Login</button>
-                <button class="btn btn-secondary" onclick="openRegisterModal()">Daftar</button>
-            </div>
-        </div>
-    </header>
+    <!-- Animated background elements -->
+    <ul class="bg-bubbles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
 
-    <!-- Main Content -->
-    <div class="container main-content">
-        <!-- Home Section -->
-        <section id="home">
-            <h2 class="section-title">Selamat Datang di Website Kelas 8</h2>
-            <div class="class-info">
-                <div class="class-teacher">
-                    <img src="https://catbox.moe/cached.php?t=w&id=2be8c1b4f7c1e9b6c1c4c1c4c1c4c1c4c1c4c1c4c1c4c1c4c1c4c1c4c1c4c1c4" alt="Pak SUHARDI" class="teacher-img">
-                    <div class="teacher-info">
-                        <h3>Wali Kelas: SUHARDI, S.Pd</h3>
-                        <p>Selamat datang di website resmi kelas 8 SMP AZAHRA BEKASI. Kami dengan bangga mempersembahkan platform digital ini untuk mendukung proses belajar mengajar serta komunikasi antara siswa, guru, dan orang tua.</p>
-                    </div>
-                </div>
-                
-                <div class="students-count">
-                    <div class="count-number">8</div>
-                    <p>Jumlah Siswa Kelas 8</p>
-                </div>
+    <!-- Login Page -->
+    <div id="login-page">
+        <div class="login-container">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzFhNzNlOCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yIDNIOGEyIDIgMCAwIDEgMiAydjE0YTIgMiAwIDAgMS0yIDJIMnYtMThaIj48L3BhdGg+PHBhdGggZD0iTTIyIDNIMTZhMiAyIDAgMCAwLTIgMnYxNGEyIDIgMCAwIDAgMiAyaDZ2LTE4WiI+PC9wYXRoPjxwYXRoIGQ9Ik02IDE2aDQiPjwvcGF0aD48cGF0aCBkPSJNNiAxMGg0Ij48L3BhdGg+PHBhdGggZD0iTTE0IDE2aDQiPjwvcGF0aD48cGF0aCBkPSJNMTQgMTBoNCI+PC9wYXRoPjwvc3ZnPg==" alt="SMP AZAHRA Logo">
+            <h1 class="school-name">SMP AZAHRA BEKASI</h1>
+            <p class="school-subtitle">Sekolah Unggulan Berbasis Karakter dan Prestasi</p>
+            <h2>LOGIN TO PORTAL</h2>
+            <div class="input-group">
+                <label for="username">Username</label>
+                <i class="fas fa-user"></i>
+                <input type="text" id="username" placeholder="Masukkan username">
             </div>
-        </section>
-
-        <!-- News Section -->
-        <section id="news" class="mt-20">
-            <h2 class="section-title">Berita Terbaru</h2>
-            <div class="news-grid" id="news-container">
-                <!-- News will be loaded dynamically -->
-                <div class="spinner"></div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" placeholder="Masukkan password">
             </div>
-        </section>
-
-        <!-- About School Section -->
-        <section id="about" class="mt-20">
-            <h2 class="section-title">Tentang Sekolah</h2>
-            <div class="class-info">
-                <p>SMP AZAHRA BEKASI adalah lembaga pendidikan yang berkomitmen untuk memberikan pendidikan berkualitas dengan mengutamakan pengembangan karakter, akademik, dan keterampilan siswa. Kami memiliki fasilitas lengkap dan guru-guru yang berpengalaman di bidangnya.</p>
-                
-                <h3 class="mt-20">Visi</h3>
-                <p>Menjadi sekolah unggulan yang mencetak generasi muslim yang berakhlak mulia, cerdas, dan mandiri.</p>
-                
-                <h3 class="mt-20">Misi</h3>
-                <ul>
-                    <li>Menyelenggarakan pendidikan yang berkualitas dengan kurikulum yang terintegrasi</li>
-                    <li>Membangun karakter islami melalui pembiasaan dan keteladanan</li>
-                    <li>Mengembangkan potensi akademik dan non-akademik siswa</li>
-                    <li>Menjalin kerjasama yang harmonis antara sekolah, orang tua, dan masyarakat</li>
-                </ul>
+            <button class="btn-login" onclick="login()">Login</button>
+            <div class="additional-options">
+                <a href="#">Lupa Password?</a>
+                <a href="#">Butuh Bantuan?</a>
             </div>
-        </section>
-
-        <!-- Class Section -->
-        <section id="class" class="mt-20">
-            <h2 class="section-title">Kelas 8</h2>
-            <div class="class-info">
-                <p>Kelas 8 SMP AZAHRA BEKASI diampu oleh Wali Kelas SUHARDI, S.Pd dengan jumlah siswa sebanyak 8 orang. Kelas 8 memiliki semangat belajar yang tinggi dan telah mencapai berbagai prestasi di tingkat sekolah maupun daerah.</p>
-                
-                <div class="students-grid" id="students-container">
-                    <!-- Students will be loaded dynamically -->
-                    <div class="spinner"></div>
-                </div>
+            <p class="error-message" id="error-message">Username atau password salah!</p>
+            <div class="footer">
+                &copy; 2023 SMP AZAHRA BEKASI. All rights reserved.
             </div>
-        </section>
-
-        <!-- Structure Section -->
-        <section id="structure" class="mt-20">
-            <h2 class="section-title">Struktur Kelas</h2>
-            <div class="class-info">
-                <div class="structure-list" id="structure-container">
-                    <!-- Structure will be loaded dynamically -->
-                    <div class="spinner"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Student Tools Section -->
-        <section id="tools" class="mt-20 student-tools">
-            <h2 class="section-title">Fitur Siswa</h2>
-            <div class="tools-grid">
-                <div class="tool-card">
-                    <h3 class="tool-title">Kalkulator</h3>
-                    <div class="calculator">
-                        <div class="calculator-display" id="calc-display">0</div>
-                        <button class="calculator-btn" onclick="clearDisplay()">C</button>
-                        <button class="calculator-btn" onclick="deleteLast()">⌫</button>
-                        <button class="calculator-btn operator" onclick="appendValue('%')">%</button>
-                        <button class="calculator-btn operator" onclick="appendValue('/')">/</button>
-                        <button class="calculator-btn" onclick="appendValue('7')">7</button>
-                        <button class="calculator-btn" onclick="appendValue('8')">8</button>
-                        <button class="calculator-btn" onclick="appendValue('9')">9</button>
-                        <button class="calculator-btn operator" onclick="appendValue('*')">×</button>
-                        <button class="calculator-btn" onclick="appendValue('4')">4</button>
-                        <button class="calculator-btn" onclick="appendValue('5')">5</button>
-                        <button class="calculator-btn" onclick="appendValue('6')">6</button>
-                        <button class="calculator-btn operator" onclick="appendValue('-')">-</button>
-                        <button class="calculator-btn" onclick="appendValue('1')">1</button>
-                        <button class="calculator-btn" onclick="appendValue('2')">2</button>
-                        <button class="calculator-btn" onclick="appendValue('3')">3</button>
-                        <button class="calculator-btn operator" onclick="appendValue('+')">+</button>
-                        <button class="calculator-btn" onclick="appendValue('0')">0</button>
-                        <button class="calculator-btn" onclick="appendValue('.')">.</button>
-                        <button class="calculator-btn" onclick="calculate()" style="grid-column: span 2;">=</button>
-                    </div>
-                </div>
-                
-                <div class="tool-card">
-                    <h3 class="tool-title">Catatan Pribadi</h3>
-                    <textarea class="notes-area" id="notes-area" placeholder="Tulis catatan Anda di sini..."></textarea>
-                    <button class="btn btn-primary" onclick="saveNotes()">Simpan Catatan</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Admin Panel (Hidden by default) -->
-        <section id="admin" class="mt-20">
-            <div class="admin-panel">
-                <h2 class="section-title">Panel Admin</h2>
-                
-                <div class="admin-tabs">
-                    <button class="admin-tab active" onclick="openAdminTab('news-management')">Berita</button>
-                    <button class="admin-tab" onclick="openAdminTab('student-management')">Siswa</button>
-                    <button class="admin-tab" onclick="openAdminTab('user-management')">Pengguna</button>
-                    <button class="admin-tab" onclick="openAdminTab('banned-users')">Banned Pengguna</button>
-                </div>
-                
-                <div id="news-management" class="admin-content active">
-                    <h3>Kelola Berita</h3>
-                    <button class="btn btn-primary mb-20" onclick="showNewsForm()">Tambah Berita Baru</button>
-                    
-                    <div id="news-form" style="display: none; background: var(--primary-light); padding: 20px; border-radius: var(--radius); margin-bottom: 20px;">
-                        <h4 id="news-form-title">Tambah Berita Baru</h4>
-                        <div class="form-group">
-                            <label for="news-title">Judul Berita</label>
-                            <input type="text" id="news-title" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="news-content">Isi Berita</label>
-                            <textarea id="news-content" class="form-control" rows="5"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="news-image">URL Gambar</label>
-                            <input type="text" id="news-image" class="form-control" placeholder="https://catbox.moe/...">
-                        </div>
-                        <div class="form-group">
-                            <button class="btn btn-primary" onclick="saveNews()">Simpan Berita</button>
-                            <button class="btn btn-secondary" onclick="cancelNewsEdit()">Batal</button>
-                        </div>
-                    </div>
-                    
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Judul</th>
-                                <th>Tanggal</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="news-admin-list">
-                            <!-- News will be loaded dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div id="student-management" class="admin-content">
-                    <h3>Kelola Data Siswa</h3>
-                    <button class="btn btn-primary mb-20" onclick="showStudentForm()">Tambah Siswa Baru</button>
-                    
-                    <div id="student-form" style="display: none; background: var(--primary-light); padding: 20px; border-radius: var(--radius); margin-bottom: 20px;">
-                        <h4 id="student-form-title">Tambah Siswa Baru</h4>
-                        <div class="form-group">
-                            <label for="student-name">Nama Siswa</label>
-                            <input type="text" id="student-name" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="student-role">Peran</label>
-                            <input type="text" id="student-role" class="form-control" placeholder="Ketua Murid, Bendahara, dll.">
-                        </div>
-                        <div class="form-group">
-                            <label for="student-bio">Bio Singkat</label>
-                            <textarea id="student-bio" class="form-control" rows="3"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="student-image">URL Gambar</label>
-                            <input type="text" id="student-image" class="form-control" placeholder="https://catbox.moe/...">
-                        </div>
-                        <div class="form-group">
-                            <button class="btn btn-primary" onclick="saveStudent()">Simpan Siswa</button>
-                            <button class="btn btn-secondary" onclick="cancelStudentEdit()">Batal</button>
-                        </div>
-                    </div>
-                    
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Nama</th>
-                                <th>Peran</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="students-admin-list">
-                            <!-- Students will be loaded dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div id="user-management" class="admin-content">
-                    <h3>Kelola Pengguna</h3>
-                    <button class="btn btn-primary mb-20" onclick="showUserForm()">Tambah Pengguna Baru</button>
-                    
-                    <div id="user-form" style="display: none; background: var(--primary-light); padding: 20px; border-radius: var(--radius); margin-bottom: 20px;">
-                        <h4 id="user-form-title">Tambah Pengguna Baru</h4>
-                        <div class="form-group">
-                            <label for="user-email">Email</label>
-                            <input type="email" id="user-email" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="user-password">Password</label>
-                            <input type="password" id="user-password" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="user-role">Role</label>
-                            <select id="user-role" class="form-control">
-                                <option value="student">Siswa</option>
-                                <option value="admin">Admin</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <button class="btn btn-primary" onclick="saveUser()">Simpan Pengguna</button>
-                            <button class="btn btn-secondary" onclick="cancelUserEdit()">Batal</button>
-                        </div>
-                    </div>
-                    
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th>Status</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="users-admin-list">
-                            <!-- Users will be loaded dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div id="banned-users" class="admin-content">
-                    <h3>Kelola Banned Pengguna</h3>
-                    
-                    <div class="form-group">
-                        <label for="banned-email">Tambahkan Email ke Daftar Banned:</label>
-                        <input type="email" id="banned-email" class="form-control" placeholder="Masukkan email">
-                        <button class="btn btn-primary mt-20" onclick="addBannedEmail()">Tambahkan</button>
-                    </div>
-                    
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Email</th>
-                                <th>Tanggal Banned</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="banned-users-list">
-                            <!-- Banned users will be loaded dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- Login Modal -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('loginModal')">&times;</span>
-            <h2 class="modal-title">Login ke Akun Anda</h2>
-            
-            <form>
-                <div class="form-group">
-                    <label for="login-email">Email</label>
-                    <input type="email" id="login-email" class="form-control" placeholder="Masukkan email Anda">
-                </div>
-                
-                <div class="form-group">
-                    <label for="login-password">Password</label>
-                    <input type="password" id="login-password" class="form-control" placeholder="Masukkan password Anda">
-                </div>
-                
-                <button type="button" class="btn btn-primary" style="width: 100%;" onclick="login()">Login</button>
-            </form>
-            
-            <p class="text-center mt-20">Belum punya akun? <a href="#" onclick="switchToRegister()" style="color: var(--accent);">Daftar di sini</a></p>
         </div>
     </div>
-
-    <!-- Register Modal -->
-    <div id="registerModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('registerModal')">&times;</span>
-            <h2 class="modal-title">Buat Akun Baru</h2>
-            
-            <form>
-                <div class="form-group">
-                    <label for="register-name">Nama Lengkap</label>
-                    <input type="text" id="register-name" class="form-control" placeholder="Masukkan nama lengkap">
-                </div>
-                
-                <div class="form-group">
-                    <label for="register-email">Email</label>
-                    <input type="email" id="register-email" class="form-control" placeholder="Masukkan email">
-                </div>
-                
-                <div class="form-group">
-                    <label for="register-password">Password</label>
-                    <input type="password" id="register-password" class="form-control" placeholder="Buat password">
-                </div>
-                
-                <div class="form-group">
-                    <label for="register-confirm">Konfirmasi Password</label>
-                    <input type="password" id="register-confirm" class="form-control" placeholder="Konfirmasi password">
-                </div>
-                
-                <button type="button" class="btn btn-primary" style="width: 100%;" onclick="register()">Daftar</button>
-            </form>
-            
-            <p class="text-center mt-20">Sudah punya akun? <a href="#" onclick="switchToLogin()" style="color: var(--accent);">Login di sini</a></p>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container footer-content">
-            <p class="credit">© 2025 SMP AZAHRA BEKASI - Kelas 8. All rights reserved.</p>
-            <p class="credit">Development By <span>I.R</span></p>
-        </div>
-    </footer>
 
     <script>
-        // Konfigurasi Firebase - GANTI DENGAN KONFIGURASI ANDA SENDIRI
-        const firebaseConfig = {
-            apiKey: "AIzaSyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-            authDomain: "your-project-id.firebaseapp.com",
-            projectId: "your-project-id",
-            storageBucket: "your-project-id.appspot.com",
-            messagingSenderId: "123456789000",
-            appId: "1:123456789000:web:aaaaaaaaaaaaaaaaaaaaaa"
-        };
-
-        // Inisialisasi Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
-        const storage = firebase.storage();
-
-        // Referensi ke koleksi Firestore
-        const newsRef = db.collection('news');
-        const studentsRef = db.collection('students');
-        const usersRef = db.collection('users');
-        const bannedRef = db.collection('banned');
-        const structureRef = db.collection('structure');
-
-        // State aplikasi
-        let currentUser = null;
-        let editingNewsId = null;
-        let editingStudentId = null;
-        let editingUserId = null;
-
-        // Fungsi inisialisasi
-        function init() {
-            // Cek status autentikasi
-            auth.onAuthStateChanged(user => {
-                if (user) {
-                    currentUser = user;
-                    checkUserStatus(user.email);
-                } else {
-                    currentUser = null;
-                    showPublicView();
-                }
-            });
-
-            // Muat data untuk pengunjung
-            loadNews();
-            loadStudents();
-            loadStructure();
-        }
-
-        // Muat berita
-        function loadNews() {
-            newsRef.orderBy('date', 'desc').limit(5).get().then(snapshot => {
-                const newsContainer = document.getElementById('news-container');
-                newsContainer.innerHTML = '';
-                
-                if (snapshot.empty) {
-                    newsContainer.innerHTML = '<p class="text-center">Tidak ada berita saat ini.</p>';
-                    return;
-                }
-                
-                snapshot.forEach(doc => {
-                    const news = doc.data();
-                    const newsElement = `
-                        <div class="news-card">
-                            <img src="${news.image}" alt="${news.title}" class="news-img">
-                            <div class="news-content">
-                                <h3 class="news-title">${news.title}</h3>
-                                <div class="news-date">${formatDate(news.date)}</div>
-                                <p class="news-excerpt">${news.content.substring(0, 100)}...</p>
-                                <a href="#" class="read-more">Selengkapnya <i class="fas fa-arrow-right"></i></a>
-                            </div>
-                        </div>
-                    `;
-                    newsContainer.innerHTML += newsElement;
-                });
-            }).catch(error => {
-                console.error("Error loading news:", error);
-                document.getElementById('news-container').innerHTML = '<p class="text-center">Gagal memuat berita.</p>';
-            });
-        }
-
-        // Muat data siswa
-        function loadStudents() {
-            studentsRef.get().then(snapshot => {
-                const studentsContainer = document.getElementById('students-container');
-                studentsContainer.innerHTML = '';
-                
-                if (snapshot.empty) {
-                    studentsContainer.innerHTML = '<p class="text-center">Tidak ada data siswa.</p>';
-                    return;
-                }
-                
-                snapshot.forEach(doc => {
-                    const student = doc.data();
-                    const studentElement = `
-                        <div class="student-card">
-                            <img src="${student.image}" alt="${student.name}" class="student-img">
-                            <div class="student-info">
-                                <h3 class="student-name">${student.name}</h3>
-                                <span class="student-role">${student.role}</span>
-                                <p class="student-bio">${student.bio}</p>
-                                <a href="#" class="read-more">Info Lengkap <i class="fas fa-arrow-right"></i></a>
-                            </div>
-                        </div>
-                    `;
-                    studentsContainer.innerHTML += studentElement;
-                });
-            }).catch(error => {
-                console.error("Error loading students:", error);
-                document.getElementById('students-container').innerHTML = '<p class="text-center">Gagal memuat data siswa.</p>';
-            });
-        }
-
-        // Muat struktur kelas
-        function loadStructure() {
-            structureRef.get().then(snapshot => {
-                const structureContainer = document.getElementById('structure-container');
-                structureContainer.innerHTML = '';
-                
-                if (snapshot.empty) {
-                    // Data default jika tidak ada data di Firestore
-                    structureContainer.innerHTML = `
-                        <div class="structure-item">
-                            <h3>Wali Kelas</h3>
-                            <p>SUHARDI, S.Pd</p>
-                        </div>
-                        <div class="structure-item">
-                            <h3>Ketua Murid</h3>
-                            <p>Oktaviano</p>
-                        </div>
-                        <div class="structure-item">
-                            <h3>Wakil Ketua Murid</h3>
-                            <p>Meisyah</p>
-                        </div>
-                        <div class="structure-item">
-                            <h3>Bendahara</h3>
-                            <p>Naila Putri</p>
-                        </div>
-                        <div class="structure-item">
-                            <h3>Sekretaris</h3>
-                            <p>Rafi Ahmad</p>
-                        </div>
-                        <div class="structure-item">
-                            <h3>Koordinator Bidang Akademik</h3>
-                            <p>Zahra Fitriani</p>
-                        </div>
-                    `;
-                    return;
-                }
-                
-                snapshot.forEach(doc => {
-                    const item = doc.data();
-                    structureContainer.innerHTML += `
-                        <div class="structure-item">
-                            <h3>${item.position}</h3>
-                            <p>${item.name}</p>
-                        </div>
-                    `;
-                });
-            }).catch(error => {
-                console.error("Error loading structure:", error);
-            });
-        }
-
-        // Format tanggal
-        function formatDate(timestamp) {
-            if (!timestamp) return '';
-            const date = timestamp.toDate();
-            return date.toLocaleDateString('id-ID', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-        }
-
-        // Fungsi autentikasi
         function login() {
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
             
-            if (!email || !password) {
-                alert('Email dan password harus diisi!');
+            // Simple validation
+            if (username === '' || password === '') {
+                errorMessage.textContent = 'Username dan password harus diisi!';
+                errorMessage.classList.add('show');
+                
+                // Add shake animation to inputs
+                document.getElementById('username').style.animation = 'shake 0.5s';
+                document.getElementById('password').style.animation = 'shake 0.5s';
+                
+                // Remove animation after it completes
+                setTimeout(() => {
+                    document.getElementById('username').style.animation = '';
+                    document.getElementById('password').style.animation = '';
+                }, 500);
+                
                 return;
             }
             
-            // Cek apakah email dibanned
-            bannedRef.doc(email).get().then(doc => {
-                if (doc.exists) {
-                    alert('Email ini telah dibanned dan tidak dapat mengakses sistem.');
-                    return;
-                }
-                
-                // Login dengan Firebase Auth
-                auth.signInWithEmailAndPassword(email, password)
-                    .then(userCredential => {
-                        closeModal('loginModal');
-                    })
-                    .catch(error => {
-                        alert('Login gagal: ' + error.message);
-                    });
-            });
-        }
-
-        function register() {
-            const name = document.getElementById('register-name').value;
-            const email = document.getElementById('register-email').value;
-            const password = document.getElementById('register-password').value;
-            const confirm = document.getElementById('register-confirm').value;
-            
-            if (!name || !email || !password || !confirm) {
-                alert('Semua field harus diisi!');
-                return;
-            }
-            
-            if (password !== confirm) {
-                alert('Password dan konfirmasi password tidak cocok!');
-                return;
-            }
-            
-            // Cek apakah email dibanned
-            bannedRef.doc(email).get().then(doc => {
-                if (doc.exists) {
-                    alert('Email ini telah dibanned dan tidak dapat mendaftar.');
-                    return;
-                }
-                
-                // Buat user dengan Firebase Auth
-                auth.createUserWithEmailAndPassword(email, password)
-                    .then(userCredential => {
-                        // Simpan data user tambahan ke Firestore
-                        return usersRef.doc(userCredential.user.uid).set({
-                            name: name,
-                            email: email,
-                            role: 'student',
-                            status: 'pending',
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                        });
-                    })
-                    .then(() => {
-                        alert('Pendaftaran berhasil! Akun Anda menunggu konfirmasi admin.');
-                        closeModal('registerModal');
-                    })
-                    .catch(error => {
-                        alert('Pendaftaran gagal: ' + error.message);
-                    });
-            });
-        }
-
-        function logout() {
-            auth.signOut().then(() => {
-                currentUser = null;
-                showPublicView();
-            });
-        }
-
-        // Cek status user
-        function checkUserStatus(email) {
-            usersRef.where('email', '==', email).get().then(snapshot => {
-                if (snapshot.empty) {
-                    alert('Akun tidak ditemukan dalam database.');
-                    logout();
-                    return;
-                }
-                
-                snapshot.forEach(doc => {
-                    const userData = doc.data();
-                    
-                    if (userData.status === 'banned') {
-                        alert('Akun Anda telah dibanned. Silahkan hubungi administrator.');
-                        logout();
-                        return;
-                    }
-                    
-                    if (userData.status === 'pending') {
-                        alert('Akun Anda masih menunggu konfirmasi admin.');
-                        showPendingView();
-                        return;
-                    }
-                    
-                    if (userData.role === 'admin') {
-                        showAdminView();
-                    } else {
-                        showStudentView();
-                    }
-                });
-            }).catch(error => {
-                console.error("Error checking user status:", error);
-            });
-        }
-
-        // Tampilkan view berdasarkan role
-        function showPublicView() {
-            document.getElementById('admin').style.display = 'none';
-            document.querySelector('.student-tools').style.display = 'none';
-            document.querySelector('.auth-buttons').innerHTML = `
-                <button class="btn btn-primary" onclick="openLoginModal()">Login</button>
-                <button class="btn btn-secondary" onclick="openRegisterModal()">Daftar</button>
-            `;
-        }
-
-        function showPendingView() {
-            document.getElementById('admin').style.display = 'none';
-            document.querySelector('.student-tools').style.display = 'none';
-            document.querySelector('.auth-buttons').innerHTML = `
-                <span style="margin-right: 15px;">Menunggu konfirmasi</span>
-                <button class="btn btn-secondary" onclick="logout()">Logout</button>
-            `;
-        }
-
-        function showStudentView() {
-            document.getElementById('admin').style.display = 'none';
-            document.querySelector('.student-tools').style.display = 'block';
-            document.querySelector('.auth-buttons').innerHTML = `
-                <span style="margin-right: 15px;">Hai, ${currentUser.email}</span>
-                <button class="btn btn-secondary" onclick="logout()">Logout</button>
-            `;
-        }
-
-        function showAdminView() {
-            document.getElementById('admin').style.display = 'block';
-            document.querySelector('.student-tools').style.display = 'none';
-            document.querySelector('.auth-buttons').innerHTML = `
-                <span style="margin-right: 15px;">Hai, Admin</span>
-                <button class="btn btn-secondary" onclick="logout()">Logout</button>
-            `;
-            
-            // Muat data admin
-            loadNewsForAdmin();
-            loadStudentsForAdmin();
-            loadUsersForAdmin();
-            loadBannedEmails();
-        }
-
-        // Fungsi admin
-        function loadNewsForAdmin() {
-            newsRef.orderBy('date', 'desc').get().then(snapshot => {
-                const newsList = document.getElementById('news-admin-list');
-                newsList.innerHTML = '';
-                
-                snapshot.forEach(doc => {
-                    const news = doc.data();
-                    newsList.innerHTML += `
-                        <tr>
-                            <td>${news.title}</td>
-                            <td>${formatDate(news.date)}</td>
-                            <td>
-                                <button class="action-btn btn-edit" onclick="editNews('${doc.id}')">Edit</button>
-                                <button class="action-btn btn-delete" onclick="deleteNews('${doc.id}')">Hapus</button>
-                            </td>
-                        </tr>
-                    `;
-                });
-            });
-        }
-
-        function showNewsForm() {
-            document.getElementById('news-form').style.display = 'block';
-            document.getElementById('news-form-title').textContent = 'Tambah Berita Baru';
-            editingNewsId = null;
-            document.getElementById('news-title').value = '';
-            document.getElementById('news-content').value = '';
-            document.getElementById('news-image').value = '';
-        }
-
-        function saveNews() {
-            const title = document.getElementById('news-title').value;
-            const content = document.getElementById('news-content').value;
-            const image = document.getElementById('news-image').value;
-            
-            if (!title || !content) {
-                alert('Judul dan isi berita harus diisi!');
-                return;
-            }
-            
-            const newsData = {
-                title: title,
-                content: content,
-                image: image || 'https://catbox.moe/cached.php?t=w&id=3be8c1b4f7c1e9b6c1c4c1c4c1c4c1c4c1c4c1c4c1c4c1c4c1c4c1c4c1c4c1c4',
-                date: firebase.firestore.FieldValue.serverTimestamp()
-            };
-            
-            if (editingNewsId) {
-                newsRef.doc(editingNewsId).update(newsData)
-                    .then(() => {
-                        alert('Berita berhasil diperbarui!');
-                        cancelNewsEdit();
-                        loadNewsForAdmin();
-                        loadNews(); // Reload berita untuk pengunjung
-                    })
-                    .catch(error => {
-                        alert('Gagal memperbarui berita: ' + error.message);
-                    });
+            // Here you would typically send the data to a server for authentication
+            // For demo purposes, we'll use a simple check
+            if (username === 'admin' && password === 'admin') {
+                errorMessage.classList.remove('show');
+                alert('Login berhasil! Redirecting...');
+                // In a real scenario, you would redirect to the dashboard
             } else {
-                newsRef.add(newsData)
-                    .then(() => {
-                        alert('Berita berhasil ditambahkan!');
-                        cancelNewsEdit();
-                        loadNewsForAdmin();
-                        loadNews(); // Reload berita untuk pengunjung
-                    })
-                    .catch(error => {
-                        alert('Gagal menambahkan berita: ' + error.message);
-                    });
+                errorMessage.textContent = 'Username atau password salah!';
+                errorMessage.classList.add('show');
+                
+                // Add shake animation to the login container
+                document.querySelector('.login-container').style.animation = 'shake 0.5s';
+                
+                // Remove animation after it completes
+                setTimeout(() => {
+                    document.querySelector('.login-container').style.animation = '';
+                }, 500);
             }
-        }
-
-        function editNews(id) {
-            newsRef.doc(id).get().then(doc => {
-                if (doc.exists) {
-                    const news = doc.data();
-                    document.getElementById('news-form').style.display = 'block';
-                    document.getElementById('news-form-title').textContent = 'Edit Berita';
-                    editingNewsId = id;
-                    document.getElementById('news-title').value = news.title;
-                    document.getElementById('news-content').value = news.content;
-                    document.getElementById('news-image').value = news.image;
-                }
-            });
-        }
-
-        function deleteNews(id) {
-            if (confirm('Apakah Anda yakin ingin menghapus berita ini?')) {
-                newsRef.doc(id).delete()
-                    .then(() => {
-                        alert('Berita berhasil dihapus!');
-                        loadNewsForAdmin();
-                        loadNews(); // Reload berita untuk pengunjung
-                    })
-                    .catch(error => {
-                        alert('Gagal menghapus berita: ' + error.message);
-                    });
-            }
-        }
-
-        function cancelNewsEdit() {
-            document.getElementById('news-form').style.display = 'none';
-            editingNewsId = null;
-        }
-
-        // Fungsi-fungsi admin lainnya (kelola siswa, user, banned) akan mengikuti pola yang sama
-        // Demi singkatnya kode, saya tidak menuliskan semuanya di sini, tetapi prinsipnya sama
-
-        // Fungsi kalkulator
-        function appendValue(value) {
-            const display = document.getElementById('calc-display');
-            if (display.textContent === '0' && value !== '.') {
-                display.textContent = value;
-            } else {
-                display.textContent += value;
-            }
-        }
-
-        function clearDisplay() {
-            document.getElementById('calc-display').textContent = '0';
-        }
-
-        function deleteLast() {
-            const display = document.getElementById('calc-display');
-            if (display.textContent.length > 1) {
-                display.textContent = display.textContent.slice(0, -1);
-            } else {
-                display.textContent = '0';
-            }
-        }
-
-        function calculate() {
-            const display = document.getElementById('calc-display');
-            try {
-                const result = eval(display.textContent);
-                display.textContent = result;
-            } catch (error) {
-                display.textContent = 'Error';
-            }
-        }
-
-        // Fungsi catatan
-        function saveNotes() {
-            const notes = document.getElementById('notes-area').value;
-            if (currentUser) {
-                localStorage.setItem(`notes_${currentUser.uid}`, notes);
-                alert('Catatan berhasil disimpan!');
-            }
-        }
-
-        function loadNotes() {
-            if (currentUser) {
-                const notes = localStorage.getItem(`notes_${currentUser.uid}`);
-                if (notes) {
-                    document.getElementById('notes-area').value = notes;
-                }
-            }
-        }
-
-        // Modal Functions
-        function openLoginModal() {
-            document.getElementById('loginModal').style.display = 'flex';
         }
         
-        function openRegisterModal() {
-            document.getElementById('registerModal').style.display = 'flex';
-        }
-        
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-        
-        function switchToRegister() {
-            closeModal('loginModal');
-            openRegisterModal();
-        }
-        
-        function switchToLogin() {
-            closeModal('registerModal');
-            openLoginModal();
-        }
-        
-        // Admin Tab Functions
-        function openAdminTab(tabName) {
-            const adminContents = document.getElementsByClassName('admin-content');
-            for (let i = 0; i < adminContents.length; i++) {
-                adminContents[i].classList.remove('active');
+        // Add shake animation for errors
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+                20%, 40%, 60%, 80% { transform: translateX(10px); }
             }
-            
-            const adminTabs = document.getElementsByClassName('admin-tab');
-            for (let i = 0; i < adminTabs.length; i++) {
-                adminTabs[i].classList.remove('active');
-            }
-            
-            document.getElementById(tabName).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
+        `;
+        document.head.appendChild(style);
         
-        // Close modals when clicking outside
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
+        // Allow submitting form with Enter key
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
             }
-        }
-
-        // Inisialisasi aplikasi saat halaman dimuat
-        window.onload = init;
+        });
     </script>
 </body>
 </html>
