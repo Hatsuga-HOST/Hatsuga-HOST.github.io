@@ -3,464 +3,1647 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MoneyTracker - Kelola Keuangan Pribadi</title>
+    <title>RbxScriptHub - Script dan Executor Roblox Terlengkap</title>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #4361ee;
-            --secondary: #3f37c9;
-            --success: #4cc9f0;
-            --danger: #f72585;
-            --light: #f8f9fa;
-            --dark: #212529;
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --accent: #fd79a8;
+            --text: #2d3436;
+            --bg: #f9f9f9;
+            --card-bg: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #d63031;
+            --transition: all 0.3s ease;
         }
-        
+
+        .dark-theme {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --accent: #fd79a8;
+            --text: #f9f9f9;
+            --bg: #1a1a2e;
+            --card-bg: #16213e;
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: var(--transition);
         }
-        
+
         body {
-            background-color: #f5f5f5;
-            color: var(--dark);
-            line-height: 1.6;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
         }
-        
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
+
+        /* Header & Navigation */
         header {
+            background-color: var(--card-bg);
+            box-shadow: 0 4px 12px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--card-bg);
+            min-width: 200px;
+            box-shadow: 0 8px 16px var(--shadow);
+            border-radius: 8px;
+            z-index: 1;
+            padding: 1rem;
+            top: 100%;
+            left: 0;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: flex;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
             background-color: var(--primary);
             color: white;
-            padding: 1rem;
-            text-align: center;
-            border-radius: 8px;
-            margin-bottom: 20px;
         }
-        
-        .auth-container, .dashboard {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+
+        .btn-primary:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
         }
-        
-        .form-group {
-            margin-bottom: 15px;
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
         }
-        
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
         }
-        
-        input {
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
         }
-        
-        button {
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Content Sections */
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--accent);
+        }
+
+        .search-bar {
+            display: flex;
+            margin-bottom: 2rem;
+            max-width: 500px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--secondary);
+            border-radius: 8px 0 0 8px;
+            outline: none;
+            background-color: var(--card-bg);
+            color: var(--text);
+        }
+
+        .search-bar button {
+            padding: 0.75rem 1.25rem;
             background-color: var(--primary);
             color: white;
             border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
+            border-radius: 0 8px 8px 0;
             cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
         }
-        
-        button:hover {
-            background-color: var(--secondary);
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
-        
-        .btn-danger {
-            background-color: var(--danger);
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background-color: var(--card-bg);
+            border: 1px solid var(--secondary);
+            border-radius: 20px;
+            cursor: pointer;
+            color: var(--text);
         }
-        
-        .btn-danger:hover {
-            background-color: #c1121f;
+
+        .filter-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
         }
-        
-        .hidden {
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px var(--shadow);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            color: var(--text);
+            opacity: 0.8;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .badge-nokey {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .badge-keyless {
+            background-color: var(--warning);
+            color: var(--text);
+        }
+
+        .badge-premium {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--secondary);
+            border-radius: 8px;
+            background-color: var(--card-bg);
+            color: var(--text);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
             display: none;
         }
-        
-        .transaction-form {
+
+        .admin-actions {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr auto;
-            gap: 10px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
-        
+
+        .admin-card {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px var(--shadow);
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .admin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px var(--shadow);
+        }
+
+        .admin-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .admin-card h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Auth Pages */
+        .auth-container {
+            max-width: 400px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--secondary);
+        }
+
+        .auth-tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            opacity: 0.7;
+        }
+
+        .auth-tab.active {
+            opacity: 1;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            text-align: center;
+            margin-top: auto;
+            box-shadow: 0 -4px 12px var(--shadow);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .social-links a {
+            color: var(--text);
+            font-size: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .transaction-form {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--card-bg);
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 4px 12px var(--shadow);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+                font-size: 1.5rem;
+                background: none;
+                border: none;
+                color: var(--text);
+                cursor: pointer;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-actions {
                 grid-template-columns: 1fr;
             }
         }
-        
-        .transaction-list {
-            margin-top: 20px;
+
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
-        
-        .transaction-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .income {
-            color: green;
-        }
-        
-        .expense {
-            color: red;
-        }
-        
-        .summary {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .summary-card {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        
-        .balance {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        
-        .tab {
-            overflow: hidden;
-            border: 1px solid #ccc;
-            background-color: #f1f1f1;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
-        
-        .tab button {
-            background-color: inherit;
-            float: left;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            padding: 14px 16px;
-            transition: 0.3s;
-            color: var(--dark);
-        }
-        
-        .tab button:hover {
-            background-color: #ddd;
-        }
-        
-        .tab button.active {
-            background-color: var(--primary);
-            color: white;
+
+        .pulse {
+            animation: pulse 2s infinite;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>MoneyTracker</h1>
-            <p>Kelola keuangan pribadi dengan mudah</p>
-        </header>
-        
-        <!-- Container untuk autentikasi -->
-        <div id="authContainer" class="auth-container">
-            <div class="tab">
-                <button class="tablinks active" onclick="openTab(event, 'Login')">Login</button>
-                <button class="tablinks" onclick="openTab(event, 'Register')">Daftar</button>
+    <header>
+        <nav>
+            <div class="logo">
+                <i class="fas fa-cube"></i>
+                <span>RbxScriptHub</span>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="nav-link" data-page="home">Home</a>
+                <div class="dropdown">
+                    <a href="#" class="nav-link">Scripts <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown-content">
+                        <a href="#" class="nav-link" data-page="scripts" data-category="block-fruit">Block Fruit</a>
+                        <a href="#" class="nav-link" data-page="scripts" data-category="blue-lock">Blue Lock</a>
+                        <a href="#" class="nav-link" data-page="scripts" data-category="hunty-zombie">Hunty Zombie</a>
+                        <a href="#" class="nav-link" data-page="scripts" data-category="others">Lainnya</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <a href="#" class="nav-link">Executors <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown-content">
+                        <a href="#" class="nav-link" data-page="executors" data-platform="android">Android</a>
+                        <a href="#" class="nav-link" data-page="executors" data-platform="ios">iOS</a>
+                        <a href="#" class="nav-link" data-page="executors" data-platform="windows">Windows</a>
+                    </div>
+                </div>
+                <a href="#" class="nav-link" data-page="about">Tentang Kami</a>
+                <div class="user-actions">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="btn btn-outline" id="loginBtn">Login</button>
+                    <button class="btn btn-primary" id="registerBtn">Daftar</button>
+                    <div id="userMenu" style="display: none;">
+                        <button class="btn btn-outline" id="logoutBtn">Logout</button>
+                    </div>
+                    <div id="adminMenu" style="display: none;">
+                        <button class="btn btn-primary" id="adminPanelBtn">Admin Panel</button>
+                    </div>
+                </div>
+            </div>
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Home Page -->
+        <section id="home" class="page active">
+            <div class="hero">
+                <h1>Script dan Executor Roblox Terlengkap</h1>
+                <p>Temukan script dan executor terbaik untuk pengalaman gaming Roblox yang maksimal. Dengan berbagai kategori dan fitur premium.</p>
+                <button class="btn btn-primary">Jelajahi Sekarang</button>
+            </div>
+
+            <div class="featured-scripts">
+                <h2 class="section-title">Script Terpopuler</h2>
+                <div class="content-grid" id="featuredScripts">
+                    <!-- Script items will be loaded here -->
+                </div>
+            </div>
+
+            <div class="featured-executors">
+                <h2 class="section-title">Executor Terpopuler</h2>
+                <div class="content-grid" id="featuredExecutors">
+                    <!-- Executor items will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Scripts Page -->
+        <section id="scripts" class="page">
+            <h2 class="section-title">Script Roblox</h2>
+            <div class="search-bar">
+                <input type="text" id="scriptSearch" placeholder="Cari script...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">Semua</button>
+                <button class="filter-btn" data-filter="nokey">No Key</button>
+                <button class="filter-btn" data-filter="keyless">Keyless</button>
+                <button class="filter-btn" data-filter="premium">Premium</button>
+            </div>
+            <div class="content-grid" id="scriptsGrid">
+                <!-- Script items will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Executors Page -->
+        <section id="executors" class="page">
+            <h2 class="section-title">Executor Roblox</h2>
+            <div class="search-bar">
+                <input type="text" id="executorSearch" placeholder="Cari executor...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">Semua</button>
+                <button class="filter-btn" data-filter="android">Android</button>
+                <button class="filter-btn" data-filter="ios">iOS</button>
+                <button class="filter-btn" data-filter="windows">Windows</button>
+                <button class="filter-btn" data-filter="nokey">No Key</button>
+                <button class="filter-btn" data-filter="keyless">Keyless</button>
+                <button class="filter-btn" data-filter="premium">Premium</button>
+            </div>
+            <div class="content-grid" id="executorsGrid">
+                <!-- Executor items will be loaded here -->
+            </div>
+        </section>
+
+        <!-- About Page -->
+        <section id="about" class="page">
+            <h2 class="section-title">Tentang Kami</h2>
+            <div class="about-content">
+                <p>RbxScriptHub adalah platform terpercaya untuk menemukan script dan executor Roblox terbaik. Kami menyediakan berbagai macam script untuk game-game populer seperti Block Fruit, Blue Lock, Hunty Zombie, dan banyak lagi.</p>
+                
+                <h3>Fitur Kami</h3>
+                <ul>
+                    <li>Script No Key - Dapat digunakan tanpa kunci</li>
+                    <li>Script Keyless - Mudah digunakan tanpa proses rumit</li>
+                    <li>Script Premium - Akses eksklusif untuk member premium</li>
+                    <li>Executor untuk berbagai platform (Android, iOS, Windows)</li>
+                    <li>Antarmuka yang ramah pengguna</li>
+                    <li>Update berkala dengan script dan executor terbaru</li>
+                </ul>
+                
+                <h3>Tim Kami</h3>
+                <p>Kami adalah tim developer yang passionate tentang dunia Roblox. Kami berkomitmen untuk menyediakan tools terbaik untuk meningkatkan pengalaman gaming Anda.</p>
+                
+                <h3>Kontak</h3>
+                <p>Jika Anda memiliki pertanyaan atau masukan, jangan ragu untuk menghubungi kami melalui email: support@rbxscripthub.com</p>
+            </div>
+        </section>
+
+        <!-- Admin Panel -->
+        <section id="admin-panel" class="page">
+            <h2 class="section-title">Admin Panel</h2>
+            
+            <div class="admin-actions">
+                <div class="admin-card" id="manageScriptsBtn">
+                    <i class="fas fa-code"></i>
+                    <h3>Kelola Script</h3>
+                    <p>Tambah, edit, atau hapus script</p>
+                </div>
+                
+                <div class="admin-card" id="manageExecutorsBtn">
+                    <i class="fas fa-rocket"></i>
+                    <h3>Kelola Executor</h3>
+                    <p>Tambah, edit, atau hapus executor</p>
+                </div>
+                
+                <div class="admin-card" id="manageUsersBtn">
+                    <i class="fas fa-users"></i>
+                    <h3>Kelola Pengguna</h3>
+                    <p>Kelola akun pengguna</p>
+                </div>
+                
+                <div class="admin-card" id="manageAdminsBtn">
+                    <i class="fas fa-user-shield"></i>
+                    <h3>Kelola Admin</h3>
+                    <p>Tambah atau hapus admin</p>
+                </div>
             </div>
             
-            <div id="Login" class="tabcontent" style="display:block;">
-                <h2>Login</h2>
-                <div class="form-group">
-                    <label for="loginEmail">Email</label>
-                    <input type="email" id="loginEmail" placeholder="Masukkan email">
-                </div>
-                <div class="form-group">
-                    <label for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword" placeholder="Masukkan password">
-                </div>
-                <button onclick="login()">Login</button>
-                <p id="loginMessage"></p>
+            <div id="adminContent">
+                <!-- Admin content will be loaded here -->
             </div>
-            
-            <div id="Register" class="tabcontent" style="display:none;">
-                <h2>Daftar Akun Baru</h2>
-                <div class="form-group">
-                    <label for="registerEmail">Email</label>
-                    <input type="email" id="registerEmail" placeholder="Masukkan email">
+        </section>
+
+        <!-- Login Modal -->
+        <div class="modal" id="loginModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Login</h3>
+                    <button class="close-modal">&times;</button>
                 </div>
-                <div class="form-group">
-                    <label for="registerPassword">Password</label>
-                    <input type="password" id="registerPassword" placeholder="Buat password (min. 6 karakter)">
-                </div>
-                <button onclick="register()">Daftar</button>
-                <p id="registerMessage"></p>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
             </div>
         </div>
-        
-        <!-- Dashboard setelah login -->
-        <div id="dashboard" class="dashboard hidden">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2>Dashboard Keuangan</h2>
-                <button onclick="logout()" class="btn-danger">Logout</button>
-            </div>
-            
-            <div class="summary">
-                <div class="summary-card">
-                    <h3>Saldo</h3>
-                    <p class="balance" id="balanceAmount">Rp 0</p>
+
+        <!-- Register Modal -->
+        <div class="modal" id="registerModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Daftar Akun</h3>
+                    <button class="close-modal">&times;</button>
                 </div>
-                <div class="summary-card">
-                    <h3>Pemasukan</h3>
-                    <p class="income" id="incomeAmount">Rp 0</p>
-                </div>
-                <div class="summary-card">
-                    <h3>Pengeluaran</h3>
-                    <p class="expense" id="expenseAmount">Rp 0</p>
-                </div>
-            </div>
-            
-            <h3>Tambah Transaksi</h3>
-            <div class="transaction-form">
-                <div class="form-group">
-                    <input type="text" id="transactionDescription" placeholder="Keterangan">
-                </div>
-                <div class="form-group">
-                    <input type="number" id="transactionAmount" placeholder="Jumlah">
-                </div>
-                <div class="form-group">
-                    <select id="transactionType">
-                        <option value="income">Pemasukan</option>
-                        <option value="expense">Pengeluaran</option>
-                    </select>
-                </div>
-                <button onclick="addTransaction()">Tambah</button>
-            </div>
-            
-            <h3>Riwayat Transaksi</h3>
-            <div class="transaction-list" id="transactionList">
-                <!-- Daftar transaksi akan dimuat di sini -->
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="registerName">Nama Lengkap</label>
+                        <input type="text" id="registerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email</label>
+                        <input type="email" id="registerEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <input type="password" id="registerPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerConfirmPassword">Konfirmasi Password</label>
+                        <input type="password" id="registerConfirmPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Daftar</button>
+                </form>
             </div>
         </div>
-    </div>
+
+        <!-- Script Detail Modal -->
+        <div class="modal" id="scriptDetailModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="scriptDetailTitle">Detail Script</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div id="scriptDetailContent">
+                    <!-- Script detail will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Executor Detail Modal -->
+        <div class="modal" id="executorDetailModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="executorDetailTitle">Detail Executor</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div id="executorDetailContent">
+                    <!-- Executor detail will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="logo">
+                <i class="fas fa-cube"></i>
+                <span>RbxScriptHub</span>
+            </div>
+            <p>Platform terbaik untuk script dan executor Roblox</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-discord"></i></a>
+                <a href="#"><i class="fab fa-telegram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+            </div>
+            <p>&copy; 2023 RbxScriptHub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase Configuration -->
+    <script>
+        // Firebase configuration - Replace with your own config
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "your-project.firebaseapp.com",
+            projectId: "your-project",
+            storageBucket: "your-project.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+    </script>
 
     <script>
-        // Konfigurasi Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyCFdcQFSLPyAt9zqOBSjgYO8IQOibKYKA8",
-            authDomain: "finance-34ce0.firebaseapp.com",
-            projectId: "finance-34ce0",
-            storageBucket: "finance-34ce0.firebasestorage.app",
-            messagingSenderId: "103206908021",
-            appId: "1:103206908021:web:f25749c6fe42fc330b883c"
-        };
-        
-        // Inisialisasi Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        
-        // Referensi elemen DOM
-        const authContainer = document.getElementById('authContainer');
-        const dashboard = document.getElementById('dashboard');
-        const loginMessage = document.getElementById('loginMessage');
-        const registerMessage = document.getElementById('registerMessage');
-        const balanceAmount = document.getElementById('balanceAmount');
-        const incomeAmount = document.getElementById('incomeAmount');
-        const expenseAmount = document.getElementById('expenseAmount');
-        const transactionList = document.getElementById('transactionList');
-        
-        // Fungsi untuk tab
-        function openTab(evt, tabName) {
-            const tabcontent = document.getElementsByClassName("tabcontent");
-            for (let i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
+        // Sample data (will be replaced with Firestore data)
+        const sampleScripts = [
+            {
+                id: 1,
+                title: "Block Fruit Script V3",
+                description: "Script terbaru untuk game Block Fruit dengan fitur auto farm, auto upgrade, dan banyak fitur lainnya.",
+                image: "https://via.placeholder.com/300x180?text=Block+Fruit+Script",
+                category: "block-fruit",
+                type: "nokey",
+                premium: false,
+                content: "Script lengkap untuk Block Fruit dengan semua fitur premium. Auto farm, auto upgrade, teleport, dan banyak lagi."
+            },
+            {
+                id: 2,
+                title: "Blue Lock Ultimate",
+                description: "Script eksklusif untuk game Blue Lock dengan fitur auto goal, auto train, dan fitur khusus lainnya.",
+                image: "https://via.placeholder.com/300x180?text=Blue+Lock+Script",
+                category: "blue-lock",
+                type: "keyless",
+                premium: false,
+                content: "Script khusus untuk Blue Lock dengan fitur auto goal, auto train, stamina unlimited, dan banyak lagi."
+            },
+            {
+                id: 3,
+                title: "Hunty Zombie Premium",
+                description: "Script premium untuk game Hunty Zombie dengan semua fitur unlocked dan tanpa iklan.",
+                image: "https://via.placeholder.com/300x180?text=Hunty+Zombie+Script",
+                category: "hunty-zombie",
+                type: "premium",
+                premium: true,
+                content: "Script premium untuk Hunty Zombie dengan semua senjata unlocked, damage tinggi, dan fitur khusus lainnya."
             }
-            
-            const tablinks = document.getElementsByClassName("tablinks");
-            for (let i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
+        ];
+
+        const sampleExecutors = [
+            {
+                id: 1,
+                title: "Arceus X Android",
+                description: "Executor Android terbaik dengan support untuk semua script dan tanpa root.",
+                image: "https://via.placeholder.com/300x180?text=Arceus+X+Android",
+                platform: "android",
+                type: "nokey",
+                premium: false,
+                content: "Executor Android terbaik dengan support untuk semua script. Mudah digunakan dan tidak perlu root."
+            },
+            {
+                id: 2,
+                title: "Script-Ware iOS",
+                description: "Executor untuk perangkat iOS dengan injector built-in dan support script lengkap.",
+                image: "https://via.placeholder.com/300x180?text=Script-Ware+iOS",
+                platform: "ios",
+                type: "keyless",
+                premium: false,
+                content: "Executor untuk perangkat iOS dengan injector built-in. Support semua script dan mudah digunakan."
+            },
+            {
+                id: 3,
+                title: "Synapse X Windows",
+                description: "Executor premium untuk Windows dengan performa terbaik dan support script lengkap.",
+                image: "https://via.placeholder.com/300x180?text=Synapse+X+Windows",
+                platform: "windows",
+                type: "premium",
+                premium: true,
+                content: "Executor premium untuk Windows dengan performa terbaik. Support semua script dan update berkala."
             }
-            
-            document.getElementById(tabName).style.display = "block";
-            evt.currentTarget.className += " active";
+        ];
+
+        // DOM Elements
+        const themeToggle = document.getElementById('themeToggle');
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.querySelector('.nav-links');
+        const pages = document.querySelectorAll('.page');
+        const navLinksElements = document.querySelectorAll('.nav-link');
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const adminPanelBtn = document.getElementById('adminPanelBtn');
+        const userMenu = document.getElementById('userMenu');
+        const adminMenu = document.getElementById('adminMenu');
+        const loginModal = document.getElementById('loginModal');
+        const registerModal = document.getElementById('registerModal');
+        const scriptDetailModal = document.getElementById('scriptDetailModal');
+        const executorDetailModal = document.getElementById('executorDetailModal');
+        const closeModalButtons = document.querySelectorAll('.close-modal');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const featuredScriptsGrid = document.getElementById('featuredScripts');
+        const featuredExecutorsGrid = document.getElementById('featuredExecutors');
+        const scriptsGrid = document.getElementById('scriptsGrid');
+        const executorsGrid = document.getElementById('executorsGrid');
+        const scriptSearch = document.getElementById('scriptSearch');
+        const executorSearch = document.getElementById('executorSearch');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const manageScriptsBtn = document.getElementById('manageScriptsBtn');
+        const manageExecutorsBtn = document.getElementById('manageExecutorsBtn');
+        const manageUsersBtn = document.getElementById('manageUsersBtn');
+        const manageAdminsBtn = document.getElementById('manageAdminsBtn');
+        const adminContent = document.getElementById('adminContent');
+
+        // Current user state
+        let currentUser = null;
+        let currentPage = 'home';
+        let currentScriptCategory = 'all';
+        let currentExecutorPlatform = 'all';
+        let currentScriptFilter = 'all';
+        let currentExecutorFilter = 'all';
+
+        // Initialize the app
+        function init() {
+            loadFeaturedContent();
+            setupEventListeners();
+            checkAuthState();
+            applySavedTheme();
         }
-        
-        // Daftar pengguna baru
-        function register() {
-            const email = document.getElementById('registerEmail').value;
-            const password = document.getElementById('registerPassword').value;
+
+        // Load featured content
+        function loadFeaturedContent() {
+            // Load featured scripts
+            featuredScriptsGrid.innerHTML = '';
+            sampleScripts.slice(0, 3).forEach(script => {
+                featuredScriptsGrid.appendChild(createScriptCard(script));
+            });
+
+            // Load featured executors
+            featuredExecutorsGrid.innerHTML = '';
+            sampleExecutors.slice(0, 3).forEach(executor => {
+                featuredExecutorsGrid.appendChild(createExecutorCard(executor));
+            });
+
+            // Load all scripts
+            loadScripts();
             
-            if (password.length < 6) {
-                registerMessage.textContent = "Password minimal 6 karakter";
-                registerMessage.style.color = "red";
-                return;
+            // Load all executors
+            loadExecutors();
+        }
+
+        // Create script card element
+        function createScriptCard(script) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <img src="${script.image}" alt="${script.title}" class="card-img">
+                <div class="card-content">
+                    <h3 class="card-title">${script.title}</h3>
+                    <span class="card-badge ${script.type === 'nokey' ? 'badge-nokey' : script.type === 'keyless' ? 'badge-keyless' : 'badge-premium'}">${script.type === 'nokey' ? 'No Key' : script.type === 'keyless' ? 'Keyless' : 'Premium'}</span>
+                    <p class="card-desc">${script.description}</p>
+                    <div class="card-actions">
+                        <button class="btn btn-outline view-script" data-id="${script.id}">Info</button>
+                        ${script.premium && (!currentUser || !currentUser.premium) ? 
+                            `<button class="btn btn-primary" disabled>Premium Only</button>` : 
+                            `<button class="btn btn-primary get-script" data-id="${script.id}">Dapatkan</button>`
+                        }
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+
+        // Create executor card element
+        function createExecutorCard(executor) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <img src="${executor.image}" alt="${executor.title}" class="card-img">
+                <div class="card-content">
+                    <h3 class="card-title">${executor.title}</h3>
+                    <span class="card-badge ${executor.type === 'nokey' ? 'badge-nokey' : executor.type === 'keyless' ? 'badge-keyless' : 'badge-premium'}">${executor.type === 'nokey' ? 'No Key' : executor.type === 'keyless' ? 'Keyless' : 'Premium'}</span>
+                    <p class="card-desc">${executor.description}</p>
+                    <div class="card-actions">
+                        <button class="btn btn-outline view-executor" data-id="${executor.id}">Info</button>
+                        ${executor.premium && (!currentUser || !currentUser.premium) ? 
+                            `<button class="btn btn-primary" disabled>Premium Only</button>` : 
+                            `<button class="btn btn-primary get-executor" data-id="${executor.id}">Download</button>`
+                        }
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+
+        // Load scripts based on filters
+        function loadScripts() {
+            scriptsGrid.innerHTML = '';
+            
+            let filteredScripts = sampleScripts;
+            
+            // Filter by category
+            if (currentScriptCategory !== 'all') {
+                filteredScripts = filteredScripts.filter(script => script.category === currentScriptCategory);
             }
             
-            auth.createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    registerMessage.textContent = "Pendaftaran berhasil! Silakan login.";
-                    registerMessage.style.color = "green";
-                    document.getElementById('registerEmail').value = "";
-                    document.getElementById('registerPassword').value = "";
-                    openTab(event, 'Login');
-                })
-                .catch((error) => {
-                    registerMessage.textContent = "Error: " + error.message;
-                    registerMessage.style.color = "red";
+            // Filter by type
+            if (currentScriptFilter !== 'all') {
+                filteredScripts = filteredScripts.filter(script => script.type === currentScriptFilter);
+            }
+            
+            // Apply search
+            if (scriptSearch.value) {
+                const searchTerm = scriptSearch.value.toLowerCase();
+                filteredScripts = filteredScripts.filter(script => 
+                    script.title.toLowerCase().includes(searchTerm) || 
+                    script.description.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            // Render scripts
+            filteredScripts.forEach(script => {
+                scriptsGrid.appendChild(createScriptCard(script));
+            });
+            
+            // Add event listeners to the new buttons
+            addScriptEventListeners();
+        }
+
+        // Load executors based on filters
+        function loadExecutors() {
+            executorsGrid.innerHTML = '';
+            
+            let filteredExecutors = sampleExecutors;
+            
+            // Filter by platform
+            if (currentExecutorPlatform !== 'all') {
+                filteredExecutors = filteredExecutors.filter(executor => executor.platform === currentExecutorPlatform);
+            }
+            
+            // Filter by type
+            if (currentExecutorFilter !== 'all') {
+                filteredExecutors = filteredExecutors.filter(executor => executor.type === currentExecutorFilter);
+            }
+            
+            // Apply search
+            if (executorSearch.value) {
+                const searchTerm = executorSearch.value.toLowerCase();
+                filteredExecutors = filteredExecutors.filter(executor => 
+                    executor.title.toLowerCase().includes(searchTerm) || 
+                    executor.description.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            // Render executors
+            filteredExecutors.forEach(executor => {
+                executorsGrid.appendChild(createExecutorCard(executor));
+            });
+            
+            // Add event listeners to the new buttons
+            addExecutorEventListeners();
+        }
+
+        // Add event listeners to script buttons
+        function addScriptEventListeners() {
+            document.querySelectorAll('.view-script').forEach(button => {
+                button.addEventListener('click', function() {
+                    const scriptId = this.getAttribute('data-id');
+                    const script = sampleScripts.find(s => s.id == scriptId);
+                    showScriptDetail(script);
                 });
-        }
-        
-        // Login pengguna
-        function login() {
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
+            });
             
-            auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    // Login berhasil
-                    loginMessage.textContent = "";
-                    loadUserData();
-                })
-                .catch((error) => {
-                    loginMessage.textContent = "Error: " + error.message;
-                    loginMessage.style.color = "red";
+            document.querySelectorAll('.get-script').forEach(button => {
+                button.addEventListener('click', function() {
+                    const scriptId = this.getAttribute('data-id');
+                    const script = sampleScripts.find(s => s.id == scriptId);
+                    getScript(script);
                 });
-        }
-        
-        // Logout
-        function logout() {
-            auth.signOut().then(() => {
-                authContainer.classList.remove('hidden');
-                dashboard.classList.add('hidden');
             });
         }
-        
-        // Tambah transaksi
-        function addTransaction() {
-            const description = document.getElementById('transactionDescription').value;
-            const amount = parseFloat(document.getElementById('transactionAmount').value);
-            const type = document.getElementById('transactionType').value;
+
+        // Add event listeners to executor buttons
+        function addExecutorEventListeners() {
+            document.querySelectorAll('.view-executor').forEach(button => {
+                button.addEventListener('click', function() {
+                    const executorId = this.getAttribute('data-id');
+                    const executor = sampleExecutors.find(e => e.id == executorId);
+                    showExecutorDetail(executor);
+                });
+            });
             
-            if (!description || !amount) {
-                alert("Harap isi semua field");
-                return;
-            }
+            document.querySelectorAll('.get-executor').forEach(button => {
+                button.addEventListener('click', function() {
+                    const executorId = this.getAttribute('data-id');
+                    const executor = sampleExecutors.find(e => e.id == executorId);
+                    getExecutor(executor);
+                });
+            });
+        }
+
+        // Show script detail
+        function showScriptDetail(script) {
+            const scriptDetailTitle = document.getElementById('scriptDetailTitle');
+            const scriptDetailContent = document.getElementById('scriptDetailContent');
             
-            const user = auth.currentUser;
-            if (user) {
-                db.collection("transactions").add({
-                    userId: user.uid,
-                    description: description,
-                    amount: amount,
-                    type: type,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                })
-                .then(() => {
-                    document.getElementById('transactionDescription').value = "";
-                    document.getElementById('transactionAmount').value = "";
-                })
-                .catch((error) => {
-                    console.error("Error adding transaction: ", error);
+            scriptDetailTitle.textContent = script.title;
+            
+            scriptDetailContent.innerHTML = `
+                <img src="${script.image}" alt="${script.title}" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">
+                <p><strong>Kategori:</strong> ${script.category}</p>
+                <p><strong>Tipe:</strong> ${script.type === 'nokey' ? 'No Key' : script.type === 'keyless' ? 'Keyless' : 'Premium'}</p>
+                <p>${script.content}</p>
+                <div style="margin-top: 1.5rem;">
+                    ${script.premium && (!currentUser || !currentUser.premium) ? 
+                        `<button class="btn btn-primary" disabled>Premium Only</button>` : 
+                        `<button class="btn btn-primary" id="getScriptFromDetail" data-id="${script.id}">Dapatkan Script</button>`
+                    }
+                </div>
+            `;
+            
+            scriptDetailModal.classList.add('active');
+            
+            // Add event listener to the get button
+            const getButton = document.getElementById('getScriptFromDetail');
+            if (getButton) {
+                getButton.addEventListener('click', function() {
+                    getScript(script);
                 });
             }
         }
-        
-        // Muat data pengguna
-        function loadUserData() {
-            const user = auth.currentUser;
-            if (user) {
-                authContainer.classList.add('hidden');
-                dashboard.classList.remove('hidden');
-                
-                // Daftar transaksi
-                db.collection("transactions")
-                    .where("userId", "==", user.uid)
-                    .orderBy("createdAt", "desc")
-                    .onSnapshot((querySnapshot) => {
-                        let totalIncome = 0;
-                        let totalExpense = 0;
-                        transactionList.innerHTML = "";
-                        
-                        querySnapshot.forEach((doc) => {
-                            const transaction = doc.data();
-                            const transactionElement = document.createElement('div');
-                            transactionElement.className = 'transaction-item';
-                            
-                            if (transaction.type === 'income') {
-                                totalIncome += transaction.amount;
-                                transactionElement.innerHTML = `
-                                    <div>${transaction.description}</div>
-                                    <div class="income">+ Rp ${transaction.amount.toLocaleString()}</div>
-                                    <button onclick="deleteTransaction('${doc.id}')" class="btn-danger">Hapus</button>
-                                `;
-                            } else {
-                                totalExpense += transaction.amount;
-                                transactionElement.innerHTML = `
-                                    <div>${transaction.description}</div>
-                                    <div class="expense">- Rp ${transaction.amount.toLocaleString()}</div>
-                                    <button onclick="deleteTransaction('${doc.id}')" class="btn-danger">Hapus</button>
-                                `;
-                            }
-                            
-                            transactionList.appendChild(transactionElement);
-                        });
-                        
-                        const balance = totalIncome - totalExpense;
-                        balanceAmount.textContent = `Rp ${balance.toLocaleString()}`;
-                        incomeAmount.textContent = `Rp ${totalIncome.toLocaleString()}`;
-                        expenseAmount.textContent = `Rp ${totalExpense.toLocaleString()}`;
-                        
-                        // Warna saldo berdasarkan nilai
-                        balanceAmount.style.color = balance >= 0 ? 'green' : 'red';
-                    });
+
+        // Show executor detail
+        function showExecutorDetail(executor) {
+            const executorDetailTitle = document.getElementById('executorDetailTitle');
+            const executorDetailContent = document.getElementById('executorDetailContent');
+            
+            executorDetailTitle.textContent = executor.title;
+            
+            executorDetailContent.innerHTML = `
+                <img src="${executor.image}" alt="${executor.title}" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">
+                <p><strong>Platform:</strong> ${executor.platform}</p>
+                <p><strong>Tipe:</strong> ${executor.type === 'nokey' ? 'No Key' : executor.type === 'keyless' ? 'Keyless' : 'Premium'}</p>
+                <p>${executor.content}</p>
+                <div style="margin-top: 1.5rem;">
+                    ${executor.premium && (!currentUser || !currentUser.premium) ? 
+                        `<button class="btn btn-primary" disabled>Premium Only</button>` : 
+                        `<button class="btn btn-primary" id="getExecutorFromDetail" data-id="${executor.id}">Download Executor</button>`
+                    }
+                </div>
+            `;
+            
+            executorDetailModal.classList.add('active');
+            
+            // Add event listener to the get button
+            const getButton = document.getElementById('getExecutorFromDetail');
+            if (getButton) {
+                getButton.addEventListener('click', function() {
+                    getExecutor(executor);
+                });
             }
         }
-        
-        // Hapus transaksi
-        function deleteTransaction(id) {
-            if (confirm("Apakah Anda yakin ingin menghapus transaksi ini?")) {
-                db.collection("transactions").doc(id).delete()
-                    .catch((error) => {
-                        console.error("Error deleting transaction: ", error);
-                    });
+
+        // Get script (simulate process)
+        function getScript(script) {
+            if (script.premium && (!currentUser || !currentUser.premium)) {
+                alert('Anda memerlukan akun premium untuk mengakses script ini!');
+                return;
             }
-        }
-        
-        // Deteksi status auth
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                loadUserData();
+            
+            if (script.type === 'premium' || currentUser?.premium) {
+                // Copy to clipboard for premium users or premium scripts
+                const dummyText = `Script ${script.title} - Copy this code and paste in your executor`;
+                navigator.clipboard.writeText(dummyText).then(() => {
+                    alert('Script berhasil disalin ke clipboard!');
+                });
             } else {
-                authContainer.classList.remove('hidden');
-                dashboard.classList.add('hidden');
+                // Redirect to linkvertise for non-premium
+                alert('Anda akan diarahkan ke Linkvertise...');
+                window.open('https://linkvertise.com', '_blank');
             }
-        });
+        }
+
+        // Get executor (simulate process)
+        function getExecutor(executor) {
+            if (executor.premium && (!currentUser || !currentUser.premium)) {
+                alert('Anda memerlukan akun premium untuk mengakses executor ini!');
+                return;
+            }
+            
+            if (executor.type === 'premium' || currentUser?.premium) {
+                // Direct download for premium users or premium executors
+                alert('Download executor mulai...');
+                // In a real scenario, this would be a download link
+            } else {
+                // Redirect to linkvertise for non-premium
+                alert('Anda akan diarahkan ke Linkvertise...');
+                window.open('https://linkvertise.com', '_blank');
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Theme toggle
+            themeToggle.addEventListener('click', toggleTheme);
+            
+            // Mobile menu toggle
+            menuToggle.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+            });
+            
+            // Navigation
+            navLinksElements.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const page = this.getAttribute('data-page');
+                    
+                    if (page) {
+                        navigateTo(page);
+                        
+                        // Handle category navigation
+                        const category = this.getAttribute('data-category');
+                        if (category) {
+                            currentScriptCategory = category;
+                            loadScripts();
+                        }
+                        
+                        // Handle platform navigation
+                        const platform = this.getAttribute('data-platform');
+                        if (platform) {
+                            currentExecutorPlatform = platform;
+                            loadExecutors();
+                        }
+                    }
+                    
+                    // Close mobile menu if open
+                    if (navLinks.classList.contains('active')) {
+                        navLinks.classList.remove('active');
+                    }
+                });
+            });
+            
+            // Auth buttons
+            loginBtn.addEventListener('click', function() {
+                loginModal.classList.add('active');
+            });
+            
+            registerBtn.addEventListener('click', function() {
+                registerModal.classList.add('active');
+            });
+            
+            logoutBtn.addEventListener('click', logout);
+            
+            // Admin panel button
+            adminPanelBtn.addEventListener('click', function() {
+                navigateTo('admin-panel');
+            });
+            
+            // Close modals
+            closeModalButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.closest('.modal').classList.remove('active');
+                });
+            });
+            
+            // Click outside modal to close
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('modal')) {
+                    e.target.classList.remove('active');
+                }
+            });
+            
+            // Login form
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                login(email, password);
+            });
+            
+            // Register form
+            registerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('registerName').value;
+                const email = document.getElementById('registerEmail').value;
+                const password = document.getElementById('registerPassword').value;
+                const confirmPassword = document.getElementById('registerConfirmPassword').value;
+                
+                if (password !== confirmPassword) {
+                    alert('Password dan konfirmasi password tidak cocok!');
+                    return;
+                }
+                
+                register(email, password, name);
+            });
+            
+            // Search functionality
+            scriptSearch.addEventListener('input', loadScripts);
+            executorSearch.addEventListener('input', loadExecutors);
+            
+            // Filter buttons
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const filter = this.getAttribute('data-filter');
+                    
+                    // Remove active class from all buttons in the same container
+                    this.parentElement.querySelectorAll('.filter-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Apply filter based on current page
+                    if (currentPage === 'scripts') {
+                        currentScriptFilter = filter;
+                        loadScripts();
+                    } else if (currentPage === 'executors') {
+                        if (['nokey', 'keyless', 'premium'].includes(filter)) {
+                            currentExecutorFilter = filter;
+                        } else if (['android', 'ios', 'windows'].includes(filter)) {
+                            currentExecutorPlatform = filter;
+                        } else if (filter === 'all') {
+                            currentExecutorFilter = 'all';
+                            currentExecutorPlatform = 'all';
+                        }
+                        loadExecutors();
+                    }
+                });
+            });
+            
+            // Admin panel buttons
+            manageScriptsBtn.addEventListener('click', function() {
+                showManageScripts();
+            });
+            
+            manageExecutorsBtn.addEventListener('click', function() {
+                showManageExecutors();
+            });
+            
+            manageUsersBtn.addEventListener('click', function() {
+                showManageUsers();
+            });
+            
+            manageAdminsBtn.addEventListener('click', function() {
+                showManageAdmins();
+            });
+        }
+
+        // Navigate to page
+        function navigateTo(page) {
+            // Hide all pages
+            pages.forEach(p => p.classList.remove('active'));
+            
+            // Show selected page
+            document.getElementById(page).classList.add('active');
+            
+            // Update current page
+            currentPage = page;
+        }
+
+        // Toggle theme
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            const isDark = document.body.classList.contains('dark-theme');
+            themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        // Apply saved theme
+        function applySavedTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+        }
+
+        // Check auth state
+        function checkAuthState() {
+            // In a real app, this would check Firebase auth state
+            // For demo purposes, we'll use a mock user
+            const mockUser = localStorage.getItem('mockUser');
+            if (mockUser) {
+                currentUser = JSON.parse(mockUser);
+                updateUIForAuth();
+            }
+        }
+
+        // Login function
+        function login(email, password) {
+            // In a real app, this would use Firebase auth
+            // For demo, we'll use mock data
+            if (email === 'admin@example.com' && password === 'admin123') {
+                currentUser = { email: 'admin@example.com', name: 'Admin', role: 'admin', premium: true };
+                localStorage.setItem('mockUser', JSON.stringify(currentUser));
+                updateUIForAuth();
+                loginModal.classList.remove('active');
+                alert('Login berhasil sebagai Admin!');
+            } else if (email === 'premium@example.com' && password === 'premium123') {
+                currentUser = { email: 'premium@example.com', name: 'Premium User', role: 'user', premium: true };
+                localStorage.setItem('mockUser', JSON.stringify(currentUser));
+                updateUIForAuth();
+                loginModal.classList.remove('active');
+                alert('Login berhasil sebagai Premium User!');
+            } else if (email === 'user@example.com' && password === 'user123') {
+                currentUser = { email: 'user@example.com', name: 'Regular User', role: 'user', premium: false };
+                localStorage.setItem('mockUser', JSON.stringify(currentUser));
+                updateUIForAuth();
+                loginModal.classList.remove('active');
+                alert('Login berhasil!');
+            } else {
+                alert('Email atau password salah!');
+            }
+        }
+
+        // Register function
+        function register(email, password, name) {
+            // In a real app, this would use Firebase auth
+            // For demo, we'll just create a regular user
+            currentUser = { email, name, role: 'user', premium: false };
+            localStorage.setItem('mockUser', JSON.stringify(currentUser));
+            updateUIForAuth();
+            registerModal.classList.remove('active');
+            alert('Registrasi berhasil!');
+        }
+
+        // Logout function
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('mockUser');
+            updateUIForAuth();
+            alert('Logout berhasil!');
+        }
+
+        // Update UI based on auth state
+        function updateUIForAuth() {
+            if (currentUser) {
+                loginBtn.style.display = 'none';
+                registerBtn.style.display = 'none';
+                userMenu.style.display = 'block';
+                logoutBtn.textContent = `Logout (${currentUser.name})`;
+                
+                if (currentUser.role === 'admin') {
+                    adminMenu.style.display = 'block';
+                } else {
+                    adminMenu.style.display = 'none';
+                }
+            } else {
+                loginBtn.style.display = 'block';
+                registerBtn.style.display = 'block';
+                userMenu.style.display = 'none';
+                adminMenu.style.display = 'none';
+            }
+            
+            // Reload content to update premium status
+            loadFeaturedContent();
+        }
+
+        // Admin panel functions
+        function showManageScripts() {
+            adminContent.innerHTML = `
+                <h3>Kelola Script</h3>
+                <button class="btn btn-primary" style="margin-bottom: 1rem;">Tambah Script</button>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th style="text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--secondary);">Nama</th>
+                            <th style="text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--secondary);">Kategori</th>
+                            <th style="text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--secondary);">Tipe</th>
+                            <th style="text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--secondary);">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${sampleScripts.map(script => `
+                            <tr>
+                                <td style="padding: 0.75rem; border-bottom: 1px solid var(--secondary);">${script.title}</td>
+                                <td style="padding: 0.75rem; border-bottom: 1px solid var(--secondary);">${script.category}</td>
+                                <td style="padding: 0.75rem; border-bottom: 1px solid var(--secondary);">${script.type}</td>
+                                <td style="padding: 0.75rem; border-bottom: 1px solid var(--secondary);">
+                                    <button class="btn btn-outline">Edit</button>
+                                    <button class="btn btn-outline" style="color: var(--danger); border-color: var(--danger);">Hapus</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function showManageExecutors() {
+            adminContent.innerHTML = `
+                <h3>Kelola Executor</h3>
+                <button class="btn btn-primary" style="margin-bottom: 1rem;">Tambah Executor</button>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th style="text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--secondary);">Nama</th>
+                            <th style="text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--secondary);">Platform</th>
+                            <th style="text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--secondary);">Tipe</th>
+                            <th style="text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--secondary);">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${sampleExecutors.map(executor => `
+                            <tr>
+                                <td style="padding: 0.75rem; border-bottom: 1px solid var(--secondary);">${executor.title}</td>
+                                <td style="padding: 0.75rem; border-bottom: 1px solid var(--secondary);">${executor.platform}</td>
+                                <td style="padding: 0.75rem; border-bottom: 1px solid var(--secondary);">${executor.type}</td>
+                                <td style="padding: 0.75rem; border-bottom: 1px solid var(--secondary);">
+                                    <button class="btn btn-outline">Edit</button>
+                                    <button class="btn btn-outline" style="color: var(--danger); border-color: var(--danger);">Hapus</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function showManageUsers() {
+            adminContent.innerHTML = `
+                <h3>Kelola Pengguna</h3>
+                <button class="btn btn-primary" style="margin-bottom: 1rem;">Tambah Pengguna</button>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th style="text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--secondary);">Nama</th>
+                            <th style="text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--secondary);">Email</th>
+                            <th style="text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--secondary);">Status</th>
+                            <th style="text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--secondary);">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid var(--secondary);">Premium User</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid var(--secondary);">premium@example.com</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid var(--secondary);">Premium</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid var(--secondary);">
+                                <button class="btn btn-outline">Edit</button>
+                                <button class="btn btn-outline" style="color: var(--danger); border-color: var(--danger);">Hapus</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid var(--secondary);">Regular User</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid var(--secondary);">user@example.com</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid var(--secondary);">Regular</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid var(--secondary);">
+                                <button class="btn btn-outline">Edit</button>
+                                <button class="btn btn-outline" style="color: var(--danger); border-color: var(--danger);">Hapus</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function showManageAdmins() {
+            adminContent.innerHTML = `
+                <h3>Kelola Admin</h3>
+                <button class="btn btn-primary" style="margin-bottom: 1rem;">Tambah Admin</button>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th style="text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--secondary);">Nama</th>
+                            <th style="text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--secondary);">Email</th>
+                            <th style="text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--secondary);">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid var(--secondary);">Admin</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid var(--secondary);">admin@example.com</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid var(--secondary);">
+                                <button class="btn btn-outline" style="color: var(--danger); border-color: var(--danger);">Hapus</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+        }
+
+        // Initialize the app
+        init();
     </script>
 </body>
 </html>
