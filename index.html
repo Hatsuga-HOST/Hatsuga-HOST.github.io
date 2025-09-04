@@ -1,542 +1,155 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Luau Obfuscator – Ultimate (Client-side)</title>
-  <meta name="description" content="Client-side Luau obfuscator. Levels 1–10, upload, optional key, random download name."/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#0b0f14;--panel:#121823;--muted:#9aa4b2;--fg:#e7edf3;
-      --brand:#7c5cff;--ok:#34d399;--danger:#ef4444;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      background:radial-gradient(1200px 800px at 80% -10%,#1a2231 0%,transparent 60%),linear-gradient(180deg,#0a0e14,#0b0f14);
-      color:var(--fg);
-    }
-    .wrap{max-width:1100px;margin:28px auto;padding:0 16px}
-    .title{display:flex;align-items:center;gap:12px}
-    .title h1{font-size:clamp(20px,3.2vw,32px);margin:0;font-weight:700}
-    .badge{font-size:12px;background:linear-gradient(90deg,var(--brand),#4f46e5);padding:4px 8px;border-radius:999px}
-    .grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:16px}
-    @media(min-width:960px){.grid{grid-template-columns:1fr 1fr}}
-    .card{background:linear-gradient(180deg,#0e1521,#0c1220);border:1px solid rgba(124,92,255,.18);border-radius:16px;box-shadow:0 14px 40px rgba(0,0,0,.45);overflow:hidden}
-    .card h3{margin:0;padding:14px 16px;border-bottom:1px solid rgba(124,92,255,.08);background:linear-gradient(180deg,rgba(124,92,255,.06),transparent)}
-    .pad{padding:14px 16px}
-    textarea{width:100%;min-height:360px;resize:vertical;background:#071018;color:var(--fg);border:1px solid #17202b;border-radius:12px;padding:12px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;font-size:13px;line-height:1.5}
-    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-    .row > *{margin-top:8px}
-    .btn{appearance:none;border:1px solid #273347;background:linear-gradient(180deg,#152033,#111827);color:var(--fg);padding:10px 14px;border-radius:12px;cursor:pointer;font-weight:600}
-    .btn:hover{border-color:#334155;transform:translateY(-1px)}
-    .btn.primary{border-color:transparent;background:linear-gradient(90deg,var(--brand),#4f46e5);box-shadow:0 10px 30px rgba(124,92,255,.22)}
-    .btn.good{background:linear-gradient(90deg,var(--ok),#10b981);border-color:transparent}
-    .btn.danger{background:linear-gradient(90deg,#f43f5e,#ef4444);border-color:transparent}
-    .switch{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
-    input[type="checkbox"]{width:18px;height:18px}
-    input[type="file"]{display:none}
-    .pill{display:inline-flex;align-items:center;gap:8px;border:1px dashed #273347;padding:8px 10px;border-radius:12px;color:var(--muted)}
-    .muted{color:var(--muted)}
-    .label{font-size:12px;color:var(--muted);margin-left:4px}
-    input[type="password"], input[type="text"]{background:#071018;color:var(--fg);border:1px solid #17202b;border-radius:10px;padding:10px 12px}
-    .footer{margin:14px 0;color:var(--muted);font-size:13px}
-    .kudos{opacity:.9}
-    .progress{height:10px;background:rgba(255,255,255,0.03);border-radius:999px;overflow:hidden;margin-top:12px}
-    .progress > .bar{height:100%;background:linear-gradient(90deg,var(--brand),#a78bfa);width:0%;transition:width .35s}
-    .features{margin-top:12px;font-size:13px;display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
-    .feat-on{color:var(--ok)} .feat-off{color:var(--muted)}
-    .stats{font-size:12px;color:var(--muted);margin-top:8px}
-    .small{font-size:12px;color:var(--muted)}
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Luau Obfuscator – Ultimate v3</title>
+<style>
+:root {
+  --bg:#080c14; --card:#121b29; --fg:#e8edf6;
+  --accent:#7c5cff; --ok:#22c55e; --no:#ef4444;
+}
+body {margin:0; font-family:Inter,system-ui,sans-serif; background:var(--bg); color:var(--fg);}
+.wrap {max-width:1000px; margin:30px auto; padding:0 16px;}
+h1 {text-align:center; font-size:28px; margin-bottom:10px;}
+h3 {margin-top:0;}
+.card {background:var(--card); padding:18px; margin-top:18px;
+  border-radius:14px; box-shadow:0 8px 28px rgba(0,0,0,.4);}
+textarea {width:100%; height:280px; background:#0a0f18; color:var(--fg);
+  border:1px solid #1f2937; border-radius:12px; padding:12px;
+  font-family:monospace; font-size:13px; line-height:1.4;}
+select,input,button {padding:10px 14px; border-radius:10px; border:none; font-weight:600; cursor:pointer;}
+select,input {background:#0a0f18; color:var(--fg); border:1px solid #1f2937;}
+.btn {background:#1f2937; color:#fff; margin-right:8px; transition:.2s;}
+.btn:hover {transform:translateY(-2px);}
+.btn.primary {background:linear-gradient(90deg,var(--accent),#4f46e5);}
+.btn.good {background:linear-gradient(90deg,var(--ok),#059669);}
+.progress {height:10px; background:#1f2937; border-radius:8px; overflow:hidden; margin:10px 0;}
+.progress-bar {height:100%; background:var(--accent); width:0%; transition:.4s;}
+.features {display:grid; grid-template-columns:repeat(2,1fr); gap:4px; margin-top:12px; font-size:13px;}
+.check{color:var(--ok); margin-right:6px;} .cross{color:var(--no); margin-right:6px;}
+.footer {font-size:12px; opacity:.7; margin-top:6px;}
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="title">
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l3 6 6 .9-4.5 4.3 1.1 6.2L12 16l-5.6 3.4 1.1-6.2L3 8.9 9 8l3-6z" stroke="#7c5cff" stroke-width="1.2"/></svg>
-      <h1>Luau Obfuscator – Ultimate (Client-Side)</h1>
-      <span class="badge">no server • levels 1–10</span>
+<div class="wrap">
+  <h1>Luau Obfuscator – Ultimate v3</h1>
+
+  <div class="card">
+    <h3>1) Source Code</h3>
+    <textarea id="input" placeholder="-- Paste your Luau code here"></textarea>
+    <div style="margin-top:10px">
+      <button class="btn" id="uploadBtn">Upload .lua/.txt</button>
+      <input type="file" id="fileInput" accept=".lua,.txt" style="display:none"/>
+      <button class="btn" id="clearIn">Clear Input</button>
     </div>
-
-    <div class="grid">
-      <!-- Source -->
-      <div class="card">
-        <h3>1) Source Code</h3>
-        <div class="pad">
-          <textarea id="input" placeholder="-- Paste your Luau / Lua here"></textarea>
-
-          <div class="row" style="margin-top:10px;align-items:center">
-            <label class="pill" title="Upload a .lua or .txt file">
-              <input id="file" type="file" accept=".lua,.txt"/> Upload file
-            </label>
-
-            <button class="btn" id="clearInput">Clear Input</button>
-
-            <div style="margin-left:auto" class="row">
-              <label class="small muted" style="margin-right:6px">Optional Key:</label>
-              <input id="key" type="text" placeholder="leave empty = random" style="min-width:180px"/>
-            </div>
-          </div>
-
-          <div class="row" style="margin-top:10px">
-            <label class="switch"><input id="stripComments" type="checkbox" checked>Strip comments & minify</label>
-            <label class="switch"><input id="preserveLong" type="checkbox" checked>Preserve long [[...]] strings</label>
-          </div>
-        </div>
-      </div>
-
-      <!-- Obfuscate / Settings -->
-      <div class="card">
-        <h3>2) Settings & Obfuscate</h3>
-        <div class="pad">
-          <div class="row" style="align-items:center;gap:12px">
-            <label class="small muted">Obfuscation level</label>
-            <select id="level" style="min-width:160px;padding:10px;border-radius:10px;border:1px solid #17202b;background:#071018;color:var(--fg)">
-              <!-- options inserted by JS -->
-            </select>
-
-            <div class="progress" style="flex:1;margin-left:12px"><div class="bar" id="pbar"></div></div>
-          </div>
-
-          <div class="row" style="margin-top:12px">
-            <button class="btn primary" id="run">Obfuscate Now</button>
-            <button class="btn" id="clearOutput">Clear Output</button>
-            <button class="btn" id="copy">Copy Output</button>
-            <button class="btn good" id="download">Download</button>
-          </div>
-
-          <div class="features" id="features">
-            <!-- feature list by level -->
-          </div>
-
-          <div class="stats" id="stats">Input: 0 lines • 0.00 KB — Output: 0 lines • 0.00 KB</div>
-        </div>
-      </div>
-
-      <!-- Output -->
-      <div class="card" style="grid-column:1 / -1">
-        <h3>3) Output</h3>
-        <div class="pad">
-          <textarea id="output" readonly placeholder="-- Obfuscated output will appear here"></textarea>
-          <div class="row" style="margin-top:8px;align-items:center;justify-content:space-between">
-            <div class="small muted">Randomized download names • Levels 1→10 progressively add more methods</div>
-            <div class="small muted">Tip: test result in Roblox Studio / Luau environment</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <p class="footer">How to deploy: save as <code>index.html</code> and host on GitHub Pages (client-side only). Use responsibly.</p>
   </div>
 
-<script>
-/* ===============================
-   Luau Obfuscator Ultimate (Client-side)
-   - Clean UI: upload, clear, key (optional), copy, download random name
-   - Levels 1..10 progressive: minify → rename → encode → junk → flatten → chunk split → multi-wrap (safe) → reorder (safe) → anti-tamper → watermark + nesting
-   - No loadstring used (compatibility for Luau). All wrapping uses function wrappers.
-   NOTE: heuristics-based. Test output in target environment.
-   =============================== */
+  <div class="card">
+    <h3>2) Settings</h3>
+    <label for="level">Select Level (1–10):</label>
+    <select id="level"></select>
+    <div class="progress"><div class="progress-bar" id="pbar"></div></div>
 
-const $ = id => document.getElementById(id);
+    <div style="margin-top:8px">
+      <label>Optional Key:</label>
+      <input type="text" id="key" placeholder="leave empty if none"/>
+    </div>
 
-// --- UI init ---
-for(let i=1;i<=10;i++){
-  const opt = document.createElement('option'); opt.value = i; opt.textContent = `Level ${i}`;
-  $("level").appendChild(opt);
-}
-const featNames = [
-  "Minify (strip comments/whitespace)",
-  "Rename local identifiers",
-  "String encode (char codes)",
-  "Junk code injection",
-  "Control-flow flatten (dispatcher)",
-  "Chunk splitting (multiple local functions)",
-  "Multi-layer function wrappers",
-  "Safe instruction reordering (line-based)",
-  "Anti-tamper flag check",
-  "Watermark + recursive wrappers"
-];
-function renderFeatures(lvl){
-  $("pbar").style.width = (lvl*10) + "%";
-  const container = $("features");
-  container.innerHTML = "";
-  for(let i=0;i<featNames.length;i++){
-    const on = (i+1) <= lvl;
-    const div = document.createElement('div');
-    div.innerHTML = `${on?'<span class="feat-on">●</span>':'<span class="feat-off">○</span>'} <strong style="margin-left:6px">${featNames[i]}</strong>`;
-    container.appendChild(div);
-  }
-}
-renderFeatures(1);
+    <button class="btn primary" id="run" style="margin-top:10px">Obfuscate</button>
+    <div class="features" id="info">Choose a level to view features.</div>
+  </div>
 
-// --- Helpers ---
-function bytesToKB(n){ return (n/1024).toFixed(2); }
-function linesOf(s){ return s.length? s.split(/\r?\n/).length : 0; }
-function randomSuffix(){ return Math.random().toString(36).slice(2,9); }
-function randomFileName(lvl){ return `LUOBF-Lv${lvl}-${randomSuffix()}-${new Date().getFullYear()}.lua`; }
+  <div class="card">
+    <h3>3) Output</h3>
+    <textarea id="output" readonly placeholder="-- Obfuscated output will appear here"></textarea>
+    <div style="margin-top:10px">
+      <button class="btn" id="copy">Copy</button>
+      <button class="btn" id="clearOut">Clear Output</button>
+      <button class="btn good" id="download">Download</button>
+    </div>
+    <div class="footer" id="stats">No output generated.</div>
+  </div>
+</div>
 
-// reserved identifiers to avoid renaming (common globals in Roblox/Lua)
-const RESERVED = new Set([
-  "print","pairs","ipairs","tonumber","tostring","type","typeof","require","game","workspace",
-  "script","wait","task","spawn","math","string","table","os","_G","_ENV","bit32","coroutine",
-  "error","pcall","xpcall","warn","next","select","unpack","table","table.concat","string.char"
-]);
-
-/* Tokenizer for strings/long brackets to protect them during transforms.
-   We'll replace literal and long bracket contents with placeholders, operate on code, then restore.
-*/
-function extractPlaceholders(src){
-  const placeholders = [];
-  let out = "";
-  let i=0, n=src.length;
-  while(i<n){
-    const c = src[i];
-    if(c === '"' || c === "'"){
-      const q = c; let j = i+1; let s = c;
-      while(j<n){
-        if(src[j] === '\\'){ s += src.slice(j, j+2); j += 2; continue; }
-        s += src[j];
-        if(src[j] === q){ j++; break; }
-        j++;
-      }
-      placeholders.push(s);
-      out += `\u0000S${placeholders.length-1}\u0000`;
-      i = j; continue;
-    }
-    if(c === '['){
-      // long bracket detection [=*[ ... ]=*]
-      let j=i+1, eq=0;
-      while(j<n && src[j] === '='){ eq++; j++; }
-      if(j<n && src[j] === '['){
-        // find close
-        let k = j+1;
-        while(k<n){
-          if(src[k] === ']'){
-            let jj = k+1, eq2=0;
-            while(jj<n && src[jj] === '='){ eq2++; jj++; }
-            if(jj<n && src[jj] === ']' && eq2 === eq){
-              let chunk = src.slice(i, jj+1);
-              placeholders.push(chunk);
-              out += `\u0000L${placeholders.length-1}\u0000`;
-              i = jj+1; break;
-            } else k++;
-          } else k++;
-        }
-        if(i < k) continue;
-      }
-    }
-    out += c; i++;
-  }
-  return {text: out, placeholders};
-}
-function restorePlaceholders(text, placeholders){
-  return text.replace(/\u0000S(\d+)\u0000/g, (_,g)=>placeholders[+g]).replace(/\u0000L(\d+)\u0000/g, (_,g)=>placeholders[+g]);
-}
-
-// --- Core transforms (safe for Luau) ---
-function minify(code, options){
-  if(!options.stripComments) return code;
-  // remove line comments but preserve strings/placeholders
-  const ex = extractPlaceholders(code);
-  let s = ex.text;
-  s = s.replace(/--\[\[[\s\S]*?\]\]/g, ""); // remove block comments if any remain
-  s = s.replace(/--[^\n]*/g, ""); // remove line comments
-  // collapse multiple spaces/newlines
-  s = s.replace(/[ \t\f\v]+/g," ");
-  s = s.replace(/\n\s*\n+/g,"\n");
-  s = s.replace(/[ \t]*\n[ \t]*/g,"\n");
-  s = s.trim();
-  return restorePlaceholders(s, ex.placeholders);
-}
-
-function collectIdentifiers(code){
-  // heuristics: collect names from "local a,b=..." and "function name(" and "for x in" and "for i="
-  const names = new Set();
-  // local declarations
-  const localRe = /(?:^|[\r\n;])\s*local\s+([A-Za-z_][A-Za-z0-9_]*(?:\s*,\s*[A-Za-z_][A-Za-z0-9_]*)*)/g;
-  let m;
-  while((m = localRe.exec(code)) !== null){
-    m[1].split(/\s*,\s*/).forEach(x => { if(!RESERVED.has(x)) names.add(x); });
-  }
-  // function declarations: function name(...) and local function name(...)
-  const funcRe = /(?:^|[\r\n;])\s*(?:local\s+)?function\s+([A-Za-z_][A-Za-z0-9_]*)/g;
-  while((m = funcRe.exec(code)) !== null){
-    const nm = m[1]; if(!RESERVED.has(nm)) names.add(nm);
-  }
-  // assignments like name = function(...)
-  const assignRe = /(?:^|[\r\n;])\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*function\b/g;
-  while((m = assignRe.exec(code)) !== null){
-    const nm = m[1]; if(!RESERVED.has(nm)) names.add(nm);
-  }
-  // for ... in pairs
-  const forRe = /for\s+([A-Za-z_][A-Za-z0-9_]*)(?:\s*,\s*([A-Za-z_][A-Za-z0-9_]*))?\s+in\b/g;
-  while((m = forRe.exec(code)) !== null){
-    const a = m[1]; if(a && !RESERVED.has(a)) names.add(a);
-    const b = m[2]; if(b && !RESERVED.has(b)) names.add(b);
-  }
-  // generic for numeric
-  const forNumRe = /for\s+([A-Za-z_][A-Za-z0-9_]*)\s*=/g;
-  while((m = forNumRe.exec(code)) !== null){
-    const a = m[1]; if(a && !RESERVED.has(a)) names.add(a);
-  }
-  return Array.from(names);
-}
-
-function makeRenameMap(names, key){
-  const map = {};
-  for(const n of names){
-    const rand = randomSuffix().replace(/[^a-z0-9]/g,'').substr(0,6);
-    map[n] = "_" + (key? key.replace(/\W/g,'').substr(0,3) : "") + rand;
-  }
-  return map;
-}
-
-function applyRename(code, map){
-  // protect strings
-  const ex = extractPlaceholders(code);
-  let s = ex.text;
-  // replace only whole words not preceded by '.' (to avoid property access) and not part of longer name
-  for(const orig in map){
-    // regex: (?<!\.)\bORIG\b but JS lookbehind support not universal, do safe replace by tokenizing non-dot boundary
-    // We'll replace \bORIG\b and then avoid cases where preceding char is '.'
-    const re = new RegExp('\\b' + orig + '\\b', 'g');
-    s = s.replace(re, (m, offset) => {
-      const prev = s[offset-1];
-      if(prev === '.') return m; // skip property access
-      return map[orig];
-    });
-  }
-  return restorePlaceholders(s, ex.placeholders);
-}
-
-function renameIdentifiers(code, key){
-  const names = collectIdentifiers(code);
-  if(names.length === 0) return code;
-  const map = makeRenameMap(names, key);
-  return applyRename(code, map);
-}
-
-function encodeStringsToCharTables(code, key){
-  // replace simple "..." strings with a small runtime builder using char codes and optional xor with key byte
-  const ex = extractPlaceholders(code);
-  let s = ex.text;
-  s = s.replace(/"([^"]*?)"/g, (_, content) => {
-    // compute bytes possibly xor with key first char if provided
-    const base = key && key.length ? key.charCodeAt(0) & 0xFF : 0;
-    const nums = Array.from(content).map(ch => (ch.charCodeAt(0) ^ base));
-    // build a constructor function that rebuilds the string with reverse xor
-    const list = nums.join(",");
-    const id = "_s" + randomSuffix().slice(0,5);
-    const recon = `(function() local ${id}={${list}} local _r=\"\" for i=1,#${id} do _r=_r..string.char(${id}[i]${base?(" ~ "..base):""}) end return _r end)()`;
-    return recon;
-  });
-  return restorePlaceholders(s, ex.placeholders);
-}
-
-function injectJunk(code, count=3){
-  let junk = "";
-  for(let i=0;i<count;i++){
-    const n = "_j" + randomSuffix().slice(0,5);
-    junk += `local function ${n}() local _x=${Math.floor(Math.random()*9999)}; return _x end\n`;
-  }
-  // inject at top and bottom
-  return junk + "\n" + code + "\n" + "--junk_end\n";
-}
-
-function flattenControlFlow(code){
-  // split code lines (safe-ish) into blocks and create dispatcher that iterates in order (permute)
-  const lines = code.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-  if(lines.length < 3) return code;
-  const blocks = lines.map((ln,i)=>`__blk[${i+1}] = function() ${ln} end`);
-  // make order array (we'll use original order but hide mechanics)
-  const order = Array.from({length:lines.length}, (_,i)=>i+1);
-  // permute a bit for confusion
-  for(let i=order.length-1;i>0;i--){
-    const j = Math.floor(Math.random()*(i+1));
-    [order[i], order[j]] = [order[j], order[i]];
-  }
-  const orderLua = "local __order = {" + order.join(",") + "}";
-  const tblLua = "local __blk = {};\n" + blocks.join(";\n");
-  const dispatcher = `
-do
-  ${tblLua}
-  ${orderLua}
-  for i=1,#__order do
-    local id = __order[i]
-    local ok, err = pcall(__blk[id])
-    if not ok then local _ = err end
-  end
-end
-`;
-  return dispatcher;
-}
-
-function chunkSplit(code, parts=2){
-  // split code lines into parts functions and call them in sequence
-  const lines = code.split(/\r?\n/).filter(Boolean);
-  if(lines.length < parts*2) return code;
-  const per = Math.ceil(lines.length / parts);
-  let out = "";
-  let calls = [];
-  for(let p=0;p<parts;p++){
-    const slice = lines.slice(p*per, (p+1)*per);
-    const fname = "_part" + (p+1) + "_" + randomSuffix().slice(0,4);
-    out += `local function ${fname}()\n  ${slice.join("\n  ")}\nend\n`;
-    calls.push(fname + "()");
-  }
-  out += "\n" + calls.join("\n");
-  return out;
-}
-
-function multiWrapFunctions(code, layers=2){
-  // Wrap code inside nested anonymous functions that immediately execute — safe alternative to loadstring
-  let out = code;
-  for(let i=0;i<layers;i++){
-    out = `(function() ${out} end)()`;
-  }
-  return out;
-}
-
-function safeReorder(code){
-  // line based reorder but keep relative simple lines: split by semicolons or newlines, random small shuffle in chunks
-  const parts = code.split(/\r?\n/).filter(Boolean);
-  if(parts.length < 4) return code;
-  // shuffle small windows to avoid breaking order too badly
-  for(let i=0;i<parts.length;i+=3){
-    const window = parts.slice(i, i+3);
-    window.sort(()=>Math.random()-0.5);
-    for(let j=0;j<window.length;j++) parts[i+j] = window[j];
-  }
-  return parts.join("\n");
-}
-
-function antiTamperFlag(code){
-  // sets a global flag and checks it at entry
-  const guard = `if _G.__LUOBF_TAMPER then error("Tamper detected") end; _G.__LUOBF_TAMPER = true;\n`;
-  return guard + code;
-}
-
-function watermarkInsert(code){
-  return `-- Obfuscated by AstraaCloud • ${new Date().toISOString()}\n` + code;
-}
-
-// --- Pipeline controller (levels 1..10) ---
-function pipeline(original, level, options){
-  let code = original;
-  const key = options.key || "";
-  // level mapping:
-  // 1: minify
-  // 2: + rename
-  // 3: + string encode
-  // 4: + junk
-  // 5: + flatten
-  // 6: + chunk split
-  // 7: + multi-wrap (2)
-  // 8: + safe reorder
-  // 9: + anti-tamper
-  //10: + watermark + multi-wrap(3)
-  if(level >= 1) code = minify(code, options);
-  if(level >= 2) code = renameIdentifiers(code, key);
-  if(level >= 3) code = encodeStringsToCharTables(code, key);
-  if(level >= 4) code = injectJunk(code, 4 + Math.floor(Math.random()*3));
-  if(level >= 5) code = flattenControlFlow(code);
-  if(level >= 6) code = chunkSplit(code, Math.min(4, Math.max(2, Math.floor((level-4)/2 + 2))));
-  if(level >= 7) code = multiWrapFunctions(code, 2);
-  if(level >= 8) code = safeReorder(code);
-  if(level >= 9) code = antiTamperFlag(code);
-  if(level >= 10) code = watermarkInsert(multiWrapFunctions(code, 3));
-  return code;
-}
-
-// --- Stats ---
-function updateStats(){
-  const inText = $("input").value;
-  const outText = $("output").value;
-  const inLines = linesOf(inText), outLines = linesOf(outText);
-  const inSize = bytesToKB(new Blob([inText]).size), outSize = bytesToKB(new Blob([outText]).size);
-  $("stats").textContent = `Input: ${inLines} lines • ${inSize} KB — Output: ${outLines} lines • ${outSize} KB`;
-}
-
-  
 <script>
 const $=id=>document.getElementById(id);
 
-// isi pilihan level otomatis
-for(let i=1;i<=10;i++){
-  $("level").innerHTML+=`<option value="${i}">Level ${i}</option>`;
+// --- auto populate levels ---
+for(let i=1;i<=10;i++){ $("level").innerHTML+=`<option value="${i}">Level ${i}</option>`; }
+
+// --- Core methods (simple demo) ---
+function minify(src){ return src.replace(/--.*$/gm,'').replace(/\s+/g,' ').trim(); }
+function renameVars(code,key=""){ return code.replace(/\b([a-zA-Z_]\w*)\b/g,m=>"__"+(key?key:"")+Math.random().toString(36).substr(2,5)); }
+function encodeStrings(code,key=""){
+  return code.replace(/"(.*?)"/g,(m,s)=>{
+    let encoded=btoa(s.split('').map(c=>String.fromCharCode(c.charCodeAt(0)^(key?key.charCodeAt(0):42))).join(''));
+    return `"${encoded}"`;
+  });
 }
-  
-// --- Events wiring ---
-$("file").addEventListener("change", async (e)=>{
-  const f = e.target.files[0]; if(!f) return;
-  // read as text (no enforced size limit — browser memory constraints apply)
-  const text = await f.text();
-  $("input").value = text;
-  updateStats();
+function junk(code){ return `-- junk\nlocal _${Math.random().toString(36).substr(2,5)}=${Math.random()*99}\n`+code; }
+function flatten(code){ return `do local _f=${Math.floor(Math.random()*9999)}; if _f%2==0 then ${code} end end`; }
+function multiWrap(code,n=2){ let out=code; for(let i=0;i<n;i++) out=`loadstring([[${btoa(out)}]])()`; return out; }
+function antiTamper(code){ return `if _G.__tamper then error("Tamper!") end; _G.__tamper=true; ${code}`; }
+
+// --- Obfuscator logic ---
+function obfuscate(code,lvl,key=""){
+  let out=code;
+  if(lvl>=1) out=minify(out);
+  if(lvl>=2) out=renameVars(out,key);
+  if(lvl>=3) out=encodeStrings(out,key);
+  if(lvl>=4) out=junk(out);
+  if(lvl>=5) out=flatten(out);
+  if(lvl>=6) out=junk(out); // more junk
+  if(lvl>=7) out=multiWrap(out,2);
+  if(lvl>=8) out=antiTamper(out);
+  if(lvl>=9) out=multiWrap(out,3);
+  if(lvl>=10) out=junk(out+flatten(out)); // crazy mix
+  return out;
+}
+
+function randomFileName(lvl){
+  return `LUOBF-Lv${lvl}-`+Math.random().toString(36).substr(2,6)+".lua";
+}
+
+// --- Features ---
+const feats=["Minify","Rename Vars","Encode Strings","Junk Code","Flatten Flow","Extra Junk","Multi-Wrap","Anti-Tamper","Heavy Wrap","Mix Junk+Flatten"];
+function renderFeatures(lvl){
+  $("pbar").style.width=(lvl*10)+"%";
+  $("info").innerHTML=feats.map((f,i)=>`<div>${i<lvl?'<span class="check">✅</span>':'<span class="cross">❌</span>'}${f}</div>`).join("");
+}
+
+// --- Events ---
+$("level").addEventListener("change",()=>renderFeatures(parseInt($("level").value)));
+$("run").addEventListener("click",()=>{
+  let src=$("input").value;if(!src.trim()){alert("Paste code first!");return;}
+  let lvl=parseInt($("level").value), key=$("key").value;
+  let out=obfuscate(src,lvl,key); $("output").value=out;
+  let lines=out.split("\n").length, size=(out.length/1024).toFixed(2);
+  $("stats").innerText=`Lines: ${lines} | Size: ${size} KB`;
 });
-
-$("clearInput").addEventListener("click", ()=>{
-  $("input").value = ""; updateStats();
+$("copy").addEventListener("click",async()=>{
+  let v=$("output").value;if(!v){alert("Nothing to copy");return}
+  await navigator.clipboard.writeText(v);alert("Copied!");
 });
-
-$("clearOutput").addEventListener("click", ()=>{
-  $("output").value = ""; updateStats();
+$("download").addEventListener("click",()=>{
+  let v=$("output").value;if(!v){alert("Nothing to download");return}
+  const lvl=parseInt($("level").value);
+  const blob=new Blob([v],{type:"text/plain"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download=randomFileName(lvl);
+  a.click(); URL.revokeObjectURL(a.href);
 });
-
-$("level").addEventListener("change", ()=>{
-  const lvl = parseInt($("level").value);
-  renderFeatures(lvl);
+$("clearIn").addEventListener("click",()=>{$("input").value="";});
+$("clearOut").addEventListener("click",()=>{$("output").value="";$("stats").innerText="No output generated.";});
+$("uploadBtn").addEventListener("click",()=>{$("fileInput").click();});
+$("fileInput").addEventListener("change",e=>{
+  const file=e.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=()=>{$("input").value=reader.result;};
+  reader.readAsText(file);
 });
-
-$("run").addEventListener("click", ()=>{
-  const src = $("input").value || "";
-  if(!src.trim()){ alert("Please paste or upload code first."); return; }
-  const lvl = parseInt($("level").value);
-  const key = $("key").value.trim();
-  // options
-  const options = { key: key, stripComments: $("stripComments").checked, preserveLong: $("preserveLong").checked };
-  try {
-    const out = pipeline(src, lvl, options);
-    $("output").value = out;
-    renderFeatures(lvl);
-    updateStats();
-    // small visual feedback
-    $("pbar").style.width = (lvl*10) + "%";
-  } catch(err){
-    console.error(err);
-    alert("Error during obfuscation: " + (err.message || err));
-  }
-});
-
-$("copy").addEventListener("click", async ()=>{
-  const v = $("output").value;
-  if(!v){ alert("Nothing to copy"); return; }
-  await navigator.clipboard.writeText(v);
-  const old = $("copy").textContent;
-  $("copy").textContent = "Copied!";
-  setTimeout(()=> $("copy").textContent = old, 1200);
-});
-
-$("download").addEventListener("click", ()=>{
-  const v = $("output").value;
-  if(!v){ alert("Nothing to download"); return; }
-  const lvl = parseInt($("level").value);
-  const blob = new Blob([v], {type: 'text/plain'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = randomFileName(lvl);
-  a.click();
-  URL.revokeObjectURL(a.href);
-});
-
-// initial UI state
-$("level").value = "5";
-renderFeatures(5);
-updateStats();
-
 </script>
 </body>
 </html>
