@@ -460,6 +460,15 @@ function updateStats(){
   $("stats").textContent = `Input: ${inLines} lines • ${inSize} KB — Output: ${outLines} lines • ${outSize} KB`;
 }
 
+  
+<script>
+const $=id=>document.getElementById(id);
+
+// isi pilihan level otomatis
+for(let i=1;i<=10;i++){
+  $("level").innerHTML+=`<option value="${i}">Level ${i}</option>`;
+}
+  
 // --- Events wiring ---
 $("file").addEventListener("change", async (e)=>{
   const f = e.target.files[0]; if(!f) return;
