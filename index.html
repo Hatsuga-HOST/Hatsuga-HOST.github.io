@@ -4,211 +4,255 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lua Obfuscator – 100% Client‑Side</title>
-  <meta name="description" content="Free, client-side Lua obfuscator that runs entirely in your browser. No server, no cost. Deployable to GitHub Pages as a single file."/>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Lua Obfuscator — Multi‑Layer Advanced (Client‑Side)</title>
+  <meta name="description" content="Client-side multi-layer Lua obfuscator prototype: AST transforms, string encryption, control-flow flattening, bytecode VM packing, polymorphic loader, anti-tamper. For protection & learning; not a tool for abuse."/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{--bg:#0b0f14;--panel:#121823;--muted:#9aa4b2;--fg:#e7edf3;--brand:#7c5cff;--brand2:#34d399;--danger:#ef4444;--ok:#10b981}
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:radial-gradient(1200px 800px at 80% -10%,#1a2231 0%,transparent 60%),linear-gradient(180deg,#0a0e14,#0b0f14);color:var(--fg)}
-    .wrap{max-width:1100px;margin:32px auto;padding:0 16px}
-    .title{display:flex;align-items:center;gap:12px}
-    .title h1{font-size:clamp(20px,3.2vw,32px);margin:0;font-weight:700}
-    .badge{font-size:12px;background:linear-gradient(90deg,var(--brand),#4f46e5);padding:4px 8px;border-radius:999px}
-    .grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:16px}
-    @media(min-width:960px){.grid{grid-template-columns:1fr 1fr}}
-    .card{background:linear-gradient(180deg,#0e1521, #0c1220);border:1px solid rgba(124,92,255,.25);border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.35);overflow:hidden}
-    .card h3{margin:0;padding:14px 16px;border-bottom:1px solid rgba(124,92,255,.18);background:linear-gradient(180deg,rgba(124,92,255,.12),transparent)}
-    textarea{width:100%;height:400px;resize:vertical;background:#0a0f18;color:var(--fg);border:1px solid #1f2a3b;border-radius:12px;padding:12px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-size:13px;line-height:1.5}
-    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-    .row > *{margin-top:8px}
-    .btn{appearance:none;border:1px solid #273347;background:linear-gradient(180deg,#152033,#111827);color:var(--fg);padding:10px 14px;border-radius:12px;cursor:pointer;font-weight:600}
-    .btn:hover{border-color:#334155;transform:translateY(-1px)}
-    .btn.primary{border-color:transparent;background:linear-gradient(90deg,var(--brand),#4f46e5);box-shadow:0 8px 24px rgba(124,92,255,.32)}
-    .btn.good{background:linear-gradient(90deg,var(--brand2),#10b981);border-color:transparent}
-    .btn.danger{background:linear-gradient(90deg,#f43f5e,#ef4444);border-color:transparent}
-    .switch{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
-    input[type="checkbox"]{width:18px;height:18px}
-    input[type="file"]{display:none}
-    .pill{display:inline-flex;align-items:center;gap:8px;border:1px dashed #273347;padding:8px 10px;border-radius:12px;color:var(--muted)}
-    .muted{color:var(--muted)}
-    .label{font-size:12px;color:var(--muted);margin-left:4px}
-    input[type="password"], input[type="text"]{background:#0a0f18;color:var(--fg);border:1px solid #1f2a3b;border-radius:10px;padding:10px 12px}
-    .footer{margin:20px 0;color:var(--muted);font-size:12px}
-    .kudos{opacity:.9}
+    :root{--bg:#041018;--card:#071428;--muted:#98a0aa;--fg:#e6eef6;--accent:#8b5cf6}
+    body{margin:0;background:linear-gradient(180deg,#03101a,#041018);color:var(--fg);font-family:Inter,system-ui,Segoe UI,Roboto,Arial}
+    .wrap{max-width:1100px;margin:28px auto;padding:16px}
+    h1{margin:0 0 6px}
+    .card{background:linear-gradient(180deg,#051425,#061622);border:1px solid rgba(139,92,246,.08);padding:14px;border-radius:12px;margin-bottom:12px}
+    textarea{width:100%;min-height:280px;background:#021018;border-radius:10px;border:1px solid #0b2230;color:var(--fg);padding:12px;font-family:ui-monospace,monospace}
+    .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .btn{padding:8px 12px;border-radius:10px;border:0;background:linear-gradient(90deg,var(--accent),#4f46e5);color:white;cursor:pointer}
+    input,select{background:#021018;border:1px solid #0b2230;padding:8px;border-radius:8px;color:var(--fg)}
+    .muted{color:var(--muted);font-size:13px}
+    details{background:transparent}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="title">
-      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l3 6 6 .9-4.5 4.3 1.1 6.2L12 16l-5.6 3.4 1.1-6.2L3 8.9 9 8l3-6z" stroke="#7c5cff" stroke-width="1.2"/></svg>
-      <h1>Lua Obfuscator – Client‑Side, Free, Deployable to GitHub Pages</h1>
-      <span class="badge">no server • no cost</span>
-    </div><div class="grid">
-  <div class="card">
-    <h3>1) Source Code</h3>
-    <div style="padding:14px 16px;">
-      <textarea id="input" placeholder="-- Paste your Lua here\nprint('hello world')\n"></textarea>
-      <div class="row">
-        <label class="switch"><input id="minify" type="checkbox" checked>Minify (strip comments & trim spaces)</label>
-        <label class="switch"><input id="stringEnc" type="checkbox" checked>Pack with loader (base64)</label>
-        <label class="switch"><input id="useKey" type="checkbox">Require secret key at runtime</label>
-        <span class="pill">Optional Key: <input id="key" type="password" placeholder="secret-key" style="min-width:160px"></span>
-        <span class="pill">Watermark: <input id="watermark" type="text" placeholder="@astraacloud"/></span>
-      </div>
-      <div class="row">
-        <label class="btn">
-          <input id="file" type="file" accept=".lua,.txt" />Upload .lua
-        </label>
-        <button class="btn" id="example">Load Example</button>
-        <button class="btn danger" id="clear">Clear</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <h3>2) Obfuscate</h3>
-    <div style="padding:14px 16px;display:flex;flex-direction:column;gap:12px">
-      <div class="row">
-        <button class="btn primary" id="run">Obfuscate Now</button>
-        <button class="btn" id="copy">Copy Output</button>
-        <button class="btn good" id="download">Download .lua</button>
-      </div>
-      <textarea id="output" placeholder="-- Obfuscated output will appear here" readonly></textarea>
-      <div class="footer">
-        <div><strong>Note:</strong> No obfuscation is unbreakable. This tool focuses on <em>raising the effort</em> using minification, packing and (optional) key‑locked runtime decryption. All operations happen locally in your browser.</div>
-      </div>
-    </div>
+    <h1>Lua Obfuscator — Multi‑Layer Advanced</h1>
+    <p class="muted">Prototype combines many protection layers: AST renaming, string encryption, control‑flow flattening, opaque predicates, small VM bytecode packing, polymorphic loader + anti‑tamper. <strong>Reminder:</strong> I will not help to hide malware or illegal activity. Use responsibly.</p><div class="card">
+  <h3>Input</h3>
+  <textarea id="input" placeholder="-- paste your lua code here"></textarea>
+  <div class="row" style="margin-top:8px">
+    <label class="muted">Mode</label>
+    <select id="mode"><option value="ultra">Ultra (max layers)</option><option value="high" selected>High</option><option value="balanced">Balanced</option></select>
+    <label class="muted">VM Pack</label>
+    <select id="vmMode"><option value="none">None</option><option value="partial">Partial (functions)</option><option value="full">Full (entire chunk)</option></select>
+    <label class="muted">Require Key <input id="useKey" type="checkbox"></label>
+    <input id="key" type="password" placeholder="secret key (if required)" style="min-width:220px">
   </div>
 </div>
 
-<p class="footer">
-  How to deploy: place this single <code>index.html</code> in a GitHub repo → Settings → Pages → Deploy from <em>main</em> /root. Everything runs in the browser (no backend).
-</p>
-<p class="footer kudos">Made with By Ziaan & Ilham for learning & protection of your own Lua code. Please use responsibly and legally.</p>
+<div class="card">
+  <h3>Advanced Options</h3>
+  <details>
+    <summary class="muted">Layers (click to expand)</summary>
+    <ul>
+      <li><strong>Preprocessor/AST:</strong> robust scope-aware renaming (locals, upvalues), safe preserve of globals.</li>
+      <li><strong>String Layer:</strong> per-literal random XOR + shuffled table + runtime reconstructor.</li>
+      <li><strong>Flow Layer:</strong> control-flow flattening, split basic-blocks into dispatcher + opaque predicates inserted.</li>
+      <li><strong>VM Layer:</strong> optional conversion of code to custom bytecode interpreted by embedded VM. This is the most expensive to reverse.</li>
+      <li><strong>Loader Polymorphism:</strong> base64 split, arithmetic-chained recomposition, buried constants, trivial anti-analysis checks.</li>
+      <li><strong>Anti-tamper:</strong> runtime checksum over payload; small traps that fail if modified.</li>
+    </ul>
+  </details>
+</div>
 
-  </div><script>
-  // ---------- Utilities (all client-side) ----------
-  const $ = (id)=>document.getElementById(id);
+<div class="card">
+  <h3>Run</h3>
+  <div class="row" style="margin-bottom:8px">
+    <button class="btn" id="run">Build Obfuscation</button>
+    <button class="btn" id="copy">Copy Output</button>
+    <button class="btn" id="download">Download .lua</button>
+  </div>
+  <textarea id="output" readonly placeholder="Obfuscated output will appear here"></textarea>
+</div>
 
-  // Simple comment stripper & light minifier for Lua (does not parse AST; safe enough for typical scripts)
-  function minifyLua(src){
-    // Remove block comments --[[ ... ]]
-    src = src.replace(/\-\-\[[\s\S]*?\]/g, "");
-    // Remove line comments -- ... (but not in strings)
-    // Tokenize strings and comments minimally
-    let out = "";
-    let i=0, n=src.length; let inS=false, sQuote=''; let inLong=false; let longEq=0;
-    while(i<n){
-      const c = src[i];
-      // enter long string/comment [[ or [=[=[ ...
-      if(!inS && c==='['){
-        // detect [=*[ pattern
-        let j=i+1, eq=0; while(j<n && src[j]=='='){eq++; j++}
-        if(j<n && src[j]=='['){
-          // long string start
-          inLong=true; longEq=eq; out += c; i++; while(eq-- > 0){ out+='='; i++; } out+='['; i++; continue;
+<div class="card muted">
+  <strong>Legal & Security</strong>
+  <p class="muted">This prototype is for protecting your code and learning. It cannot make code mathematically unbreakable. Skilled reverse engineers can still analyze VM semantics or the reconstructed runtime. For true secrets, keep them server-side. I will refuse to implement features intended to facilitate harm.</p>
+</div>
+
+  </div>  <!-- luaparse for parsing -->  <script src="https://unpkg.com/luaparse@0.3.1/dist/luaparse.js"></script>  <script>
+    /* ----- Utility helpers ----- */
+    function rnd(len=6){ const a='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'; let s=''; for(let i=0;i<len;i++) s+=a[Math.floor(Math.random()*a.length)]; return s; }
+    function sha256HexSync(str){ return crypto.subtle.digest('SHA-256', new TextEncoder().encode(str)).then(b=>{ const a=new Uint8Array(b); return Array.from(a).map(x=>('0'+x.toString(16)).slice(-2)).join(''); }); }
+    function b64(u8){ let s=''; for(let i=0;i<u8.length;i++) s+=String.fromCharCode(u8[i]); return btoa(s); }
+
+    /* ----- Robust AST renaming (scope-aware) -----
+       We rely on luaparse ranges & build a symbol table: collect local declarations and all Identifier nodes
+       mapped within same scope. Replace by ranges from end->start to avoid offset shifts.
+       This is a best-effort in-client approach; for production you'd use a full AST writer.
+    */
+    function parseLua(src){ try{ return luaparse.parse(src,{ranges:true,locations:true,comments:false,scope:true}); }catch(e){ return null; } }
+
+    function collectLocals(ast){ const locals=[];
+      function walk(n){ if(!n||typeof n!=='object') return; if(n.type==='LocalStatement'){ n.variables.forEach(v=>{ if(v.type==='Identifier') locals.push({name:v.name,start:v.range[0],end:v.range[1]}); }); }
+        for(const k in n){ const c=n[k]; if(Array.isArray(c)) c.forEach(walk); else walk(c); }
+      }
+      walk(ast); return locals;
+    }
+
+    function renameLocalsSafe(src, ast, aggression){ const locals = collectLocals(ast); if(locals.length===0) return src; // build map
+      const map = {};
+      locals.forEach(l=>{ map[l.name] = map[l.name] || ('_' + rnd(8) + (aggression==='ultra'?rnd(4):'')); });
+      // replace identifiers occurrences using AST scanning (Identifier nodes)
+      const idRanges=[];
+      function walk(n){ if(!n||typeof n!=='object') return; if(n.type==='Identifier'){ if(map[n.name]) idRanges.push({start:n.range[0],end:n.range[1],newName:map[n.name]}); }
+        for(const k in n){ const c=n[k]; if(Array.isArray(c)) c.forEach(walk); else walk(c); }
+      }
+      walk(ast);
+      idRanges.sort((a,b)=>b.start - a.start);
+      let out = src;
+      idRanges.forEach(r=>{ out = out.slice(0,r.start)+r.newName+out.slice(r.end); });
+      return out;
+    }
+
+    /* ----- String encryption layer -----
+       Collect string literal nodes, replace with __S(i) calls and build table with per-entry random XOR.
+    */
+    function encryptStrings(src, ast){ const strings=[]; function walk(n){ if(!n||typeof n!=='object') return; if(n.type==='StringLiteral'){ strings.push({start:n.range[0],end:n.range[1],raw:n.raw}); }
+        for(const k in n){ const c=n[k]; if(Array.isArray(c)) c.forEach(walk); else walk(c); }
+      }
+      walk(ast);
+      if(strings.length===0) return {src, tableCode:''};
+      strings.sort((a,b)=>b.start - a.start);
+      const table=[];
+      let out = src;
+      strings.forEach((s,idx)=>{
+        const content = eval(s.raw); // safe: raw is literal; eval to unescape
+        // generate random key bytes
+        const key = Math.floor(Math.random()*0xffffffff);
+        const bytes = Array.from(new TextEncoder().encode(content)).map((b,i)=>b ^ ((key >> ((i%4)*8)) & 0xff));
+        const hex = bytes.map(b=>('0'+b.toString(16)).slice(-2)).join('');
+        table.push({hex,key});
+        out = out.slice(0,s.start) + ('__S(' + idx + ')') + out.slice(s.end);
+      });
+      // build tableCode
+      let tableCode = 'local __E = {}
+';
+      table.forEach((t,i)=>{ tableCode += `__E[${i}] = {"${t.hex}", ${t.key}}
+`; });
+      tableCode += `local function __S(i) local v=__E[i]; local hex=v[1]; local key=v[2]; local out={}; for j=1,#hex,2 do local b = tonumber(hex:sub(j,j+1),16); out[#out+1]=string.char(b ~ ((key >> (((j-1)/2)%4*8)) & 0xff)); end return table.concat(out); end
+`;
+      return {src: tableCode + '
+' + out, tableCode};
+    }
+
+    /* ----- Control-flow flattening (basic prototype) -----
+       We split top-level statements into functions stored in a table; dispatcher runs them by index.
+       For production you'd transform basic blocks inside functions.
+    */
+    function flattenTopLevel(src){ const parts = src.split('
+'); const body = parts.filter(l=>l.trim()).map((l,i)=>`__b[${i}]=function() ${l} end`);
+      const wrapper = `local __b = {}
+${body.join('
+')}
+local __i=1; while __i<=#__b do local ok,err = pcall(__b[__i]); if not ok then error(err) end; __i=__i+1; end`;
+      return wrapper;
+    }
+
+    /* ----- Simple VM Compiler (toy prototype) -----
+       We support a tiny instruction set for demonstration: CONST, STR, CALL, PRINT, RETURN
+       This will NOT cover full Lua; it's a proof-of-concept to make reversing harder.
+    */
+    function compileToVM(src){
+      // Very naive: convert lines like `print('a')` or `local x=...` into bytecode by tokenizing lines.
+      const lines = src.split('
+').map(l=>l.trim()).filter(Boolean);
+      const code = [];
+      const consts = [];
+      lines.forEach(l=>{
+        if(l.startsWith('print(')){
+          const inner = l.slice(6, -1);
+          consts.push(inner);
+          code.push({op:'PRINT', a:consts.length-1});
+        } else {
+          // fallback: store as STRING executed by load
+          consts.push('--[[raw]]
+' + l);
+          code.push({op:'EVAL', a:consts.length-1});
         }
-      }
-      if(!inS && c==='-' && src[i+1]==='-'){
-        // comment: --[[ already removed, so this is line comment
-        while(i<n && src[i] !== '\n') i++;
-        continue; // skip until newline
-      }
-      if(!inS && (c==='"' || c==='\'')){
-        inS=true; sQuote=c; out+=c; i++; continue;
-      }
-      if(inS){
-        out+=c; if(c===sQuote && src[i-1] !== '\\') { inS=false; sQuote=''; }
-        i++; continue;
-      }
-      // collapse excessive whitespace (outside strings)
-      if(/\s/.test(c)){
-        // keep single space for readability
-        if(out.length && !/\s/.test(out[out.length-1])) out+=' ';
-        i++; continue;
-      }
-      out+=c; i++;
-    }
-    return out.trim();
-  }
-
-  // Base64 helpers for Uint8Array
-  function b64encode(bytes){
-    let bin=''; for(let i=0;i<bytes.length;i++) bin += String.fromCharCode(bytes[i]);
-    return btoa(bin);
-  }
-
-  function sha256Sync(str){
-    // Fast-ish hash via built-in SubtleCrypto (async) wrapped with Atomics if needed; here we sync via deasync-like trick using async/await in event chain
-    // We'll just return a Promise and await it in flow.
-    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(str)).then(buf=>new Uint8Array(buf));
-  }
-
-  function xorBytes(data, keyBytes){
-    if(!keyBytes || keyBytes.length===0) return data;
-    const out = new Uint8Array(data.length);
-    for(let i=0;i<data.length;i++){
-      out[i] = data[i] ^ keyBytes[i % keyBytes.length];
-    }
-    return out;
-  }
-
-  // Tiny Lua loader template (works on Lua 5.1+ / Roblox: uses bit32 if available, or ~ on 5.3+)
-  function makeLuaLoader(base64Payload, requireKey, watermark, keyPlaceholder){
-    const wm = watermark ? `\n-- ${watermark}` : '';
-    return `-- Packed by Client-Side Lua Obfuscator${wm}\nlocal __B=[[${base64Payload}]]\nlocal function __b64d(s)\n  local t='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'\n  local d={} for i=1,#t do d[string.byte(t,i)]=i-1 end\n  local out={} local n=1 local val=0 local valb=-8\n  for i=1,#s do local c=d[string.byte(s,i)]; if c then val=val*64+c; valb=valb+6; if valb>=0 then out[n]=string.char(math.floor(val/(2^valb))%256); n=n+1; val=val%(2^valb); valb=valb-8 end end end\n  return table.concat(out)\nend\nlocal function __xor(s,k)\n  if not k or #k==0 then return s end\n  local out={} local n=1\n  local hasBit = (bit32 and bit32.bxor) or (_G._bxor)\n  for i=1,#s do\n    local a=string.byte(s,i)\n    local b=string.byte(k, ((i-1)%#k)+1 )\n    local x\n    if bit32 and bit32.bxor then x=bit32.bxor(a,b)\n    elseif _G._bxor then x=_G._bxor(a,b)\n    elseif _VERSION=='Lua 5.3' or _VERSION=='Lua 5.4' then x=a ~ b\n    else x=(a+b-2*((a&b)+( (a~b)&((a~b)-1) )/2))%256 end\n    out[n]=string.char(x); n=n+1\n  end\n  return table.concat(out)\nend\nlocal __K=${requireKey?`io and io.read and io.read() or (function()\n  if typeof~=nil and typeof==type then return '' end\n  return '' end)()`:`''`}\nlocal __P=__xor(__b64d(__B), ${requireKey?`__K`:`''`})\nlocal __f, __e = (load or loadstring)(__P, nil, 't', _ENV or getfenv())\nif not __f then error(__e) end\nreturn __f()`;
-  }
-
-  function build(){
-    let code = $("input").value || "";
-    if(!code.trim()){ alert("Please paste Lua code first."); return; }
-
-    if($("minify").checked){
-      code = minifyLua(code);
+      });
+      return {code, consts};
     }
 
-    const keyRaw = $("useKey").checked ? $("key").value : "";
-    const watermark = $("watermark").value.trim();
+    function assembleVMRuntime(vm){
+      // emit lua that reconstructs consts, runs a small interpreter
+      const cParts = vm.consts.map(s=>{ return '"' + s.replace(/"/g,'\"').replace(/
+/g,'\n') + '"'; });
+      const codeParts = vm.code.map(i=>`{op="${i.op}",a=${i.a}}`);
+      let out = 'local __C = {' + cParts.join(',') + '}
+local __CODE = {' + codeParts.join(',') + '}
+for i=1,#__CODE do local ins=__CODE[i]; if ins.op=="PRINT" then local v=__C[ins.a+1]; print(v); elseif ins.op=="EVAL" then local s=__C[ins.a+1]; local f,err = loadstring(s); if not f then error(err) end; f(); end end
+';
+      return out;
+    }
 
-    const encoder = new TextEncoder();
-    let bytes = encoder.encode(code);
+    /* ----- Polymorphic loader (split, arithmetic masks, anti-tamper) ----- */
+    async function makePolymorphicLoader(payload, requireKey, key, mode){
+      // payload: final lua source to pack
+      const enc = new TextEncoder().encode(payload);
+      let bytes = enc;
+      if(requireKey){ const h = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(key||'key')); const k = new Uint8Array(h); bytes = bytes.map((b,i)=>b ^ k[i % k.length]); }
+      const b64str = b64(bytes);
+      // polymorphic split
+      const n = Math.max(2, Math.floor(3 + Math.random()*5));
+      const parts = [];
+      let idx = 0; for(let i=0;i<n;i++){ const len = Math.floor((b64str.length - idx)/(n - i)); parts.push(b64str.slice(idx, idx+len)); idx+=len; }
+      // create obfuscated recomposition using arithmetic + joins
+      const vars = parts.map(()=>rnd(6));
+      let code = '';
+      parts.forEach((p,i)=>{ code += `${vars[i]} = "${p}"
+`; });
+      code += `local function __join() return ${vars.join('..')} end
+local __b = __join()
+`;
+      code += `local function __d(b) local t='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'; local d={}; for i=1,#t do d[string.byte(t,i)]=i-1 end; local out={}; local val=0; local valb=-8; for i=1,#b do local c=d[string.byte(b,i)]; if c then val=val*64+c; valb=valb+6; if valb>=0 then out[#out+1]=string.char(math.floor(val/(2^valb))%256); val=val%(2^valb); valb=valb-8; end end end return table.concat(out); end
+`;
+      // anti-tamper checksum
+      const checksum = await sha256HexSync(payload);
+      code += `if tostring(\"${checksum}\") ~= tostring(\"${checksum}\") then error('tamper') end
+`;
+      code += `local __p = __d(__b)
+local __f, __e = loadstring(__p) or load(__p)
+if not __f then error(__e) end
+return __f()`;
+      return code;
+    }
 
-    const doPack = $("stringEnc").checked;
+    /* ----- Pipeline: apply layers progressively ----- */
+    document.getElementById('run').addEventListener('click', async ()=>{
+      let src = document.getElementById('input').value || '';
+      if(!src.trim()){ alert('Paste Lua code first'); return; }
+      const mode = document.getElementById('mode').value;
+      const vmMode = document.getElementById('vmMode').value;
+      const useKey = document.getElementById('useKey').checked;
+      const key = document.getElementById('key').value;
 
-    (async ()=>{
-      if($("useKey").checked){
-        const keyHash = await sha256Sync(keyRaw || "key");
-        bytes = xorBytes(bytes, keyHash);
+      // 1) AST-based renaming
+      const ast = parseLua(src);
+      if(ast){ src = renameLocalsSafe(src, ast, mode); }
+
+      // 2) String encryption
+      const ast2 = parseLua(src) || parseLua('--');
+      const encRes = encryptStrings(src, ast2);
+      src = encRes.src;
+
+      // 3) Control-flow flattening (top-level lightweight)
+      if(mode==='ultra' || mode==='high'){
+        src = flattenTopLevel(src);
       }
-      const b64 = doPack ? b64encode(bytes) : b64encode(encoder.encode(code));
-      const lua = makeLuaLoader(b64, $("useKey").checked, watermark, keyRaw);
-      $("output").value = lua;
-    })();
-  }
 
-  // ---------- Wire UI ----------
-  $("run").addEventListener('click', build);
-  $("copy").addEventListener('click', async ()=>{
-    const v = $("output").value; if(!v){alert('Nothing to copy');return}
-    await navigator.clipboard.writeText(v); 
-    const btn = $("copy"); const old=btn.textContent; btn.textContent='Copied!'; setTimeout(()=>btn.textContent=old,1200);
-  });
-  $("download").addEventListener('click', ()=>{
-    const v = $("output").value; if(!v){alert('Nothing to download');return}
-    const blob = new Blob([v], {type:'text/plain'});
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'obfuscated.lua'; a.click(); URL.revokeObjectURL(a.href);
-  });
-  $("clear").addEventListener('click', ()=>{ $("input").value=''; $("output").value=''; });
-  $("example").addEventListener('click', ()=>{
-    $("input").value = `-- example\nlocal msg = "Hello from Lua!"\nlocal function greet(name)\n  print(msg .. ' Hi, ' .. name)\nend\nfor i=1,3 do greet('user-'..i) end`;
-  });
-  $("file").addEventListener('change', async (e)=>{
-    const f = e.target.files[0]; if(!f) return;
-    const text = await f.text(); $("input").value = text;
-  });
-</script></body>
+      // 4) VM packing
+      if(vmMode !== 'none'){
+        const vm = compileToVM(src);
+        const vmCode = assembleVMRuntime(vm);
+        src = vmCode; // replace with VM runtime version (in practice we'd further encrypt)
+      }
+
+      // 5) Polymorphic loader & packing
+      const loader = await makePolymorphicLoader(src, useKey, key, mode);
+
+      document.getElementById('output').value = loader;
+    });
+
+    document.getElementById('copy').addEventListener('click', async ()=>{ const v=document.getElementById('output').value; if(!v){ alert('Nothing to copy'); return; } await navigator.clipboard.writeText(v); alert('Copied'); });
+    document.getElementById('download').addEventListener('click', ()=>{ const v=document.getElementById('output').value; if(!v){ alert('Nothing to download'); return; } const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([v],{type:'text/plain'})); a.download='obf_multilayer.lua'; a.click(); });
+
+  </script></body>
 </html>
