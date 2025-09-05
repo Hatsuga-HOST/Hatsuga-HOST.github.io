@@ -1,116 +1,760 @@
-<!doctype html>
-<html lang="id">
-<head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Luau / Lua Obfuscator — Fast Worker</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;800&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#061226;--card:#0e1724;--muted:#9fb0cc;--fg:#e6f0ff;--accent1:#6d28d9;--accent2:#4f46e5;--ok:#16a34a;--danger:#ef4444;--glass-border:rgba(120,140,255,0.10);--radius:14px;}
-*{box-sizing:border-box} html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#041022,#030812);color:var(--fg);}
-.container{max-width:1100px;margin:28px auto;padding:18px}
-.header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
-.brand{display:flex;gap:12px;align-items:center}
-.logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:grid;place-items:center;font-weight:800;color:white}
-.title{font-size:19px;font-weight:700}
-.subtitle{font-size:13px;color:var(--muted)}
-.grid{display:grid;gap:16px;grid-template-columns:1fr 420px}
-.card{background:rgba(255,255,255,0.02);border-radius:var(--radius);padding:16px;border:1px solid var(--glass-border)}
-.large{min-height:460px;display:flex;flex-direction:column}
-.textarea{width:100%;height:300px;resize:vertical;background:#07132a;border-radius:10px;border:1px solid rgba(255,255,255,0.05);color:var(--fg);padding:12px;font-family:ui-monospace,monospace;font-size:13px}
-.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;align-items:center}
-.btn{padding:9px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:700;background:rgba(255,255,255,0.05);color:var(--fg)}
-.btn.primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff}
-.progress{height:12px;background:rgba(255,255,255,0.08);border-radius:10px;overflow:hidden}
-.progress > i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--accent2),#8b5cf6);transition:width .25s ease}
-.toast-wrap{position:fixed;right:20px;bottom:20px;z-index:999;display:flex;flex-direction:column;gap:8px}
-.toast{display:flex;gap:8px;align-items:center;padding:10px 12px;border-radius:10px;background:rgba(6,18,36,0.92);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:13px}
-</style>
-</head>
-<body>
-<div class="container">
-  <div class="header">
-    <div class="brand">
-      <div class="logo">L</div>
-      <div>
-        <div class="title">Luau / Lua Obfuscator — Worker</div>
-        <div class="subtitle">Fast • GitHub Pages Ready</div>
-      </div>
-    </div>
-  </div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lua Obfuscator</title>
+    <style>
+      /* Animations */
+      @keyframes popup {
+        0% {
+          transform: scale(0);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
 
-  <div class="grid">
-    <!-- kiri -->
-    <div class="card large">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div class="small">Source</div>
-        <button class="btn" id="clearIn">Clear</button>
-      </div>
-      <textarea id="inputArea" class="textarea" placeholder="-- paste your Lua/Luau code here"></textarea>
+      @keyframes idle {
+        0% {
+          transform: rotate(5deg);
+        }
+        100% {
+          transform: rotate(-5deg);
+        }
+      }
 
-      <div class="controls">
-        <select id="levelSelect">
-          <option value="3">Level 3</option>
-          <option value="5" selected>Level 5</option>
-          <option value="7">Level 7</option>
-          <option value="10">Level 10</option>
-        </select>
-        <input id="keyInput" type="text" placeholder="Optional key"/>
-        <button class="btn primary" id="runBtn">Obfuscate</button>
-      </div>
+      @keyframes wave {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
 
-      <div style="margin-top:12px">
-        <div class="progress"><i id="progressBar"></i></div>
-      </div>
-    </div>
+      @keyframes float {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
+      }
 
-    <!-- kanan -->
-    <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div>Output</div>
-        <div style="display:flex;gap:8px">
-          <button class="btn" id="copyBtn">Copy</button>
-          <button class="btn" id="downloadBtn">Download</button>
+      /* CSS */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        outline: none;
+        border: none;
+        text-decoration: none;
+      }
+
+      body {
+        display: flex;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: white;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #0a192f 0%, #112240 50%, #0a192f 100%);
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+          radial-gradient(circle at 10% 20%, rgba(23, 105, 170, 0.2) 0%, transparent 20%),
+          radial-gradient(circle at 90% 80%, rgba(23, 105, 170, 0.2) 0%, transparent 20%);
+        z-index: -1;
+      }
+
+      /* navbar */
+      .navbar {
+        display: flex;
+        height: 5rem;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.4rem 5%;
+        background-color: rgba(14, 35, 64, 0.7);
+        border-bottom: 2px solid rgba(64, 156, 255, 0.3);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 9999;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(10px);
+      }
+
+      .logo span {
+        color: #409cff;
+        transition: 0.2s ease-in-out;
+        text-shadow: 0 0 10px rgba(64, 156, 255, 0.5);
+      }
+
+      .logo {
+        display: flex;
+        transition: 0.2s ease-in-out;
+        animation: idle 3s ease-in-out infinite alternate;
+        font-weight: 700;
+        font-size: 1.5rem;
+      }
+
+      .logo:hover {
+        color: #64b5ff;
+        transition: 0.2s ease-in-out;
+      }
+      
+      .logo:hover span {
+        color: #a6d1ff;
+        transition: 0.2s ease-in-out;
+      }
+
+      .nav a {
+        color: rgba(255, 255, 255, 0.8);
+        display: inline-block;
+        font-size: 1rem;
+        margin: 0 1rem;
+        transition: 0.2s ease-in-out;
+        transform: scale(0.9);
+        font-weight: 500;
+      }
+
+      .nav a:hover {
+        color: rgb(255, 255, 255);
+        transform: scale(1.1);
+        transition: 0.2s ease-in-out;
+      }
+
+      .nav a::after {
+        content: "";
+        display: block;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #409cff;
+        transform: scaleX(0);
+        transition: 0.2s linear;
+      }
+
+      .nav a:hover::after {
+        transform: scaleX(1);
+      }
+
+      .nav a .t,
+      .account {
+        animation: popup 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) normal
+          calc(var(--order) * 100ms);
+      }
+
+      /* Profile */
+      .profile {
+        border-radius: 20px;
+        width: 2.5rem;
+        transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        height: 2.5rem;
+        background: linear-gradient(135deg, #409cff, #0a6ebd);
+        background-size: cover;
+        background-repeat: no-repeat;
+        box-shadow: 0 0 15px rgba(64, 156, 255, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-weight: bold;
+      }
+
+      .profile:hover {
+        border-radius: 13px;
+        border: 1.5px solid rgba(255, 255, 255, 1);
+        transform: scale(1.5);
+        box-shadow: 0 0 20px rgba(64, 156, 255, 0.8);
+      }
+
+      .profile:active {
+        transform: scale(1.25);
+      }
+
+      /* Card Form */
+      form {
+        width: 85%;
+        max-width: 600px;
+        margin-top: 3rem;
+      }
+      
+      .card {
+        display: block;
+        width: 100%;
+        position: relative;
+        background: rgba(14, 35, 64, 0.5);
+        border: 1px solid rgba(64, 156, 255, 0.2);
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        animation: popup 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1 normal forwards;
+        backdrop-filter: blur(10px);
+        overflow: hidden;
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, #409cff, #0a6ebd, #409cff);
+        background-size: 200% 100%;
+        animation: wave 3s linear infinite;
+      }
+
+      .card-header {
+        display: flex;
+        padding: 1.5rem;
+        justify-content: center;
+        align-items: center;
+        border-bottom: 1px solid rgba(64, 156, 255, 0.3);
+        background: rgba(10, 25, 47, 0.3);
+      }
+
+      .card-header h3 {
+        color: white;
+        transition: 0.5s;
+        font-size: 1.5rem;
+        font-weight: 600;
+        text-shadow: 0 0 10px rgba(64, 156, 255, 0.5);
+      }
+
+      .card-header h3:hover {
+        color: #409cff;
+        transition: 0.5s;
+      }
+
+      .card-body {
+        padding: 2rem;
+      }
+
+      /* Uploading File */
+      .filescript {
+        margin-bottom: 1.5rem;
+        position: relative;
+      }
+
+      .filescript h3 {
+        margin-bottom: 1rem;
+        color: #a6d1ff;
+        font-weight: 500;
+      }
+
+      .filescript h5 {
+        color: #89b8ff;
+        font-weight: 400;
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .filescript [type="file"] {
+        display: none;
+      }
+
+      .filescript label {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgba(10, 25, 47, 0.5);
+        border-radius: 8px;
+        color: rgba(255, 255, 255, 0.9);
+        padding: 12px 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        border: 2px dashed rgba(64, 156, 255, 0.3);
+        cursor: pointer;
+      }
+
+      .filescript #num-of-files {
+        display: flex;
+        position: relative;
+        margin-bottom: 1rem;
+        color: #89b8ff;
+        font-size: 0.9rem;
+        min-height: 1.5rem;
+      }
+
+      .filescript label:hover {
+        transform: translateY(-3px);
+        border: 2px dashed #409cff;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        background: rgba(14, 35, 64, 0.6);
+      }
+
+      .filescript label:focus,
+      .filescript label:valid,
+      .filescript label:active {
+        border: 2px solid #409cff;
+        transform: scale(0.98);
+      }
+
+      /* Key Input */
+      .inputBox {
+        margin-bottom: 1rem;
+        position: relative;
+        width: 100%;
+        max-width: 300px;
+      }
+
+      .inputBox input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid rgba(64, 156, 255, 0.3);
+        background: rgba(10, 25, 47, 0.5);
+        border-radius: 8px;
+        font-size: 1em;
+        color: white;
+        transition: 0.3s ease;
+      }
+
+      .inputBox span {
+        position: absolute;
+        left: 0;
+        padding: 12px 15px;
+        font-size: 1em;
+        color: rgba(166, 209, 255, 0.6);
+        text-transform: uppercase;
+        transition: 0.3s ease;
+        pointer-events: none;
+      }
+
+      .inputBox input:valid ~ span,
+      .inputBox input:focus ~ span {
+        color: #409cff;
+        transform: translateX(10px) translateY(-7px);
+        font-size: 0.75em;
+        padding: 0 10px;
+        background: #0a192f;
+        border-left: 1px solid #409cff;
+        border-right: 1px solid #409cff;
+      }
+
+      .inputBox input:valid,
+      .inputBox input:focus {
+        border: 1px solid #409cff;
+        background: rgba(10, 25, 47, 0.8);
+        box-shadow: 0 0 15px rgba(64, 156, 255, 0.2);
+      }
+
+      /* Button submit */
+      .card-body button {
+        display: block;
+        margin-top: 2rem;
+        text-transform: uppercase;
+        color: white;
+        font-weight: 600;
+        font-size: 1.1em;
+        position: relative;
+        background: transparent;
+        padding: 15px 40px;
+        transition: 0.5s;
+        cursor: pointer;
+        border-radius: 8px;
+        overflow: hidden;
+        width: 100%;
+        letter-spacing: 1px;
+      }
+
+      .card-body button:hover {
+        letter-spacing: 2px;
+        background: rgba(64, 156, 255, 0.2);
+        color: #fff;
+        box-shadow: 0 0 25px rgba(64, 156, 255, 0.5);
+      }
+
+      .card-body button::before {
+        content: "";
+        position: absolute;
+        inset: 2px;
+        background: #0a192f;
+        border-radius: 6px;
+        z-index: -1;
+      }
+
+      .card-body button span {
+        position: relative;
+        z-index: 1;
+      }
+
+      .card-body button i {
+        position: absolute;
+        inset: 0;
+        display: block;
+      }
+
+      .card-body button i::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 75%;
+        border: 2px solid #409cff;
+        width: 15px;
+        transform: translateY(-4px);
+        height: 8px;
+        background: #0a192f;
+        transition: 0.5s;
+      }
+
+      .card-body button:hover i::before {
+        transform: translateX(-50%) translateY(-4px);
+        border: 2px solid #fff;
+        width: 30px;
+        left: 20%;
+      }
+
+      .card-body button i::after {
+        content: "";
+        position: absolute;
+        border: 2px solid #409cff;
+        bottom: 0;
+        left: 15%;
+        width: 15px;
+        height: 8px;
+        background: #0a192f;
+        transition: 0.5s;
+        transform: translateY(4px);
+      }
+
+      .card-body button:hover i::after {
+        transform: translateX(-50%) translateY(4px);
+        border: 2px solid #fff;
+        width: 30px;
+        left: 80%;
+      }
+
+      /* Ocean elements */
+      .ocean-decoration {
+        position: absolute;
+        z-index: -1;
+        opacity: 0.2;
+      }
+
+      .bubble {
+        position: absolute;
+        background: rgba(64, 156, 255, 0.3);
+        border-radius: 50%;
+        animation: float 8s infinite ease-in-out;
+      }
+
+      .bubble:nth-child(1) {
+        width: 20px;
+        height: 20px;
+        top: 20%;
+        left: 10%;
+        animation-delay: 0s;
+      }
+
+      .bubble:nth-child(2) {
+        width: 30px;
+        height: 30px;
+        top: 60%;
+        left: 5%;
+        animation-delay: 1s;
+      }
+
+      .bubble:nth-child(3) {
+        width: 15px;
+        height: 15px;
+        top: 40%;
+        right: 10%;
+        animation-delay: 2s;
+      }
+
+      .bubble:nth-child(4) {
+        width: 25px;
+        height: 25px;
+        top: 70%;
+        right: 15%;
+        animation-delay: 3s;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        form {
+          width: 90%;
+          margin-top: 5rem;
+        }
+        
+        .navbar {
+          padding: 1rem 5%;
+        }
+        
+        .nav a {
+          margin: 0 0.5rem;
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Ocean decorations -->
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+      <h1 class="logo"><span>Ziaan</span>scator</h1>
+
+      <div class="nav">
+        <a href="#"><div class="t" style="--order: 2">Obfuscator</div></a>
+      </div>
+      <div class="account" style="--order: 4">
+        <div class="profile">Z</div>
+      </div>
+    </nav>
+
+    <!-- Card -->
+    <form id="form">
+      <div class="card">
+        <div class="card-header">
+          <h3>Lua Obfuscator</h3>
+        </div>
+        <div class="card-body">
+          <div class="filescript">
+            <h3>Upload Your File Here!</h3>
+            <input type="file" id="file" />
+            <label for="file">Select Script</label>
+            <div id="num-of-files">No File Choosen</div>
+            <h5>Only receive .lua or .txt file!</h5>
+          </div>
+          <div class="inputBox">
+            <input type="text" required id="key" />
+            <span>Encrypt Key</span>
+          </div>
+          <h5>For encrypt and decrypt script.</h5>
+          <button type="submit" id="obfuscate">
+            <span>Obfuscate</span><i></i>
+          </button>
         </div>
       </div>
-      <textarea id="outputArea" class="textarea" style="height:220px" readonly></textarea>
-    </div>
-  </div>
-</div>
+    </form>
+    <script>
+      // declare realkey variable
+      let realKey = "";
 
-<div class="toast-wrap" id="toastWrap"></div>
+      // random chars length
+      let leng = 128;
+      // key integer length xor loop
+      let k = 0;
 
-<script>
-const worker = new Worker('worker.js');
-const $ = id=>document.getElementById(id);
+      // characters
+      const abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+      // characters table
+      let abcTab = [];
 
-function showToast(msg){
-  const t=document.createElement('div');t.className='toast';t.innerText=msg;
-  $('toastWrap').appendChild(t);setTimeout(()=>t.remove(),3000);
-}
+      // inserting chars
+      for (let i = 0; i < abc.length; i++) {
+        abcTab[i] = abc[i];
+      }
 
-$('runBtn').onclick=()=>{
-  const src=$('inputArea').value;if(!src.trim()){showToast('No source');return;}
-  $('progressBar').style.width='0%';$('outputArea').value='';
-  worker.postMessage({src,level:parseInt($('levelSelect').value),key:$('keyInput').value});
-};
+      // ran{m string
+      let ran1 = "";
+      let ran2 = "";
+      let ran3 = "";
+      let ran4 = "";
+      let ran5 = "";
+      let ran6 = "";
+      for (let i = 0; i < leng; i++) {
+        ran1 += abcTab[Math.floor(Math.random() * abcTab.length)];
+        ran2 += abcTab[Math.floor(Math.random() * abcTab.length)];
+        ran3 += abcTab[Math.floor(Math.random() * abcTab.length)];
+        ran4 += abcTab[Math.floor(Math.random() * abcTab.length)];
+        ran5 += abcTab[Math.floor(Math.random() * abcTab.length)];
+        ran6 += abcTab[Math.floor(Math.random() * abcTab.length)];
+      }
 
-worker.onmessage=(e)=>{
-  const {type,data}=e.data;
-  if(type==='progress'){ $('progressBar').style.width=data+'%'; }
-  if(type==='done'){ $('outputArea').value=data; showToast('Obfuscation complete'); }
-};
+      // function encrypt xor
+      const xorE = (sc, key) => {
+        const tabel = [];
+        let k = 0;
+        for (let i = 0; i < sc.length; i++) {
+          let byteValue = sc.charCodeAt(i) + key.charCodeAt(k);
+          k++;
+          tabel.push(byteValue);
+          if (k == key.length) {
+            k = 0;
+          }
+        }
+        return tabel;
+      };
 
-$('copyBtn').onclick=async()=>{
-  const v=$('outputArea').value;if(!v)return;
-  await navigator.clipboard.writeText(v);showToast('Copied');
-};
-$('downloadBtn').onclick=()=>{
-  const v=$('outputArea').value;if(!v)return;
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([v],{type:'text/plain'}));
-  a.download='obfuscated.lua';a.click();
-};
-$('clearIn').onclick=()=>{ $('inputArea').value=''; };
-</script>
-</body>
+      const xorE2 = (sc, key) => {
+        let tabel = [];
+        for (let i = 0; i < sc.length; i++) {
+          k += 1;
+          let byte = sc.charCodeAt(i) + key.charCodeAt(k);
+          tabel.push(byte);
+          if (k == key.length) {
+            k = 0;
+          }
+        }
+        k = 0;
+        return tabel;
+      };
+
+      // function decrypt xor for testing
+      const xorD = (tabel) => {
+        let hasil = "";
+        for (const v of tabel) {
+          k = k + 1;
+          hasil = hasil + String.fromCharCode(v - key.charCodeAt(k));
+          if (k == key.length) {
+            k = 0;
+          }
+        }
+        return hasil;
+      };
+
+      // declare tabel alibi
+      let tab1 = [];
+      let tab2 = [];
+      let tab3 = [];
+      let tab4 = [];
+      let tab5 = [];
+      let tab6 = [];
+
+      for (let i = 0; i < leng; i++) {
+        // tab1[i] = string.byte(abcTab[math.ranm(1, #abcTab)]
+        tab1[i] =
+          abcTab[Math.floor(Math.random() * abcTab.length)].charCodeAt(0);
+        tab2[i] =
+          abcTab[Math.floor(Math.random() * abcTab.length)].charCodeAt(0);
+        tab3[i] =
+          abcTab[Math.floor(Math.random() * abcTab.length)].charCodeAt(0);
+        tab4[i] =
+          abcTab[Math.floor(Math.random() * abcTab.length)].charCodeAt(0);
+        tab5[i] =
+          abcTab[Math.floor(Math.random() * abcTab.length)].charCodeAt(0);
+        tab6[i] =
+          abcTab[Math.floor(Math.random() * abcTab.length)].charCodeAt(0);
+      }
+
+      tab1 = tab1.join();
+      tab2 = tab2.join();
+      tab3 = tab3.join();
+      tab4 = tab4.join();
+      tab5 = tab5.join();
+      tab6 = tab6.join();
+
+      // function alibi alias pengalhan
+      // @param var1 key
+      // @param var2 string
+      // @param var3 variable
+      // @param tablenya table
+      const alibi = (var1, var2, var3, tablenya) => {
+        return `_ENV={string=string,table=table,math=math,pairs=pairs,load=load,print=print};${var1}="${var2}";${var2}="${var1}";${var3}={${tablenya}};function xor(t)local ciphertext="";for i=1,#${var2} do local byte=string.byte(${var2}, i);local quibit=string.byte(${var1},(i-1)%#${var1}+1);ciphertext=ciphertext..string.char(bit.bxor(byte,quibit));end;return ciphertext;end;bit={bxor=function(a,b)local r,m=0,1;while a>0 and b>0 do local aa,bb=a%2,b%2;r=r+m*((aa+bb)%2);m=m*2;a=math.floor(a/2);b=math.floor(b/2) end;if a>0 then r=r+m*a end;if b>0 then r=r+m*b end;return r;end};xor(${var3})${ran1}z="Encrypt By Ziaan";`;
+      };
+
+      // @return function decrypt real
+      const decX = (tabel) => {
+        // ran3
+        let script = ran3;
+        // ran4
+        let keyleng = ran4;
+        // ran1
+        let l = ran1;
+        // ran2
+        let v = ran2;
+        // ran5
+        let hasil = ran5;
+        return `${script}={${tabel.join()}};${keyleng}=0;${hasil}='';for ${l},${v} in pairs(${script}) do ${keyleng}=${keyleng}+1;${hasil}=${hasil}.._ENV["\\115\\116\\114\\105\\110\\103"]["\\99\\104\\97\\114"](${v}-_ENV["\\115\\116\\114\\105\\110\\103"]["\\98\\121\\116\\101"]("${realKey}",${keyleng}));if ${keyleng}==#"${realKey}" then ${keyleng}=0;end;end;if ${ran1}z=="\\69\\110\\99\\114\\121\\112\\116\\32\\66\\121\\32\\90\\105\\97\\97\\110" then _ENV["\\108\\111\\97\\100"](${hasil})() else print("Error whle runing this code");end;`;
+      };
+
+      // @return Gabungan semuanya
+      // Output = templateE + alibi(ran1,ran2,ran3,tab1) + decX(xorE())
+      // console.log(Output)
+
+      const fileInput = document.getElementById("file");
+      const fileChoosen = document.getElementById("num-of-files");
+      const read = new FileReader();
+      const form = document.getElementById("form");
+      console.log(form);
+
+      fileInput.addEventListener("change", () => {
+        let fileName = fileInput.files[0].name;
+        let fileSize = (fileInput.files[0].size / 1024).toFixed(2);
+        if (fileName.endsWith(".lua") || fileName.endsWith(".txt")) {
+          fileChoosen.innerHTML = `${fileName} (${fileSize}Kb)`;
+        } else {
+          fileChoosen.innerHTML = `Please upload only lua file or txt file!`;
+        }
+      });
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        console.log("Encrypting..");
+        let file = document.getElementById("file").files[0];
+        if (file == null) {
+          alert("Please upload file first!");
+          return;
+        }
+        
+        let keys = document.getElementById("key").value;
+        if (!keys) {
+          alert("Please enter an encryption key!");
+          return;
+        }
+        
+        console.log(keys);
+        realKey = "";
+        for (let i = 0; i < keys.length; i++) {
+          realKey += "\\" + keys.charCodeAt(i);
+        }
+        
+        read.readAsText(file);
+        read.onload = () => {
+          const sc = read.result;
+          const templateE = `local key=[[${keys}]];${ran1}z="Encrypt By Ziaan";${ran2}=${ran1};${ran3}=${ran2};${ran4}=${ran3};${ran5}=${ran4};${ran6}=${ran5};`;
+          const Output =
+            templateE +
+            alibi(ran1, ran2, ran3, tab1) +
+            alibi(ran4, ran2, ran5, tab2) +
+            alibi(ran6, ran3, ran1, tab3) +
+            decX(xorE(sc, keys)) +
+            alibi(ran2, ran4, ran6, tab4) +
+            alibi(ran1, ran4, ran5, tab5) +
+            alibi(ran2, ran1, ran3, tab6);
+          let blob = new Blob([Output], { type: "octet-stream" });
+          const href = URL.createObjectURL(blob);
+          const a = Object.assign(document.createElement("a"), {
+            href,
+            style: "display:none",
+            download: `Encrypted_${file.name}`,
+          });
+          document.body.appendChild(a);
+          a.click();
+          console.log("Downloading..");
+          URL.revokeObjectURL(href);
+          a.remove();
+        };
+        
+        read.onerror = () => {
+          alert("Error reading file. Please try again.");
+        };
+      });
+    </script>
+  </body>
 </html>
